@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>90-Day Platform Strategy for MultiSensor AI</title>
+<meta name="description" content="30/60/90-day plan to consolidate MultiSensor AI's camera-first architecture into one unified embedded SW/HW sensing platform." />
+<link rel="icon" type="image/png" href="./favicon.png" />
+<link rel="shortcut icon" type="image/png" href="./favicon.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@500;600;700;800&family=Rubik:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --bg:#0A0F1C;
+    --surface:#121B30;
+    --surface-2:#182238;
+    --border:#243252;
+    --border-soft:#1B2740;
+    --text:#EEF2FA;
+    --text-muted:#93A0BE;
+    --text-dim:#5C6987;
+    --thermal:#2E44E9;
+    --thermal-dim:#16224F;
+    --signal:#FFCF00;
+    --signal-dim:#3A2F02;
+    --amber:#C9A227;
+    --success:#1FCB57;
+    --danger:#E5484D;
+    --grad-thermal: linear-gradient(135deg,#2E44E9 0%, #FFCF00 100%);
+    --shadow-thermal: 0 8px 30px -8px rgba(46,68,233,0.35);
+    --radius: 20px;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:
+      radial-gradient(1100px 600px at 12% -10%, rgba(46,68,233,0.09), transparent 60%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Rubik', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.font-display{ font-family:'Saira', 'Rubik', sans-serif; letter-spacing:-0.01em; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+  ::selection{ background:rgba(255,207,0,0.35); color:#14110A; }
+
+  .noise{
+    position:fixed; inset:0; pointer-events:none; z-index:1; opacity:0.03; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  section{ position:relative; z-index:2; scroll-margin-top:76px; }
+
+  /* ---- global fixed background stage: one video, spanning every section ---- */
+  #bgStage{ position:fixed; inset:0; z-index:0; overflow:hidden; background:var(--bg); }
+  #bgStage video{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    filter:brightness(0.42) saturate(1.15);
+    transform:scale(1.04);
+  }
+  .bg-photo{
+    position:absolute; inset:0; opacity:0;
+    transition:opacity 1800ms ease;
+    will-change:opacity;
+  }
+  .bg-photo.active{ opacity:0.5; }
+  .bg-photo img{
+    width:100%; height:100%; object-fit:cover; object-position:center;
+    filter:brightness(0.55) saturate(1.1);
+    transform:scale(1.06);
+    animation:kenburns 34s ease-in-out infinite alternate;
+  }
+  #bgStage .bg-tint{
+    position:absolute; inset:0;
+    background:
+      linear-gradient(180deg, rgba(10,15,28,0.25) 0%, rgba(10,15,28,0.55) 45%, rgba(10,15,28,0.78) 100%),
+      radial-gradient(1200px 650px at 18% 10%, rgba(46,68,233,0.10), transparent 60%);
+  }
+  @keyframes kenburns{ from{transform:scale(1.06) translate3d(0,0,0);} to{transform:scale(1.16) translate3d(-1.6%,-1.2%,0);} }
+  @media (prefers-reduced-motion: reduce){ .bg-photo img, #bgStage video{ animation:none; } }
+
+  .kicker{
+    font-size:11px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--text-dim);
+  }
+  .kicker em{ font-style:normal; color:var(--thermal); }
+  .kicker.gold em{ color:var(--signal); }
+  .kicker.light{ color:rgba(238,242,250,0.55); }
+  .kicker.light em{ color:var(--signal); }
+
+  .card{
+    background:linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+    border:1px solid var(--border-soft);
+    border-radius:var(--radius);
+  }
+  .glass{
+    background:rgba(18,27,48,0.55);
+    backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,0.08);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.06);
+    border-radius:var(--radius);
+  }
+
+  .rule-list > *{ border-top:1px solid var(--border-soft); }
+  .rule-list > *:first-child{ border-top:none; }
+
+  .ghost-num{
+    font-family:'Saira',sans-serif; font-weight:700; font-size:56px; line-height:1;
+    color:transparent; -webkit-text-stroke:1px var(--border);
+    letter-spacing:-0.02em;
+  }
+
+  .btn-primary{
+    background:#FFCF00; color:#14110A; font-weight:700;
+    box-shadow:var(--shadow-thermal);
+    transition:transform 180ms cubic-bezier(.2,.8,.2,1), box-shadow 180ms ease, background 180ms ease;
+  }
+  .btn-primary:hover{ background:#FFD91A; transform:translateY(-2px); box-shadow:0 14px 40px -8px rgba(255,207,0,0.4); }
+  .btn-primary:active{ transform:translateY(0) scale(0.98); }
+  .btn-primary:focus-visible{ outline:2px solid var(--thermal); outline-offset:3px; }
+
+  .btn-ghost{
+    border:1px solid rgba(255,255,255,0.22); color:var(--text);
+    transition:background 180ms ease, border-color 180ms ease;
+  }
+  .btn-ghost:hover{ background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.4); }
+  .btn-ghost:focus-visible{ outline:2px solid var(--signal); outline-offset:3px; }
+
+  a{ cursor:pointer; }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--signal); outline-offset:2px; }
+
+  #progress{
+    position:fixed; top:0; left:0; height:3px; width:100%;
+    transform:scaleX(0); transform-origin:left;
+    background:var(--grad-thermal); z-index:100; transition:transform 80ms linear;
+    will-change:transform;
+  }
+
+  #dotnav{
+    position:fixed; right:22px; top:50%; transform:translateY(-50%); z-index:90;
+    display:flex; flex-direction:column; gap:14px;
+  }
+  #dotnav a{
+    width:8px; height:8px; border-radius:999px; background:rgba(255,255,255,0.25);
+    display:block; position:relative; transition:all 220ms ease;
+  }
+  #dotnav a.active{ background:var(--signal); box-shadow:0 0 0 4px rgba(255,207,0,0.18); transform:scale(1.2); }
+  #dotnav a .label{
+    position:absolute; right:20px; top:50%; transform:translateY(-50%);
+    white-space:nowrap; font-size:11px; color:var(--text-muted);
+    opacity:0; pointer-events:none; transition:opacity 160ms ease;
+    background:var(--surface); padding:4px 10px; border-radius:8px; border:1px solid var(--border-soft);
+  }
+  #dotnav a:hover .label{ opacity:1; }
+  @media (max-width:1024px){ #dotnav{ display:none; } }
+
+  #topnav{
+    position:fixed; top:0; left:0; right:0; z-index:80;
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    background:rgba(10,15,28,0.78); border-bottom:1px solid var(--border-soft);
+  }
+
+  .kpi-num{ font-family:'Saira',sans-serif; font-weight:700; font-variant-numeric:tabular-nums; }
+
+  table.roadmap td, table.roadmap th{ border:1px solid var(--border-soft); }
+
+  .heat-cell{ transition:transform 160ms ease, box-shadow 160ms ease, outline-color 160ms ease; cursor:pointer; outline:2px solid transparent; outline-offset:2px; }
+  .heat-cell:hover{ transform:scale(1.06); box-shadow:0 6px 18px -6px rgba(0,0,0,0.6); }
+  .heat-cell.selected{ outline-color:#fff; }
+
+  .scrollbar-thin::-webkit-scrollbar{ height:6px; width:6px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb{ background:var(--border); border-radius:999px; }
+
+  .bar-hit{ cursor:pointer; }
+  .bar-hit rect{ transition:opacity 160ms ease; }
+  .bar-hit:hover rect{ opacity:0.75; }
+  .bar-hit.selected rect.us, .bar-hit.selected rect.ov{ stroke:#fff; stroke-width:2; }
+
+  .preview-rail a{ transition:background 160ms ease; }
+  .preview-rail a:hover{ background:rgba(255,255,255,0.03); }
+
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity 600ms ease, transform 600ms ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  .tilt{ transition:transform 300ms ease; transform-style:preserve-3d; }
+
+  .badge-sim{
+    display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600;
+    letter-spacing:0.04em; color:var(--amber); background:rgba(201,162,39,0.1);
+    border:1px solid rgba(201,162,39,0.35); border-radius:999px; padding:4px 10px;
+  }
+  .badge-sim::before{ content:''; width:6px; height:6px; border-radius:999px; background:var(--amber); }
+
+  /* framed inline imagery */
+  .frame-img{
+    position:relative; border-radius:var(--radius); overflow:hidden;
+    border:1px solid rgba(255,255,255,0.1);
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .frame-img img{ display:block; width:100%; height:100%; object-fit:cover; }
+  .frame-img::after{ content:''; position:absolute; inset:0; box-shadow:inset 0 0 0 1px rgba(255,255,255,0.04); pointer-events:none; }
+  .frame-tag{
+    position:absolute; left:14px; bottom:14px; z-index:2;
+    background:rgba(10,15,28,0.72); backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,0.12); border-radius:999px;
+    padding:5px 12px; font-size:11px; letter-spacing:0.03em; color:var(--text-muted);
+  }
+
+  /* numbered row (replaces same-size card grids for sequential content) */
+  .num-row{ display:flex; gap:20px; align-items:flex-start; }
+  .num-badge{
+    flex-shrink:0; width:30px; height:30px; border-radius:999px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:500;
+    border:1px solid var(--border); color:var(--text-muted);
+  }
+
+  /* social icon row */
+  .social-btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:11px 18px; border-radius:999px; border:1px solid rgba(255,255,255,0.16);
+    color:var(--text); font-size:13px; font-weight:600; background:rgba(255,255,255,0.03);
+    transition:border-color 180ms ease, background 180ms ease, transform 180ms ease;
+  }
+  .social-btn:hover{ border-color:var(--signal); background:rgba(255,207,0,0.06); transform:translateY(-2px); }
+  .social-btn svg{ width:18px; height:18px; }
+
+  .pill{
+    display:inline-flex; align-items:center; font-size:12px; color:var(--text-muted);
+    border:1px solid var(--border-soft); border-radius:999px; padding:6px 13px;
+    background:rgba(255,255,255,0.02);
+  }
+
+  .hero-glow{
+    position:absolute; inset:0; pointer-events:none;
+    background:
+      radial-gradient(900px 500px at 20% 20%, rgba(46,68,233,0.18), transparent 60%),
+      radial-gradient(700px 400px at 85% 75%, rgba(255,207,0,0.08), transparent 60%);
+  }
+</style>
+</head>
+<body class="antialiased">
+<div id="bgStage">
+  <video id="bgVideo" autoplay muted loop playsinline poster="./bg/hero.jpg">
+    <source src="./bg/hero.mp4" type="video/mp4" />
+  </video>
+  <div class="bg-photo" data-bg="state"><img src="./bg/state.jpg" alt="" /></div>
+  <div class="bg-photo" data-bg="gap"><img src="./bg/gap.jpg" alt="" /></div>
+  <div class="bg-photo" data-bg="vision"><img src="./bg/vision.jpg" alt="" /></div>
+  <div class="bg-photo" data-bg="roadmap"><img src="./bg/roadmap.jpg" alt="" /></div>
+  <div class="bg-photo" data-bg="cost"><img src="./bg/cost.jpg" alt="" /></div>
+  <div class="bg-photo" data-bg="hero"><img src="./bg/hero.jpg" alt="" /></div>
+  <div class="bg-tint"></div>
+</div>
+<div class="noise"></div>
+<div id="progress"></div>
+
+<nav id="topnav" class="px-6 md:px-10 py-4">
+  <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <img src="./msai-logo.png" alt="MultiSensor AI" width="20" height="20" class="shrink-0" />
+      <span class="font-display font-semibold text-sm tracking-wide">MSAI Platform Strategy</span>
+    </div>
+    <div class="hidden md:flex items-center gap-6 text-[13px] text-slate-300">
+      <a href="#state" class="hover:text-white transition-colors">Today</a>
+      <a href="#gap" class="hover:text-white transition-colors">The gap</a>
+      <a href="#vision" class="hover:text-white transition-colors">Vision</a>
+      <a href="#day30" class="hover:text-white transition-colors">30 days</a>
+      <a href="#day60" class="hover:text-white transition-colors">60 days</a>
+      <a href="#day90" class="hover:text-white transition-colors">90 days</a>
+      <a href="#roadmap" class="hover:text-white transition-colors">Roadmap</a>
+      <a href="#cost" class="hover:text-white transition-colors">Investment</a>
+      <a href="#about" class="hover:text-white transition-colors">About</a>
+    </div>
+    <a href="#close" class="btn-primary text-[13px] px-4 py-2 rounded-full">The ask</a>
+  </div>
+</nav>
+
+<div id="dotnav">
+  <a href="#hero" data-label="Hero"><span class="label">Top</span></a>
+  <a href="#state" data-label="Today"><span class="label">Where we are today</span></a>
+  <a href="#gap" data-label="Gap"><span class="label">The architecture gap</span></a>
+  <a href="#vision" data-label="Vision"><span class="label">The vision</span></a>
+  <a href="#day30" data-label="30"><span class="label">First 30 days</span></a>
+  <a href="#day60" data-label="60"><span class="label">First 60 days</span></a>
+  <a href="#day90" data-label="90"><span class="label">First 90 days</span></a>
+  <a href="#roadmap" data-label="Roadmap"><span class="label">Quarterly roadmap</span></a>
+  <a href="#cost" data-label="Cost"><span class="label">Team and investment</span></a>
+  <a href="#close" data-label="Close"><span class="label">The ask</span></a>
+  <a href="#about" data-label="About"><span class="label">About the author</span></a>
+</div>
+
+<!-- HERO -->
+<section id="hero" data-bg="hero" class="min-h-[100dvh] flex items-center px-6 md:px-10 pt-24 pb-16">
+  <div class="hero-glow"></div>
+  <div class="max-w-7xl mx-auto w-full relative z-10">
+    <div class="max-w-2xl pt-6 lg:pt-10" id="heroTilt">
+      <h1 class="text-[13vw] leading-[0.96] md:text-6xl lg:text-[4.4rem] font-bold mt-5 mb-6">
+        One platform.
+        <span style="color:var(--signal)">Every sensor.</span>
+      </h1>
+      <p class="text-lg text-slate-200 max-w-lg leading-relaxed mb-3">
+        A 30/60/90 day plan to unify thermal, vibration, current, and voltage into one platform built for proactive maintenance, not reactive fixes: one embedded stack, one cloud, one release train.
+      </p>
+      <div class="flex flex-wrap gap-3 mb-14 mt-8">
+        <a href="#day30" class="btn-primary px-6 py-3.5 rounded-full text-sm">See the 30/60/90 plan</a>
+        <a href="#cost" class="btn-ghost px-6 py-3.5 rounded-full text-sm">Jump to the investment model</a>
+      </div>
+      <div class="grid grid-cols-3 gap-3 sm:gap-4 pt-7 max-w-lg">
+        <div class="glass px-3 py-4 sm:p-5 text-center sm:text-left">
+          <div class="kpi-num text-2xl sm:text-3xl" style="color:var(--thermal)">100+</div>
+          <div class="text-[11px] sm:text-xs text-slate-300 mt-1 leading-snug">live sites on MSAI Connect</div>
+        </div>
+        <div class="glass px-3 py-4 sm:p-5 text-center sm:text-left">
+          <div class="kpi-num text-2xl sm:text-3xl" style="color:var(--signal)">8×</div>
+          <div class="text-[11px] sm:text-xs text-slate-300 mt-1 leading-snug">5-year ROI, 2-month payback</div>
+        </div>
+        <div class="glass px-3 py-4 sm:p-5 text-center sm:text-left">
+          <div class="kpi-num text-2xl sm:text-3xl" style="color:var(--success)">4</div>
+          <div class="text-[11px] sm:text-xs text-slate-300 mt-1 leading-snug">sensor modalities, one roadmap</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHERE WE ARE TODAY -->
+<section id="state" data-bg="state" class="py-24 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-bold max-w-md mb-5 reveal">Two halves of a platform already exist</h2>
+    <p class="text-slate-400 leading-relaxed max-w-md mb-10 reveal">This plan doesn't start from zero. The job is to unify what's already built, not invent it.</p>
+    <div class="grid lg:grid-cols-[1fr,0.7fr] gap-14 items-start">
+      <div class="rule-list reveal">
+        <div class="py-6 grid sm:grid-cols-[130px,1fr] gap-3 sm:gap-8">
+          <h3 class="font-display font-semibold text-base" style="color:var(--thermal)">ICI heritage</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Thermal camera cores since 1995. Legacy strength, not a constraint.</p>
+        </div>
+        <div class="py-6 grid sm:grid-cols-[130px,1fr] gap-3 sm:gap-8">
+          <h3 class="font-display font-semibold text-base" style="color:var(--thermal)">MSAI Hub</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Edge gateway. 7 PoE sensors, local AI, offline resilient. A BSP already has a home here.</p>
+        </div>
+        <div class="py-6 grid sm:grid-cols-[130px,1fr] gap-3 sm:gap-8">
+          <h3 class="font-display font-semibold text-base" style="color:var(--signal)">MSAI Connect</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Cloud layer. Sensor-agnostic. Already shifting customers from reactive fixes to proactive maintenance, proven at 100+ sites, 8x ROI, 30% less downtime.</p>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="glass p-6 flex items-start gap-4 mb-5">
+          <svg class="shrink-0 mt-0.5" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="#FFCF00" stroke-width="1.6" stroke-linejoin="round"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="#FFCF00" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <p class="text-sm text-slate-100 leading-relaxed">
+            <strong class="text-white">The signal:</strong> vibration already shipped next to thermal — proof multi-sensor motion has started on its own.
+          </p>
+        </div>
+        <div class="text-xs uppercase tracking-wide text-slate-500 mb-2">Outcomes this already delivers</div>
+        <div class="flex flex-wrap gap-2">
+          <span class="pill">Reduced unplanned downtime</span>
+          <span class="pill">Higher operational throughput</span>
+          <span class="pill">Maintenance efficiency</span>
+          <span class="pill">Reduced safety &amp; operational risk</span>
+        </div>
+        <p class="text-[11px] text-slate-600 mt-3">Outcome categories per MSAI FY25 Q4 Investor Presentation (Mar. 2026).</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THE GAP -->
+<section id="gap" data-bg="gap" class="py-24 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-bold max-w-2xl mb-14 reveal">Every new sensor re-pays the same integration tax</h2>
+    <div class="grid lg:grid-cols-2 gap-5 mb-5">
+      <div class="glass p-8 reveal">
+        <h3 class="font-display font-semibold text-lg mb-5 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full" style="background:var(--danger)"></span> Today: bespoke per sensor
+        </h3>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3 text-sm p-3 rounded-lg border border-white/10 bg-black/20">
+            <span class="mono text-xs text-slate-400 w-16">Thermal</span>
+            <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"><div class="h-full" style="width:100%;background:var(--thermal)"></div></div>
+            <span class="text-xs text-slate-400">own firmware</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm p-3 rounded-lg border border-white/10 bg-black/20">
+            <span class="mono text-xs text-slate-400 w-16">Vibration</span>
+            <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"><div class="h-full" style="width:100%;background:var(--thermal)"></div></div>
+            <span class="text-xs text-slate-400">own driver stack</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm p-3 rounded-lg border border-dashed border-white/15 opacity-50">
+            <span class="mono text-xs text-slate-400 w-16">Current</span>
+            <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"></div>
+            <span class="text-xs text-slate-500">not yet built</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm p-3 rounded-lg border border-dashed border-white/15 opacity-50">
+            <span class="mono text-xs text-slate-400 w-16">Voltage</span>
+            <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"></div>
+            <span class="text-xs text-slate-500">not yet built</span>
+          </div>
+        </div>
+        <p class="text-xs text-slate-400 mt-5">Own OS/driver/BSP, own support burden, own data model. Every row.</p>
+      </div>
+      <div class="glass p-8 reveal">
+        <h3 class="font-display font-semibold text-lg mb-5 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full" style="background:var(--success)"></span> Target: one BSP, plug-in modules
+        </h3>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3 text-sm p-3 rounded-lg border" style="border-color:var(--signal-dim); background:rgba(255,207,0,0.06)">
+            <span class="mono text-xs text-slate-400 w-16">Thermal</span>
+            <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"><div class="h-full" style="width:100%;background:var(--signal)"></div></div>
+            <span class="text-xs text-slate-300">plug-in module</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm p-3 rounded-lg border" style="border-color:var(--signal-dim); background:rgba(255,207,0,0.06)">
+            <span class="mono text-xs text-slate-400 w-16">Vibration</span>
+            <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"><div class="h-full" style="width:100%;background:var(--signal)"></div></div>
+            <span class="text-xs text-slate-300">plug-in module</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm p-3 rounded-lg border" style="border-color:var(--signal-dim); background:rgba(255,207,0,0.06)">
+            <span class="mono text-xs text-slate-400 w-16">Current</span>
+            <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"><div class="h-full" style="width:60%;background:var(--amber)"></div></div>
+            <span class="text-xs text-slate-300">Q3 module</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm p-3 rounded-lg border" style="border-color:var(--signal-dim); background:rgba(255,207,0,0.06)">
+            <span class="mono text-xs text-slate-400 w-16">Voltage</span>
+            <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"><div class="h-full" style="width:60%;background:var(--amber)"></div></div>
+            <span class="text-xs text-slate-300">Q3 module</span>
+          </div>
+        </div>
+        <p class="text-xs text-slate-400 mt-5">Same OS/driver/BSP underneath. A new sensor is a module, not a rebuild: one integration point, one data lake, one customer portal for all of it.</p>
+      </div>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 reveal">
+      <div class="glass p-6">
+        <div class="text-xs text-slate-400 mb-2 uppercase tracking-wide">Engineering cost</div>
+        <p class="text-sm text-slate-200">Firmware, drivers, QA, support — paid again per sensor type.</p>
+      </div>
+      <div class="glass p-6">
+        <div class="text-xs text-slate-400 mb-2 uppercase tracking-wide">Release cadence</div>
+        <p class="text-sm text-slate-200">Fragmented stacks make a quarterly release train impossible.</p>
+      </div>
+      <div class="glass p-6">
+        <div class="text-xs text-slate-400 mb-2 uppercase tracking-wide">Go-to-market</div>
+        <p class="text-sm text-slate-200">Market still hears "thermal camera company," not platform.</p>
+      </div>
+      <div class="glass p-6">
+        <div class="text-xs text-slate-400 mb-2 uppercase tracking-wide">Cost of inaction</div>
+        <p class="text-sm text-slate-200">Unplanned downtime averages $125K/hour; a single cooling failure runs $1.7M and six weeks to recover.<sup>*</sup></p>
+      </div>
+    </div>
+    <p class="text-[11px] text-slate-600 mt-4">* Downtime figures per MSAI FY25 Q4 Investor Presentation (Mar. 2026), citing ABB Group and Data Centre Dynamics.</p>
+  </div>
+</section>
+
+<!-- VISION -->
+<section id="vision" data-bg="vision" class="py-24 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="font-display text-4xl md:text-5xl font-bold leading-[1.05] max-w-lg mb-14 reveal">
+      One platform.<br/>One cloud.<br/><span style="color:var(--signal)">One release train.</span>
+    </h2>
+    <div class="grid sm:grid-cols-2 gap-x-10 gap-y-6 max-w-4xl">
+      <div class="py-2 flex gap-5 items-start reveal">
+        <svg class="shrink-0 mt-1" width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="#2E44E9" stroke-width="1.6"/><path d="M8 12h8M12 8v8" stroke="#2E44E9" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <div><h3 class="font-display font-semibold mb-1">One integration point, every sensor</h3><p class="text-sm text-slate-400 leading-relaxed">A single unified embedded framework absorbs thermal, vibration, current, and voltage. New modality = driver module, not a new stack.</p></div>
+      </div>
+      <div class="py-5 flex gap-5 items-start reveal">
+        <svg class="shrink-0 mt-1" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3v6M12 15v6M3 12h6M15 12h6" stroke="#2E44E9" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="12" r="3" stroke="#2E44E9" stroke-width="1.6"/></svg>
+        <div><h3 class="font-display font-semibold mb-1">One data lake, one customer portal</h3><p class="text-sm text-slate-400 leading-relaxed">Every sensor lands in one clean data-lake schema under Connect. Every customer monitors and controls their fleet through one portal, backed by the Hub at the edge.</p></div>
+      </div>
+      <div class="py-5 flex gap-5 items-start reveal">
+        <svg class="shrink-0 mt-1" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 1 1 3.5 7.1" stroke="#FFCF00" stroke-width="1.6" stroke-linecap="round"/><path d="M3 17v-5h5" stroke="#FFCF00" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div><h3 class="font-display font-semibold mb-1">Quarterly release train</h3><p class="text-sm text-slate-400 leading-relaxed">Major release every quarter. A cadence sales can sell.</p></div>
+      </div>
+      <div class="py-5 flex gap-5 items-start reveal">
+        <svg class="shrink-0 mt-1" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke="#FFCF00" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <div><h3 class="font-display font-semibold mb-1">Proactive AI, edge to cloud</h3><p class="text-sm text-slate-400 leading-relaxed">Local models on the Hub catch failures before they happen, not after. Fleet models in Connect turn that into prescriptive maintenance: less downtime for customers, a lighter long-term footprint for the whole stack.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 30/60/90 -->
+<section id="day30" data-bg="gap" class="py-24 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-[0.85fr,1.6fr] gap-14">
+    <div class="lg:sticky lg:top-28 lg:self-start reveal">
+      <div class="mono text-xs text-slate-500 mb-3">Days 1&ndash;30</div>
+      <h2 class="text-4xl font-bold mb-4">Discover and align</h2>
+      <p class="text-slate-400 leading-relaxed mb-6">Align the business. Protect the 100+ live sites from ever feeling this transition.</p>
+      <div class="pl-4 border-l-2" style="border-color:var(--thermal)">
+        <div class="text-xs text-slate-500 uppercase tracking-wide mb-1">Day-30 deliverable</div>
+        <div class="text-sm font-medium">Platform Charter + Field Continuity Plan, signed off</div>
+      </div>
+    </div>
+    <div class="rule-list">
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">1</span>
+        <div><h3 class="font-display font-semibold mb-2">Stakeholder alignment</h3><p class="text-sm text-slate-400 leading-relaxed">Product, Finance, Manufacturing, Ops charter the stack together — budget owners in the room early.</p></div>
+      </div>
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">2</span>
+        <div><h3 class="font-display font-semibold mb-2">Architecture &amp; IP audit</h3><p class="text-sm text-slate-400 leading-relaxed">Map Hub, Connect, ICI firmware, vibration pipeline against reusable vs. rebuild. Runs parallel — field ops don't pause.</p></div>
+      </div>
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">3</span>
+        <div><h3 class="font-display font-semibold mb-2">GTM re-alignment</h3><p class="text-sm text-slate-400 leading-relaxed">"Thermal camera company" → "multi-sensor platform." Brief sales before release one ships.</p></div>
+      </div>
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">4</span>
+        <div><h3 class="font-display font-semibold mb-2">Resourcing decision: ops first</h3><p class="text-sm text-slate-400 leading-relaxed">Decide how the current 12 engineers split: priority stays on live-product sustainment, not a wholesale reassignment. Only the capacity that doesn't put the 100+ live sites at risk peels off into the new Brazil incubation pod &mdash; redundancy and acceleration on the unified stack, run in parallel to keeping today's product operational. This split is what Day 60 stands up.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="day60" data-bg="state" class="py-24 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-[0.85fr,1.6fr] gap-14">
+    <div class="lg:sticky lg:top-28 lg:self-start reveal">
+      <div class="mono text-xs text-slate-500 mb-3">Days 31&ndash;60</div>
+      <h2 class="text-4xl font-bold mb-4">Team and foundation</h2>
+      <p class="text-slate-400 leading-relaxed mb-6">Split the org. Field never loses support while a dedicated team builds fast.</p>
+      <div class="pl-4 border-l-2" style="border-color:var(--signal)">
+        <div class="text-xs text-slate-500 uppercase tracking-wide mb-1">Day-60 deliverable</div>
+        <div class="text-sm font-medium">Core + Incubator org live, Brazil pod onboarding, BSP in active build</div>
+      </div>
+    </div>
+    <div class="rule-list">
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">1</span>
+        <div><h3 class="font-display font-semibold mb-2">Capability assessment</h3><p class="text-sm text-slate-400 leading-relaxed">Skills-map today's 12 engineers against RTOS, Yocto, BSP, edge AI. Name the real gaps.</p></div>
+      </div>
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">2</span>
+        <div><h3 class="font-display font-semibold mb-2">Two-team restructure</h3><p class="text-sm text-slate-400 leading-relaxed"><strong class="text-slate-200">Core</strong> runs live sites uninterrupted. <strong class="text-slate-200">Incubator</strong> builds the unified stack, insulated from ticket gravity.</p></div>
+      </div>
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">3</span>
+        <div><h3 class="font-display font-semibold mb-2">Brazil engineering pod</h3><p class="text-sm text-slate-400 leading-relaxed">Nearshore pod closes the RTOS/Yocto/BSP gap. Starts small, mentored by the existing team, scales as it earns autonomy — see the Investment section for real numbers.</p></div>
+      </div>
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">4</span>
+        <div><h3 class="font-display font-semibold mb-2">Break ground on the BSP</h3><p class="text-sm text-slate-400 leading-relaxed">Thermal and vibration migrate first, proving the model before current and voltage build on it.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="day90" data-bg="roadmap" class="py-24 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-[0.85fr,1.6fr] gap-14">
+    <div class="lg:sticky lg:top-28 lg:self-start reveal">
+      <div class="mono text-xs text-slate-500 mb-3">Days 61&ndash;90</div>
+      <h2 class="text-4xl font-bold mb-4">Roadmap and commitment</h2>
+      <p class="text-slate-400 leading-relaxed mb-6">First 60 days becomes a board-ready 12-month plan with real numbers.</p>
+      <div class="pl-4 border-l-2" style="border-color:var(--thermal)">
+        <div class="text-xs text-slate-500 uppercase tracking-wide mb-1">Day-90 deliverable</div>
+        <div class="text-sm font-medium">Board-ready 12-month roadmap and investment ask</div>
+      </div>
+    </div>
+    <div class="rule-list">
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">1</span>
+        <div><h3 class="font-display font-semibold mb-2">Build vs. buy matrix</h3><p class="text-sm text-slate-400 leading-relaxed">RTOS, Yocto layers, data-lake tech, analog front-ends — decided on cost and time, not habit.</p></div>
+      </div>
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">2</span>
+        <div><h3 class="font-display font-semibold mb-2">12-month roadmap</h3><p class="text-sm text-slate-400 leading-relaxed">Four themed quarters, each a major release built from 2&ndash;3 week sprints. Full view below.</p></div>
+      </div>
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">3</span>
+        <div><h3 class="font-display font-semibold mb-2">Sensor sequencing</h3><p class="text-sm text-slate-400 leading-relaxed">Vibration shipped. Current and voltage next, then acoustic and environmental — all on one BSP.</p></div>
+      </div>
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">4</span>
+        <div><h3 class="font-display font-semibold mb-2">AI injection strategy</h3><p class="text-sm text-slate-400 leading-relaxed">Hub keeps real-time detection. Connect layers on fleet-wide prescriptive maintenance: the shift from reactive to proactive that cuts customer downtime and lowers the stack's long-term operating footprint.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap" data-bg="roadmap" class="py-24 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto">
+    <div class="mb-14 reveal">
+      <h2 class="text-3xl md:text-4xl font-bold mb-3">Quarterly release roadmap</h2>
+      <span class="badge-sim">Illustrative sequencing, click a cell below to explore</span>
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-8 mb-4 reveal">
+      <div class="pt-5 border-t-2" style="border-color:var(--thermal)">
+        <div class="mono text-xs text-slate-500 mb-1">Q1</div>
+        <div class="text-sm font-semibold mb-1" style="color:var(--thermal)">Foundation</div>
+        <div class="text-[10px] text-slate-500 mb-3">Investor Stage 1 &middot; platform &amp; UX</div>
+        <ul class="text-xs text-slate-400 space-y-1.5 leading-relaxed">
+          <li>Charter signed</li><li>Audit complete</li><li>Pod hired</li><li>BSP v0</li>
+        </ul>
+      </div>
+      <div class="pt-5 md:mt-10 border-t-2" style="border-color:var(--thermal)">
+        <div class="mono text-xs text-slate-500 mb-1">Q2</div>
+        <div class="text-sm font-semibold mb-1" style="color:var(--thermal)">Unification</div>
+        <div class="text-[10px] text-slate-500 mb-3">Investor Stage 2 &middot; Distribution &amp; Logistics</div>
+        <ul class="text-xs text-slate-400 space-y-1.5 leading-relaxed">
+          <li>BSP alpha ships</li><li>Thermal + vibration unified</li><li>Data lake v1</li><li>First quarterly release</li>
+        </ul>
+      </div>
+      <div class="pt-5 border-t-2" style="border-color:var(--signal)">
+        <div class="mono text-xs text-slate-500 mb-1">Q3</div>
+        <div class="text-sm font-semibold mb-1" style="color:var(--signal)">Expansion</div>
+        <div class="text-[10px] text-slate-500 mb-3">Investor Stage 3 &middot; Manufacturing, Data Centers</div>
+        <ul class="text-xs text-slate-400 space-y-1.5 leading-relaxed">
+          <li>Current + voltage integrated</li><li>Edge AI v2</li><li>Platform GTM live</li>
+        </ul>
+      </div>
+      <div class="pt-5 md:mt-10 border-t-2" style="border-color:var(--signal)">
+        <div class="mono text-xs text-slate-500 mb-1">Q4</div>
+        <div class="text-sm font-semibold mb-1" style="color:var(--signal)">Scale</div>
+        <div class="text-[10px] text-slate-500 mb-3">Investor Stage 4&ndash;5 &middot; connected layer, predictive intelligence</div>
+        <ul class="text-xs text-slate-400 space-y-1.5 leading-relaxed">
+          <li>Acoustic + env. beta</li><li>Prescriptive AI pilot</li><li>FY+1 board review</li>
+        </ul>
+      </div>
+    </div>
+    <p class="text-[11px] text-slate-600 mb-12">Investor Stage references per MSAI FY25 Q4 Investor Presentation (Mar. 2026) 5-stage platform roadmap &mdash; this 90-day plan is how engineering delivers Stages 1&ndash;3.</p>
+
+    <div class="card p-7 reveal">
+      <h3 class="font-display font-semibold text-lg mb-5">Sensor modality rollout</h3>
+      <div class="overflow-x-auto scrollbar-thin">
+        <div id="heatmap" class="grid grid-cols-5 gap-2 max-sm:min-w-[560px]">
+          <div></div>
+          <div class="text-center text-xs text-slate-500 uppercase tracking-wide pb-2">Q1</div>
+          <div class="text-center text-xs text-slate-500 uppercase tracking-wide pb-2">Q2</div>
+          <div class="text-center text-xs text-slate-500 uppercase tracking-wide pb-2">Q3</div>
+          <div class="text-center text-xs text-slate-500 uppercase tracking-wide pb-2">Q4</div>
+        </div>
+      </div>
+      <div id="heatDetail" class="mt-5 p-4 rounded-xl border border-[var(--border-soft)] bg-black/20 text-sm text-slate-300 leading-relaxed">
+        Click any cell above to see what happens that quarter.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COST / INVESTMENT -->
+<section id="cost" data-bg="cost" class="py-24 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto">
+    <div class="max-w-2xl mb-10 reveal">
+      <h2 class="text-3xl md:text-4xl font-bold mb-3">What the Brazil pod costs, incrementally</h2>
+      <span class="badge-sim mb-6 inline-flex">Simulated projection — click a bar to explore</span>
+      <p class="text-sm text-slate-200 leading-relaxed mt-6">
+        The existing <strong class="text-white">12-engineer team</strong> — a mix of US and global hires — keeps
+        the current platform operational through the transition; that cost is
+        <strong class="text-white">already funded in the annual plan and not counted here.</strong> This model is
+        only the <strong style="color:var(--signal)">incremental cost of a parallel Brazil incubator pod</strong>,
+        working alongside the existing team, adding 2&ndash;3 engineers a quarter as it earns autonomy.
+      </p>
+      <p class="text-xs text-slate-500 leading-relaxed mt-4 max-w-2xl">
+        Software revenue nearly doubled in FY25 ($1.0M &rarr; $1.9M)<sup>*</sup> &mdash; this investment compounds
+        that growth engine rather than starting a new one.
+      </p>
+      <p class="text-[11px] text-slate-600 mt-1">* Per MSAI FY25 Q4 Investor Presentation (Mar. 2026), Financial Summary.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-4 gap-5 mb-10">
+      <div class="glass p-5 reveal">
+        <div class="text-xs text-slate-400 uppercase tracking-wide mb-2">Brazil engineer, loaded (avg)</div>
+        <div class="kpi-num text-2xl" style="color:var(--signal)">$70k<span class="text-sm text-slate-500">/yr</span></div>
+      </div>
+      <div class="glass p-5 reveal">
+        <div class="text-xs text-slate-400 uppercase tracking-wide mb-2">vs. US benchmark ($170k)</div>
+        <div class="kpi-num text-2xl" style="color:var(--success)">~2.4x</div>
+      </div>
+      <div class="glass p-5 reveal">
+        <div class="text-xs text-slate-400 uppercase tracking-wide mb-2">Pod size by Q4</div>
+        <div class="kpi-num text-2xl" style="color:var(--thermal)">10 <span class="text-sm text-slate-500">±2</span></div>
+        <div class="text-xs text-slate-500 mt-1">flexes 8&ndash;12 to scale up or down</div>
+      </div>
+      <div class="glass p-5 reveal">
+        <div class="text-xs text-slate-400 uppercase tracking-wide mb-2">Year-1 incremental spend</div>
+        <div class="kpi-num text-2xl">$504k</div>
+        <div class="text-xs text-slate-500 mt-1">range $365k&ndash;$645k with buffer</div>
+      </div>
+    </div>
+
+    <div class="card p-7 mb-6 reveal">
+      <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+        <h3 class="font-display font-semibold text-lg">Quarterly incremental cost</h3>
+        <div class="flex gap-4 text-xs text-slate-400 flex-wrap">
+          <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm inline-block" style="background:var(--signal)"></span>Brazil pod ($k)</span>
+          <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm inline-block" style="background:var(--amber);opacity:0.7"></span>Incubation overhead ($k)</span>
+          <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm inline-block border" style="border-color:var(--thermal)"></span>Cumulative</span>
+          <span class="flex items-center gap-2"><span class="w-2.5 h-0 border-t border-dashed inline-block" style="border-color:#93A0BE"></span>±2 engineer flex range</span>
+        </div>
+      </div>
+      <svg id="costChart" width="100%" height="340" viewBox="0 0 800 340" role="img" aria-label="Interactive bar chart of the Brazil pod's incremental quarterly cost, Q1 through Q4, click a bar for detail"></svg>
+      <div id="costDetail" class="mt-4 p-4 rounded-xl border border-[var(--border-soft)] bg-black/20 text-sm text-slate-300 leading-relaxed">
+        Click a quarter above to see pod size, mentorship load, and overhead.
+      </div>
+    </div>
+
+    <div class="card p-7 mb-6 reveal">
+      <h3 class="font-display font-semibold text-lg mb-2">Talent strategy: shared skills, built-in redundancy</h3>
+      <p class="text-sm text-slate-400 leading-relaxed mb-6 max-w-3xl">
+        The pod isn't a silo. Roughly a third of its skill matrix is deliberately cross-trained with the
+        existing Core team, so knowledge transfers both directions and neither side is a single point of failure.
+      </p>
+
+      <div class="grid md:grid-cols-[1fr,0.9fr,1fr] gap-0 items-stretch rounded-2xl overflow-hidden border border-[var(--border-soft)] mb-6">
+        <div class="p-5" style="background:rgba(46,68,233,0.08)">
+          <div class="text-xs uppercase tracking-wide mb-3" style="color:var(--thermal)">Core team only</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="pill">Customer &amp; field support</span>
+            <span class="pill">Hardware bring-up</span>
+            <span class="pill">Sales &amp; GTM liaison</span>
+          </div>
+        </div>
+        <div class="p-5 flex flex-col justify-center text-center" style="background:linear-gradient(135deg, rgba(46,68,233,0.16), rgba(255,207,0,0.16))">
+          <div class="text-xs uppercase tracking-wide text-slate-300 mb-1">Shared / cross-trained</div>
+          <div class="kpi-num text-3xl mb-3" style="color:var(--signal)">~25&ndash;50%</div>
+          <div class="flex flex-wrap gap-2 justify-center">
+            <span class="pill">RTOS fundamentals</span>
+            <span class="pill">BSP integration</span>
+            <span class="pill">Cloud data pipelines</span>
+          </div>
+        </div>
+        <div class="p-5" style="background:rgba(255,207,0,0.08)">
+          <div class="text-xs uppercase tracking-wide mb-3" style="color:var(--signal)">Pod specialized</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="pill">Embedded Linux drivers</span>
+            <span class="pill">DevOps &amp; tooling automation</span>
+            <span class="pill">Localized nearshore delivery</span>
+            <span class="pill">Edge AI/LLM integration (on-device inference)</span>
+            <span class="pill">Cloud AI models for prescriptive maintenance</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 text-xs text-slate-400">
+        <div class="flex-1 h-2 rounded-full overflow-hidden flex bg-white/5">
+          <div class="h-full" style="width:65%; background:var(--thermal)"></div>
+          <div class="h-full" style="width:35%; background:linear-gradient(90deg, var(--thermal), var(--signal))"></div>
+        </div>
+        <span class="shrink-0">~35% overlap, illustrative</span>
+      </div>
+    </div>
+
+    <div class="card p-7 mb-6 reveal">
+      <h3 class="font-display font-semibold text-lg mb-2">Projected return on the incremental spend</h3>
+      <span class="badge-sim mb-4 inline-flex">Calculated projection &mdash; not sourced from investor materials</span>
+      <p class="text-sm text-slate-400 leading-relaxed mb-6 max-w-3xl">
+        Modeled off this plan's own execution parameters: the $1.9M FY25 software-revenue base,<sup>*</sup> the
+        $504k Year-1 pod spend, and the Q3/Q4 modality-shipping cadence above. Counterfactual assumes bespoke
+        per-sensor integration keeps decelerating growth (50%/35%/25% YoY); platform case assumes the unified
+        BSP cross-sells Current + Voltage + the 5th modality into the 100+ site base once they ship, sustaining
+        growth instead.
+      </p>
+
+      <div class="overflow-x-auto mb-4">
+        <table class="roadmap w-full text-sm border-collapse">
+          <thead>
+            <tr class="text-left text-xs text-slate-500 uppercase tracking-wide">
+              <th class="p-3">Scenario</th>
+              <th class="p-3">YoY growth (FY26/27/28)</th>
+              <th class="p-3">3-yr revenue</th>
+              <th class="p-3">Delta vs. no-platform</th>
+              <th class="p-3">Net vs. ~$1.9M spend</th>
+              <th class="p-3">ROI multiple</th>
+            </tr>
+          </thead>
+          <tbody class="text-slate-300">
+            <tr>
+              <td class="p-3">No platform (counterfactual)</td>
+              <td class="p-3 mono">50% / 35% / 25%</td>
+              <td class="p-3 mono">$11.5M</td>
+              <td class="p-3 mono">&mdash;</td>
+              <td class="p-3 mono">&mdash;</td>
+              <td class="p-3 mono">&mdash;</td>
+            </tr>
+            <tr>
+              <td class="p-3">Conservative</td>
+              <td class="p-3 mono">65% / 50% / 35%</td>
+              <td class="p-3 mono">$14.2M</td>
+              <td class="p-3 mono">$2.68M</td>
+              <td class="p-3 mono">$0.78M</td>
+              <td class="p-3 mono" style="color:var(--signal)">1.4x</td>
+            </tr>
+            <tr>
+              <td class="p-3">Base</td>
+              <td class="p-3 mono">90% / 70% / 55%</td>
+              <td class="p-3 mono">$19.3M</td>
+              <td class="p-3 mono">$7.75M</td>
+              <td class="p-3 mono">$5.85M</td>
+              <td class="p-3 mono" style="color:var(--success)">4.1x</td>
+            </tr>
+            <tr>
+              <td class="p-3">Upside</td>
+              <td class="p-3 mono">110% / 90% / 70%</td>
+              <td class="p-3 mono">$24.5M</td>
+              <td class="p-3 mono">$12.95M</td>
+              <td class="p-3 mono">$11.05M</td>
+              <td class="p-3 mono" style="color:var(--success)">6.8x</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="text-sm text-slate-400 leading-relaxed max-w-3xl">
+        Payback: Year-1 spend funds the build, not yet-shipped modules &mdash; revenue impact starts FY26 once
+        Current, Voltage, and the 5th modality go live. In the base case, FY26's growth delta alone ($0.76M)
+        clears the Year-1 spend within the first year of shipping.
+      </p>
+      <p class="text-[11px] text-slate-600 mt-3">
+        * FY25 software revenue and growth rate per MSAI FY25 Q4 Investor Presentation (Mar. 2026). Growth-rate
+        assumptions above are this plan's own projection, not sourced from investor materials &mdash; refine with
+        Finance at Day 30.
+      </p>
+    </div>
+
+    <p class="text-xs text-slate-500 max-w-2xl leading-relaxed">
+      All figures are planning estimates for interview discussion, refined with Finance at Day 30.
+      Excludes hardware BOM, cloud infrastructure, and the existing Core Team baseline already in the P&amp;L.
+    </p>
+  </div>
+</section>
+
+<!-- CLOSE -->
+<section id="close" data-bg="hero" class="py-28 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-3xl md:text-4xl font-bold max-w-2xl mb-5 reveal">Give me 90 days to turn momentum into architecture.</h2>
+    <p class="text-slate-400 leading-relaxed max-w-2xl mb-3 reveal">
+      100+ live sites. 8x ROI. A second sensor shipped without anyone asking permission. What's missing
+      isn't vision — it's the platform underneath it: one integration point for every sensor, one data lake,
+      one customer portal, and AI that catches problems before they cost anyone downtime.
+    </p>
+    <div class="mb-14 reveal">
+      <p class="text-slate-500 text-sm leading-relaxed max-w-2xl">
+        With $24.4M cash and $28.2M working capital on the balance sheet at FY25 year-end,<sup>*</sup> this $504k ask
+        is a scoping decision, not a funding one.
+      </p>
+      <p class="text-[11px] text-slate-600 mt-2">* Per MSAI FY25 Q4 Investor Presentation (Mar. 2026), Consolidated Balance Sheet.</p>
+    </div>
+    <div class="grid sm:grid-cols-3 gap-5 mb-14 reveal">
+      <div class="card p-6">
+        <div class="text-xs uppercase tracking-wide text-slate-500 mb-2">I need from you</div>
+        <div class="text-sm font-medium">Sponsorship for the Day-30 workshop</div>
+      </div>
+      <div class="card p-6">
+        <div class="text-xs uppercase tracking-wide text-slate-500 mb-2">I need from Finance</div>
+        <div class="text-sm font-medium">Day-60 review of the Brazil pod model</div>
+      </div>
+      <div class="card p-6">
+        <div class="text-xs uppercase tracking-wide text-slate-500 mb-2">I bring at Day 90</div>
+        <div class="text-sm font-medium">A costed, sequenced 12-month roadmap</div>
+      </div>
+    </div>
+    <a href="#hero" class="btn-primary px-8 py-4 rounded-full text-sm inline-block reveal">Back to the top</a>
+  </div>
+</section>
+
+<!-- ABOUT THE AUTHOR -->
+<section id="about" data-bg="vision" class="py-28 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid lg:grid-cols-[0.75fr,1.25fr] gap-16 items-start">
+      <div class="reveal">
+        <div class="frame-img aspect-[4/5]">
+          <img src="./about/monil-casual.jpg" alt="Monil Morar" loading="lazy" />
+        </div>
+        <div class="flex flex-wrap gap-3 mt-6">
+          <a href="https://www.linkedin.com/in/mdmorar/" target="_blank" rel="noopener" class="social-btn">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" stroke-width="1.6"/><path d="M7 10v7M7 7.2v.01M11 17v-4.5c0-1.4 1-2.5 2.4-2.5 1.3 0 2.1 1 2.1 2.5V17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            LinkedIn
+          </a>
+          <a href="https://github.com/mdmorar/" target="_blank" rel="noopener" class="social-btn">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.58 2 12.2c0 4.49 2.87 8.3 6.84 9.64.5.1.68-.22.68-.49v-1.92c-2.78.62-3.37-1.36-3.37-1.36-.46-1.2-1.11-1.52-1.11-1.52-.9-.64.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.05 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.9-1.33 2.74-1.05 2.74-1.05.56 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.92-2.34 4.78-4.57 5.03.36.32.68.94.68 1.9v2.82c0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.2C22 6.58 17.52 2 12 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Monil Morar</h2>
+        <p class="text-sm mb-3" style="color:var(--signal)">Technology Leader · Digital &amp; AI Transformation · IoT SaaS Connectivity · End-to-End Engineering</p>
+        <p class="text-xs text-slate-500 mb-8">Industries: Oil &amp; Gas Services · Avionics · MedTech · Biotech · Mobility Solutions</p>
+
+        <p class="text-slate-300 leading-relaxed mb-5">
+          Started in controls and automation — analog closed-loop systems, electrical and embedded
+          engineering. That hands-on foundation became the launchpad for bridging legacy engineering
+          systems with the cloud-connected, data-driven world running product portfolios today.
+        </p>
+        <p class="text-slate-400 leading-relaxed mb-8">
+          From there: IoT and cloud-connected solutions bringing real-time telemetry into scalable data
+          architectures, then digital transformation enablement — helping organizations build in-house
+          capability for end-to-end solutions with harmonized data models, digital twins, and
+          cloud-native intelligence. The result has been engineering efficiency gains, reduced carbon
+          footprint, measurable ROI, and better outcomes for the customer, across every organization along the way.
+        </p>
+
+        <div class="glass p-6 mb-8">
+          <p class="text-sm text-slate-100 leading-relaxed italic">
+            "The convergence of AI services and generative AI into product portfolios is a shift as
+            profound as the smartphone or the cloud. The organizations that build internal maturity now
+            will lead that transition."
+          </p>
+        </div>
+
+        <div class="mb-2 text-xs uppercase tracking-wide text-slate-500">What I bring to the table</div>
+        <div class="flex flex-wrap gap-2">
+          <span class="pill">Strategic roadmap &amp; product lifecycle</span>
+          <span class="pill">Digital ecosystem harmonization</span>
+          <span class="pill">Concept &rarr; prototype &rarr; production</span>
+          <span class="pill">Cross-functional alignment</span>
+          <span class="pill">3&ndash;5yr SaaS monetization strategy</span>
+          <span class="pill">Cybersecurity &amp; infra architecture</span>
+          <span class="pill">Full-stack, multi-platform delivery</span>
+          <span class="pill">AI CoE &amp; toolchain enablement</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // scroll progress
+  const progress = document.getElementById('progress');
+  function onScroll(){
+    const h = document.documentElement;
+    const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progress.style.transform = 'scaleX(' + (pct/100) + ')';
+  }
+  document.addEventListener('scroll', onScroll, { passive:true });
+
+  // dot nav spy
+  const sections = ['hero','state','gap','vision','day30','day60','day90','roadmap','cost','close','about'].map(id=>document.getElementById(id));
+  const dots = document.querySelectorAll('#dotnav a');
+  const spy = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const id = e.target.id;
+        dots.forEach(d=>d.classList.toggle('active', d.getAttribute('href') === '#'+id));
+      }
+    });
+  }, { threshold:0.5 });
+  sections.forEach(s=>{ if(s) spy.observe(s); });
+
+  // seamless full-page background: crossfade the matching photo layer as each section scrolls into view
+  const bgPhotos = document.querySelectorAll('.bg-photo');
+  const bgSpy = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const key = e.target.dataset.bg;
+        if(!key) return;
+        bgPhotos.forEach(p=>p.classList.toggle('active', p.dataset.bg === key));
+      }
+    });
+  }, { threshold:0.35 });
+  sections.forEach(s=>{ if(s && s.dataset.bg) bgSpy.observe(s); });
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); revealObs.unobserve(e.target); } });
+  }, { threshold:0.12, rootMargin:'0px 0px -40px 0px' });
+  revealEls.forEach(el=>revealObs.observe(el));
+
+// ---------- Sensor rollout heatmap (interactive) ----------
+  const heatData = [
+    { row:'Thermal', cells:[
+      {q:'Q1', label:'Live', tone:'live', detail:'Thermal already runs in production across 100+ sites on today\'s ICI firmware — the baseline the unified BSP has to match before it can replace it.'},
+      {q:'Q2', label:'Unified', tone:'live', detail:'Thermal migrates onto the new BSP first. If thermal runs clean here, the architecture is proven for everything after it.'},
+      {q:'Q3', label:'Unified', tone:'live', detail:'Thermal stays on the unified stack, now shipping the same release train as current and voltage.'},
+      {q:'Q4', label:'Unified', tone:'live', detail:'Fully steady-state. Thermal is just one module among several on one BSP.'} ]},
+    { row:'Vibration', cells:[
+      {q:'Q1', label:'Live', tone:'live', detail:'Vibration already shipped organically — the proof point this whole plan is built on.'},
+      {q:'Q2', label:'Unified', tone:'live', detail:'Vibration moves onto the unified BSP alongside thermal, second sensor through the new pipeline.'},
+      {q:'Q3', label:'Unified', tone:'live', detail:'Runs on the same cadence as every other modality now.'},
+      {q:'Q4', label:'Unified', tone:'live', detail:'Steady-state, contributing to fleet-wide prescriptive models in Connect.'} ]},
+    { row:'Current', cells:[
+      {q:'Q1', label:'n/a', tone:'na', detail:'Not started. Team focus in Q1 is the charter, audit, and pod onboarding — not new sensor builds.'},
+      {q:'Q2', label:'Design', tone:'design', detail:'Analog front-end and driver design begins once the BSP alpha is stable enough to build against.'},
+      {q:'Q3', label:'Ship', tone:'ship', detail:'Current monitoring module ships as a plug-in on the unified BSP — first true test of the "module not rebuild" thesis.'},
+      {q:'Q4', label:'Unified', tone:'live', detail:'Fully integrated, running the standard release cadence with everything else.'} ]},
+    { row:'Voltage', cells:[
+      {q:'Q1', label:'n/a', tone:'na', detail:'Not started, same reasoning as Current — Q1 is foundation, not features.'},
+      {q:'Q2', label:'Design', tone:'design', detail:'Runs in parallel with Current\'s design phase, sharing the same BSP scaffolding.'},
+      {q:'Q3', label:'Ship', tone:'ship', detail:'Voltage module ships alongside Current — two modalities landing in the same quarter validates reuse.'},
+      {q:'Q4', label:'Unified', tone:'live', detail:'Fully integrated, steady-state.'} ]},
+    { row:'Acoustic, env.', cells:[
+      {q:'Q1', label:'n/a', tone:'na', detail:'Not started.'},
+      {q:'Q2', label:'n/a', tone:'na', detail:'Not started — waits for the BSP to prove itself on four modalities first.'},
+      {q:'Q3', label:'Design', tone:'design', detail:'Design work starts once Current and Voltage are shipping, applying the same lessons.'},
+      {q:'Q4', label:'Beta', tone:'ship', detail:'Beta with design partners. Sets up an FY+1 roadmap of continuous modality expansion.'} ]},
+  ];
+  const toneStyle = {
+    live:  { bg:'rgba(46,68,233,0.85)', color:'#F3F6FF' },
+    ship:  { bg:'rgba(255,207,0,0.85)', color:'#14110A' },
+    design:{ bg:'rgba(201,162,39,0.85)', color:'#14110A' },
+    na:    { bg:'transparent', color:'var(--text-dim)', dashed:true },
+  };
+  const heatmap = document.getElementById('heatmap');
+  const heatDetail = document.getElementById('heatDetail');
+  heatData.forEach(row=>{
+    const label = document.createElement('div');
+    label.className = 'text-xs text-slate-400 flex items-center';
+    label.textContent = row.row;
+    heatmap.appendChild(label);
+    row.cells.forEach(cell=>{
+      const t = toneStyle[cell.tone];
+      const div = document.createElement('div');
+      div.className = 'heat-cell rounded-lg h-11 flex items-center justify-center text-[11px] mono' + (t.dashed ? ' border border-dashed' : '');
+      div.style.background = t.bg;
+      div.style.color = t.color;
+      if(t.dashed) div.style.borderColor = 'var(--border)';
+      div.textContent = cell.label;
+      div.setAttribute('role','button');
+      div.setAttribute('tabindex','0');
+      div.addEventListener('click', ()=>{
+        document.querySelectorAll('.heat-cell.selected').forEach(x=>x.classList.remove('selected'));
+        div.classList.add('selected');
+        heatDetail.innerHTML = '<strong class="text-white">' + row.row + ', ' + cell.q + ' &mdash; ' + cell.label + ':</strong> ' + cell.detail;
+      });
+      div.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); div.click(); } });
+      heatmap.appendChild(div);
+    });
+  });
+
+  // ---------- Cost chart (interactive, Brazil-pod-only model) ----------
+  // Simulated projection: incremental Brazil nearshore pod cost only.
+  // Existing 12-engineer team (mixed US/global) already funded in the annual plan — excluded.
+  const costData = [
+    { q:'Q1', label:'Foundation', pod:3,  us:52.5,  ov:22, lo:39.5,  hi:109.5, podLo:1, podHi:5,   mentor:'20%', note:'Pod bootstraps with 3 engineers, working in parallel with the existing team — not replacing it. Hands-on mentorship while the first hiring wave, tooling, and localization overhead front-loads.' },
+    { q:'Q2', label:'Unification', pod:5, us:87.5,  ov:14, lo:66.5,  hi:136.5, podLo:3, podHi:7,   mentor:'12%', note:'Pod adds 2 more engineers (5 total) as the first cohort starts training the next. Mentorship load from the internal team eases as the pod gains ground truth.' },
+    { q:'Q3', label:'Expansion', pod:8,   us:140,   ov:8,  lo:113,   hi:183,   podLo:6, podHi:10,  mentor:'6%',  note:'Pod adds 3 more (8 total), now owning Current and Voltage module delivery largely on its own. Overhead mostly amortized.' },
+    { q:'Q4', label:'Scale', pod:10,      us:175,   ov:5,  lo:145,   hi:215,   podLo:8, podHi:12,  mentor:'3%',  note:'Pod reaches its Q4 target of 10, adding 2 more engineers, running near-autonomously alongside the existing team. Internal mentorship drops to a light-touch check-in.' },
+  ];
+  const svg = document.getElementById('costChart');
+  const costDetail = document.getElementById('costDetail');
+  const W = 800, H = 340, padL = 50, padB = 40, padT = 20, padR = 20;
+  const chartW = W - padL - padR, chartH = H - padT - padB;
+  const maxVal = 240;
+  let cumMaxTotal = 0; costData.forEach(d=>cumMaxTotal += d.us + d.ov);
+  const barGroupW = chartW / costData.length;
+  const barW = 64;
+  const svgNS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs){ const e = document.createElementNS(svgNS, tag); for(const k in attrs) e.setAttribute(k, attrs[k]); return e; }
+
+  for(let i=0;i<=4;i++){
+    const y = padT + chartH - (chartH * i/4);
+    svg.appendChild(el('line', {x1:padL,y1:y,x2:W-padR,y2:y,stroke:'#243252','stroke-width':1}));
+    const lval = Math.round(maxVal * i/4);
+    const t = el('text', {x:padL-10,y:y+4,fill:'#5C6987','font-size':11,'text-anchor':'end','font-family':'JetBrains Mono, monospace'});
+    t.textContent = '$'+lval+'k';
+    svg.appendChild(t);
+  }
+
+  let cumulative = 0;
+  const points = [];
+  costData.forEach((d, i)=>{
+    const cx = padL + barGroupW * i + barGroupW/2;
+    const usH = (d.us/maxVal) * chartH;
+    const ovH = (d.ov/maxVal) * chartH;
+    const usY = padT + chartH - usH;
+    const ovY = usY - ovH;
+
+    const group = el('g', {class:'bar-hit'});
+    const usRect = el('rect', {class:'us', x:cx-barW/2, y:usY, width:barW, height:usH, rx:4, fill:'#FFCF00'});
+    const ovRect = el('rect', {class:'ov', x:cx-barW/2, y:ovY, width:barW, height:ovH, rx:4, fill:'#C9A227'});
+    group.appendChild(usRect);
+    group.appendChild(ovRect);
+
+    // flex-range whisker: shows the ±2 engineer scale-up/down buffer for this quarter
+    const loY = padT + chartH - (d.lo/maxVal) * chartH;
+    const hiY = padT + chartH - (d.hi/maxVal) * chartH;
+    const whiskerW = 15;
+    svg.appendChild(el('line', {x1:cx, y1:hiY, x2:cx, y2:loY, stroke:'#93A0BE', 'stroke-width':1.5, 'stroke-dasharray':'2,3', opacity:'0.85'}));
+    svg.appendChild(el('line', {x1:cx-whiskerW/2, y1:hiY, x2:cx+whiskerW/2, y2:hiY, stroke:'#93A0BE', 'stroke-width':1.5, opacity:'0.85'}));
+    svg.appendChild(el('line', {x1:cx-whiskerW/2, y1:loY, x2:cx+whiskerW/2, y2:loY, stroke:'#93A0BE', 'stroke-width':1.5, opacity:'0.85'}));
+
+    const totalLabel = el('text', {x:cx, y:hiY-10, fill:'#EEF2FA', 'font-size':13,'font-weight':700,'text-anchor':'middle','font-family':'Saira, sans-serif'});
+    totalLabel.textContent = '$'+(d.us+d.ov).toFixed(1).replace(/\.0$/,'')+'k';
+    svg.appendChild(totalLabel);
+
+    const qLabel = el('text', {x:cx, y:H-14, fill:'#93A0BE', 'font-size':12,'text-anchor':'middle'});
+    qLabel.textContent = d.q;
+    svg.appendChild(qLabel);
+
+    // invisible full-height hit area for easier clicking
+    const hit = el('rect', {x:cx-barW/2-8, y:padT, width:barW+16, height:chartH, fill:'transparent'});
+    group.appendChild(hit);
+    group.style.cursor = 'pointer';
+    group.addEventListener('click', ()=>{
+      document.querySelectorAll('.bar-hit.selected').forEach(x=>x.classList.remove('selected'));
+      group.classList.add('selected');
+      cumulativeAt = 0;
+      for(let j=0;j<=i;j++) cumulativeAt += costData[j].us + costData[j].ov;
+      costDetail.innerHTML =
+        '<strong class="text-white">' + d.q + ', ' + d.label + ':</strong> ' +
+        d.note +
+        '<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-3 text-xs">' +
+        '<div><div class="text-slate-500">Pod size (planned)</div><div class="mono text-slate-200">' + d.pod + ' engineers</div></div>' +
+        '<div><div class="text-slate-500">Flex range</div><div class="mono text-slate-200">' + d.podLo + '&ndash;' + d.podHi + ' engineers</div></div>' +
+        '<div><div class="text-slate-500">Incubation overhead</div><div class="mono text-slate-200">$' + d.ov + 'k</div></div>' +
+        '<div><div class="text-slate-500">Internal mentorship load</div><div class="mono text-slate-200">' + d.mentor + '</div></div>' +
+        '</div>' +
+        '<div class="text-xs text-slate-500 mt-3">Spend this quarter: <span class="mono text-slate-200">$' + d.lo.toFixed(1).replace(/\.0$/,'') + 'k&ndash;$' + d.hi.toFixed(1).replace(/\.0$/,'') + 'k</span> (planned $' + (d.us+d.ov).toFixed(1).replace(/\.0$/,'') + 'k) &middot; cumulative through ' + d.q + ': <span class="mono text-slate-200">$' + cumulativeAt.toFixed(1).replace(/\.0$/,'') + 'k</span></div>';
+    });
+    svg.appendChild(group);
+
+    cumulative += d.us + d.ov;
+    const cy = padT + (chartH*0.12) + (chartH*0.88) - (cumulative/cumMaxTotal) * (chartH*0.88);
+    points.push([cx, cy]);
+  });
+
+  const pathD = points.map((p,i)=> (i===0?'M':'L')+p[0]+','+p[1]).join(' ');
+  svg.appendChild(el('path', {d:pathD, fill:'none', stroke:'#2E44E9', 'stroke-width':2, 'stroke-dasharray':'5,4'}));
+  points.forEach(p=>{ svg.appendChild(el('circle', {cx:p[0], cy:p[1], r:4, fill:'#2E44E9'})); });
+</script>
+</body>
+</html>
