@@ -31,5 +31,5 @@ http
     });
   })
   .listen(PORT, () => {
-    console.log(`MSAI 90-Day Strategy deck: http://localhost:${PORT}`);
+    console.log(`Sensara 90-Day Strategy deck: http://localhost:${PORT}`);
   });

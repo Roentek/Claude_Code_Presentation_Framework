@@ -27,7 +27,7 @@ Requires [Node.js](https://nodejs.org) installed.
 | `index.html` | the deck (single file, all styles/scripts inline) |
 | `bg/` | background images + hero video |
 | `about/` | headshot photos for the About section |
-| `msai-logo.png`, `favicon.png` | branding assets |
+| `logo.svg`, `favicon.svg` | branding assets |
 | `serve.mjs` | tiny local static file server (Option B) |
 | `README.md` | this file |
 
