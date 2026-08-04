@@ -1,0 +1,344 @@
+{
+  "env": {},
+  "permissions": {
+    "allow": [
+      "Bash(dir:*)",
+      "Bash(ren:*)",
+      "Bash(mv:*)",
+      "Bash(grep:*)",
+      "Bash(mkdir:*)",
+      "Bash(exit)",
+      "Bash(claude mcp add:*)",
+      "Bash(claude --version)",
+      "Bash(claude --debug)",
+      "Bash(where npm)",
+      "Bash(npm install *)",
+      "Bash(npm cache clean:*)",
+      "Bash(npm run:*)",
+      "Bash(where n8n-mcp)",
+      "Bash(npx n8n-mcp:*)",
+      "Bash(git remote set-url:*)",
+      "Bash(npx markdownlint-cli:*)",
+      "Bash(python3 *)",
+      "Bash(gh api *)",
+      "Bash(npx skillui *)",
+      "Bash(skillui *)",
+      "Bash(python -m json.tool)",
+      "Bash(gh repo *)",
+      "Bash(start *)",
+      "Bash(python *)",
+      "Bash(node tools/playwright.js:*)",
+      "Bash(npx playwright:*)",
+      "Bash(npm run playwright:*)",
+      "Bash(firecrawl:*)",
+      "Bash(npx firecrawl-cli:*)",
+      "Bash(nlm:*)",
+      "Bash(uvx --from notebooklm-mcp-cli nlm:*)",
+      "Bash(apify *)",
+      "Bash(npx apify-cli *)",
+      "Bash(openspace *)",
+      "Bash(openspace-download-skill *)",
+      "Bash(openspace-upload-skill *)",
+      "Bash(designlang *)",
+      "Bash(npx designlang *)",
+      "Bash(kie-cli *)",
+      "Bash(graphify *)",
+      "Bash(graphify-mcp *)",
+      "Bash(ffmpeg *)",
+      "Bash(yt-dlp *)",
+      "Bash(higgsfield *)",
+      "Bash(llmfit *)",
+      "Bash(gw *)",
+      "Bash(vercel *)",
+      "Bash(alpaca *)",
+      "Bash(stripe *)",
+      "Bash(openspace-dashboard *)",
+      "Bash(bash .claude/hooks/setup.sh)",
+      "Bash(echo \"exit: $?\")",
+      "Bash(git *)",
+      "Bash(curl *)",
+      "Bash(codex *)",
+      "Bash(gemini *)",
+      "Bash(uv *)",
+      "Bash(cp *)",
+      "PowerShell(codex *)",
+      "PowerShell(gemini *)",
+      "PowerShell(uv *)",
+      "PowerShell(skillui *)",
+      "PowerShell(npx skillui *)",
+      "PowerShell(node tools/playwright.js *)",
+      "PowerShell(npx playwright *)",
+      "PowerShell(firecrawl *)",
+      "PowerShell(npx firecrawl-cli *)",
+      "PowerShell(nlm *)",
+      "PowerShell(uvx --from notebooklm-mcp-cli nlm *)",
+      "PowerShell(apify *)",
+      "PowerShell(npx apify-cli *)",
+      "PowerShell(openspace *)",
+      "PowerShell(openspace-download-skill *)",
+      "PowerShell(openspace-upload-skill *)",
+      "PowerShell(designlang *)",
+      "PowerShell(npx designlang *)",
+      "PowerShell(kie-cli *)",
+      "PowerShell(graphify *)",
+      "PowerShell(yt-dlp *)",
+      "PowerShell(higgsfield *)",
+      "PowerShell(llmfit *)",
+      "PowerShell(gw *)",
+      "PowerShell(vercel *)",
+      "PowerShell(alpaca *)",
+      "PowerShell(stripe *)",
+      "PowerShell(openspace-dashboard *)",
+      "PowerShell(npm install *)",
+      "PowerShell(Get-Process *)",
+      "PowerShell(uv sync *)",
+      "PowerShell(Move-Item *)",
+      "PowerShell(Compare-Object *)"
+    ],
+    "deny": [],
+    "defaultMode": "bypassPermissions"
+  },
+  "enableAllProjectMcpServers": true,
+  "enabledMcpjsonServers": [
+    "memory-shrunk",
+    "supabase-mcp",
+    "openrouter-mcp",
+    "kie-ai",
+    "tavily-mcp",
+    "google-workspace-mcp",
+    "trigger",
+    "pinecone-mcp",
+    "vapi-mcp",
+    "alpaca",
+    "n8n-mcp",
+    "apify",
+    "zep-mcp",
+    "canva-dev",
+    "monet-mcp",
+    "stitch",
+    "21st-dev-magic",
+    "playwright-mcp",
+    "firecrawl-mcp",
+    "higgsfield",
+    "context7",
+    "notebooklm-mcp",
+    "openspace",
+    "designlang-mcp",
+    "graphify-mcp",
+    "llmfit-mcp",
+    "vercel-mcp",
+    "stripe-mcp"
+  ],
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'dir=\"$(pwd)\"; while [ \"$dir\" != \"/\" ] && [ ! -f \"$dir/.claude/hooks/mcp-cleanup.sh\" ]; do dir=\"$(dirname \"$dir\")\"; done; if [ -f \"$dir/.claude/hooks/mcp-cleanup.sh\" ]; then bash \"$dir/.claude/hooks/mcp-cleanup.sh\"; fi'",
+            "statusMessage": "Cleaning up stale MCP processes..."
+          },
+          {
+            "type": "command",
+            "command": "bash -c 'dir=\"$(pwd)\"; while [ \"$dir\" != \"/\" ] && [ ! -f \"$dir/.claude/hooks/openspace-sync.sh\" ]; do dir=\"$(dirname \"$dir\")\"; done; if [ -f \"$dir/.claude/hooks/openspace-sync.sh\" ]; then bash \"$dir/.claude/hooks/openspace-sync.sh\"; fi'",
+            "statusMessage": "Syncing OpenSpace submodule..."
+          }
+        ]
+      }
+    ],
+    "Setup": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'dir=\"$(pwd)\"; while [ \"$dir\" != \"/\" ] && [ ! -f \"$dir/.claude/hooks/setup.sh\" ]; do dir=\"$(dirname \"$dir\")\"; done; if [ -f \"$dir/.claude/hooks/setup.sh\" ]; then bash \"$dir/.claude/hooks/setup.sh\"; fi'",
+            "statusMessage": "Running first-time project setup..."
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'dir=\"$(pwd)\"; while [ \"$dir\" != \"/\" ] && [ ! -f \"$dir/.claude/hooks/read-guard.sh\" ]; do dir=\"$(dirname \"$dir\")\"; done; if [ -f \"$dir/.claude/hooks/read-guard.sh\" ]; then bash \"$dir/.claude/hooks/read-guard.sh\"; fi'",
+            "statusMessage": "Checking read scope..."
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'dir=\"$(pwd)\"; while [ \"$dir\" != \"/\" ] && [ ! -f \"$dir/.claude/hooks/autosync-docs.sh\" ]; do dir=\"$(dirname \"$dir\")\"; done; if [ -f \"$dir/.claude/hooks/autosync-docs.sh\" ]; then bash \"$dir/.claude/hooks/autosync-docs.sh\"; fi'",
+            "statusMessage": "Checking if docs need updating..."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash -c 'dir=\"$(pwd)\"; while [ \"$dir\" != \"/\" ] && [ ! -f \"$dir/.claude/hooks/stop.sh\" ]; do dir=\"$(dirname \"$dir\")\"; done; if [ -f \"$dir/.claude/hooks/stop.sh\" ]; then bash \"$dir/.claude/hooks/stop.sh\"; fi'"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "python -X utf8 .claude/scripts/advanced-statusline.py"
+  },
+  "enabledPlugins": {
+    "agent-sdk-dev@claude-plugins-official": true,
+    "claude-code-setup@claude-plugins-official": true,
+    "claude-md-management@claude-plugins-official": true,
+    "frontend-design@claude-plugins-official": true,
+    "github@claude-plugins-official": true,
+    "pinecone@claude-plugins-official": false,
+    "playground@claude-plugins-official": true,
+    "plugin-dev@claude-plugins-official": false,
+    "supabase@claude-plugins-official": false,
+    "superpowers@claude-plugins-official": true,
+    "skill-creator@claude-plugins-official": true,
+    "ui-ux-pro-max@ui-ux-pro-max-skill": true,
+    "andrej-karpathy-skills@karpathy-skills": true,
+    "codex@openai-codex": true,
+    "impeccable@impeccable": true,
+    "cc-gemini-plugin@cc-gemini-plugin": true,
+    "cli-anything@cli-anything": true,
+    "apify-ultimate-scraper@apify-agent-skills": true,
+    "caveman@caveman": true,
+    "context-mode@context-mode": true,
+    "claude-mem@claude-mem": true,
+    "claude-mem@thedotmack": true,
+    "designlang@design-extract": false,
+    "watch@claude-video": true,
+    "ponytail@ponytail": true,
+    "mattpocock-skills@mattpocock-skills": true,
+    "claude-obsidian@agricidaniel-claude-obsidian": true,
+    "higgsfield@higgsfield": true,
+    "stripe@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-code-plugins": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/anthropics/claude-code.git"
+      }
+    },
+    "ui-ux-pro-max-skill": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill.git"
+      },
+      "autoUpdate": true
+    },
+    "karpathy-skills": {
+      "source": {
+        "source": "github",
+        "repo": "forrestchang/andrej-karpathy-skills"
+      },
+      "autoUpdate": true
+    },
+    "openai-codex": {
+      "source": {
+        "source": "github",
+        "repo": "openai/codex-plugin-cc"
+      },
+      "autoUpdate": true
+    },
+    "impeccable": {
+      "source": {
+        "source": "github",
+        "repo": "pbakaus/impeccable"
+      },
+      "autoUpdate": true
+    },
+    "cc-gemini-plugin": {
+      "source": {
+        "source": "github",
+        "repo": "thepushkarp/cc-gemini-plugin"
+      },
+      "autoUpdate": true
+    },
+    "cli-anything": {
+      "source": {
+        "source": "github",
+        "repo": "HKUDS/CLI-Anything"
+      },
+      "autoUpdate": true
+    },
+    "apify-agent-skills": {
+      "source": {
+        "source": "github",
+        "repo": "apify/agent-skills"
+      },
+      "autoUpdate": true
+    },
+    "caveman": {
+      "source": {
+        "source": "github",
+        "repo": "JuliusBrussee/caveman"
+      },
+      "autoUpdate": true
+    },
+    "context-mode": {
+      "source": {
+        "source": "github",
+        "repo": "mksglu/context-mode"
+      },
+      "autoUpdate": true
+    },
+    "claude-mem": {
+      "source": {
+        "source": "github",
+        "repo": "thedotmack/claude-mem"
+      },
+      "autoUpdate": true
+    },
+    "claude-video": {
+      "source": {
+        "source": "github",
+        "repo": "bradautomates/claude-video"
+      },
+      "autoUpdate": true
+    },
+    "ponytail": {
+      "source": {
+        "source": "github",
+        "repo": "DietrichGebert/ponytail"
+      },
+      "autoUpdate": true
+    },
+    "mattpocock-skills": {
+      "source": {
+        "source": "github",
+        "repo": "mattpocock/skills"
+      },
+      "autoUpdate": true
+    },
+    "agricidaniel-claude-obsidian": {
+      "source": {
+        "source": "github",
+        "repo": "AgriciDaniel/claude-obsidian"
+      },
+      "autoUpdate": true
+    },
+    "higgsfield": {
+      "source": {
+        "source": "github",
+        "repo": "higgsfield-ai/skills"
+      },
+      "autoUpdate": true
+    }
+  }
+}

@@ -1,0 +1,43 @@
+[project]
+name = "lightrag-integration"
+version = "0.1.0"
+description = "LightRAG installation for Claude Code Boilerplate Framework"
+requires-python = ">=3.10"
+dependencies = [
+    "lightrag-hku>=1.4.15,<2.0.0",
+    "fastapi>=0.115.0",
+    "uvicorn>=0.32.0",
+    "openai>=1.0.0",
+    "pyjwt>=2.0.0",
+    "passlib>=1.7.4",
+    "python-multipart>=0.0.6",
+    "bcrypt>=4.0.0",
+    "aiofiles>=24.0.0",
+    "ollama>=0.3.0",
+    "google-genai>=1.0.0",
+    "supabase>=2.0.0",
+    "pinecone>=3.0.0",
+    "Pillow>=10.0.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.0.0",
+    "pypdf>=6.12.0",
+    "python-docx>=1.0.0",
+    "python-pptx>=1.0.0",
+    "openpyxl>=3.1.0"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.0.3",
+    "pytest-asyncio>=0.23,<1.0",
+]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+
+[tool.setuptools.packages.find]
+exclude = ["rag_storage*", "inputs*", "tests*"]
+
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"

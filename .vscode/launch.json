@@ -1,0 +1,157 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "LightRAG Server",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "lightrag.api.lightrag_server",
+      "args": [
+        "--port", "9621",
+        "--working-dir", "${workspaceFolder}/tools/lightrag-plus/rag_storage"
+      ],
+      "cwd": "${workspaceFolder}/tools/lightrag-plus",
+      "env": {
+        "PYTHONIOENCODING": "utf-8"
+      },
+      "envFile": "${workspaceFolder}/tools/lightrag-plus/.env",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "python": "${workspaceFolder}/tools/lightrag-plus/.venv/Scripts/python.exe",
+      "presentation": {
+        "group": "lightrag",
+        "order": 1
+      },
+      "serverReadyAction": {
+        "pattern": "Uvicorn running on",
+        "uriFormat": "http://localhost:9621",
+        "action": "openExternally"
+      }
+    },
+    {
+      "name": "LightRAG Integration Tests",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": ["tests/test_integration.py", "-v", "--tb=short"],
+      "cwd": "${workspaceFolder}/tools/lightrag-plus",
+      "env": {
+        "PYTHONIOENCODING": "utf-8"
+      },
+      "envFile": "${workspaceFolder}/tools/lightrag-plus/.env",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "python": "${workspaceFolder}/tools/lightrag-plus/.venv/Scripts/python.exe",
+      "presentation": {
+        "group": "lightrag",
+        "order": 2
+      }
+    },
+    {
+      "name": "OpenSpace Integration Tests",
+      "type": "debugpy",
+      "request": "launch",
+      "module": "pytest",
+      "args": [
+        "${workspaceFolder}/tests/openspace",
+        "-v",
+        "--tb=short",
+        "--junit-xml=${workspaceFolder}/.tmp/openspace-test-report.xml",
+        "--log-cli-level=WARNING"
+      ],
+      "cwd": "${workspaceFolder}",
+      "env": {
+        "PYTHONIOENCODING": "utf-8",
+        "PYTHONUTF8": "1"
+      },
+      "envFile": "${workspaceFolder}/tools/openspace/.env",
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "python": "${workspaceFolder}/tools/openspace/.venv/Scripts/python.exe",
+      "presentation": {
+        "group": "openspace",
+        "order": 4
+      }
+    },
+    {
+      "name": "OpenSpace Backend Server",
+      "type": "debugpy",
+      "request": "launch",
+      "program": "${workspaceFolder}/tools/openspace_overrides/dashboard_server_patched.py",
+      "args": [
+        "--host", "127.0.0.1",
+        "--port", "7788"
+      ],
+      "cwd": "${workspaceFolder}/tools/openspace",
+      "env": {
+        "PYTHONIOENCODING": "utf-8"
+      },
+      "console": "integratedTerminal",
+      "justMyCode": false,
+      "presentation": {
+        "group": "openspace",
+        "order": 2
+      },
+      "serverReadyAction": {
+        "pattern": "Running on",
+        "uriFormat": "http://127.0.0.1:7788",
+        "action": "debugWithChrome"
+      }
+    },
+    {
+      "name": "OpenSpace Frontend",
+      "type": "node",
+      "request": "launch",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "cwd": "${workspaceFolder}/tools/openspace/frontend",
+      "console": "integratedTerminal",
+      "preLaunchTask": "OpenSpace: Check Frontend Dependencies",
+      "presentation": {
+        "group": "openspace",
+        "order": 3
+      },
+      "serverReadyAction": {
+        "pattern": "Local:.*http://127\\.0\\.0\\.1:(\\d+)",
+        "uriFormat": "http://127.0.0.1:$1",
+        "action": "openExternally"
+      }
+    },
+    {
+      "name": "Claude-Mem Web Viewer (Edge)",
+      "type": "msedge",
+      "request": "launch",
+      "url": "http://localhost:37777",
+      "presentation": {
+        "group": "claude-mem",
+        "order": 1
+      }
+    },
+    {
+      "name": "Claude-Mem Web Viewer (Chrome)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:37777",
+      "presentation": {
+        "group": "claude-mem",
+        "order": 2
+      }
+    }
+  ],
+  "compounds": [
+    {
+      "name": "OpenSpace Dashboard (Full Stack)",
+      "configurations": [
+        "OpenSpace Backend Server",
+        "OpenSpace Frontend"
+      ],
+      "preLaunchTask": "OpenSpace: Check Frontend Dependencies",
+      "presentation": {
+        "hidden": false,
+        "group": "openspace",
+        "order": 1
+      },
+      "stopAll": true
+    }
+  ]
+}

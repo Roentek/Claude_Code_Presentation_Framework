@@ -1,0 +1,235 @@
+{
+  "mcpServers": {
+    "supabase-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@supabase/mcp-server-supabase@latest"
+      ],
+      "env": {
+        "SUPABASE_ACCESS_TOKEN": "${SUPABASE_API_PAT}",
+        "SUPABASE_URL": "${SUPABASE_PROJECT_URL}"
+      }
+    },
+    "openrouter-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@physics91/openrouter-mcp",
+        "start"
+      ],
+      "env": {
+        "OPENROUTER_API_KEY": "${OPENROUTER_API_KEY}"
+      }
+    },
+    "kie-ai": {
+      "command": "npx",
+      "args": ["-y", "@felores/kie-ai-mcp-server"],
+      "env": {
+        "KIE_AI_API_KEY": "${KIE_AI_API_KEY}"
+      }
+    },
+    "tavily-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "tavily-mcp@latest"
+      ],
+      "env": {
+        "TAVILY_API_KEY": "${TAVILY_API_KEY}",
+        "DEFAULT_PARAMETERS": "{\"include_images\": true, \"max_results\": 15, \"search_depth\": \"advanced\"}"
+      }
+    },
+    "google-workspace-mcp": {
+      "command": "uvx",
+      "args": [
+        "workspace-mcp"
+      ],
+      "env": {
+        "GOOGLE_OAUTH_CLIENT_ID": "${GOOGLE_OAUTH_CLIENT_ID}",
+        "GOOGLE_OAUTH_CLIENT_SECRET": "${GOOGLE_OAUTH_CLIENT_SECRET}",
+        "USER_GOOGLE_EMAIL": "${GOOGLE_USER_EMAIL}"
+      }
+    },
+    "trigger": {
+      "command": "npx",
+      "args": ["trigger.dev@latest", "mcp"]
+    },
+    "pinecone-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@pinecone-database/mcp"
+      ],
+      "env": {
+        "PINECONE_API_KEY": "${PINECONE_API_KEY}"
+      }
+    },
+    "vapi-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@vapi-ai/mcp-server"
+      ],
+      "env": {
+        "VAPI_TOKEN": "${VAPI_API_TOKEN}"
+      }
+    },
+    "alpaca": {
+      "command": "uvx",
+      "args": ["alpaca-mcp-server"],
+      "env": {
+        "ALPACA_API_KEY": "${ALPACA_API_KEY}",
+        "ALPACA_SECRET_KEY": "${ALPACA_SECRET_KEY}",
+        "ALPACA_PAPER_TRADE": "true",
+        "PYTHONUTF8": "1"
+      }
+    },
+    "n8n-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "n8n-mcp"
+      ],
+      "env": {
+        "MCP_MODE": "stdio",
+        "LOG_LEVEL": "error",
+        "DISABLE_CONSOLE_OUTPUT": "true",
+        "N8N_API_URL": "${N8N_HOST_URL}",
+        "N8N_API_KEY": "${N8N_API_KEY}"
+      }
+    },
+    "apify": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@apify/actors-mcp-server",
+        "--tools",
+        "actors,docs,apify/rag-web-browser"
+      ],
+      "env": {
+        "APIFY_TOKEN": "${APIFY_API_PAT}"
+      }
+    },
+    "zep-mcp": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "https://docs-mcp.getzep.com/mcp"
+      ]
+    },
+    "canva-dev": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "-y",
+        "@canva/cli@latest",
+        "mcp"
+      ]
+    },
+    "monet-mcp": {
+      "type": "http",
+      "url": "https://www.monet.design/api/remote/mcp",
+      "headers": {
+        "Authorization": "Bearer ${MONET_API_KEY}"
+      }
+    },
+    "stitch": {
+      "type": "http",
+      "url": "https://stitch.googleapis.com/mcp",
+      "headers": {
+        "Accept": "application/json",
+        "X-Goog-Api-Key": "${STITCH_API_KEY}"
+      }
+    },
+    "21st-dev-magic": {
+      "command": "npx",
+      "args": ["-y", "@21st-dev/magic@latest"],
+      "env": {
+        "API_KEY": "${TWENTYFIRST_DEV_MAGIC_API_KEY}"
+      }
+    },
+    "playwright-mcp": {
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp@latest"]
+    },
+    "firecrawl-mcp": {
+      "command": "npx",
+      "args": ["-y", "firecrawl-mcp"],
+      "env": {
+        "FIRECRAWL_API_KEY": "${FIRECRAWL_API_KEY}"
+      }
+    },
+    "higgsfield": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://mcp.higgsfield.ai/mcp"]
+    },
+    "context7": {
+      "command": "npx",
+      "args": ["-y", "@upstash/context7-mcp@latest"],
+      "env": {
+        "CONTEXT7_API_KEY": "${CONTEXT7_API_KEY}"
+      }
+    },    
+    "notebooklm-mcp": {
+      "command": "uvx",
+      "args": ["--from", "notebooklm-py", "notebooklm-mcp"]
+    },
+    "openspace": {
+      "command": "python",
+      "args": ["-m", "openspace.entrypoints.mcp.server"],
+      "toolTimeout": 600,
+      "env": {
+        "OPENSPACE_HOST_SKILL_DIRS": "${OPENSPACE_HOST_SKILL_DIRS}",
+        "OPENSPACE_WORKSPACE": "${OPENSPACE_WORKSPACE}",
+        "OPENSPACE_API_KEY": "${OPENSPACE_API_KEY}",
+        "PYTHONUTF8": "1"
+      }
+    },
+    "designlang-mcp": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "designlang", "mcp", "--output-dir", "./design-extract-output"]
+    },
+    "graphify-mcp": {
+      "command": "python",
+      "args": ["-m", "graphify.serve", "graphify-out/graph.json"],
+      "env": {
+        "GRAPHIFY_API_KEY": "${GRAPHIFY_API_KEY}"
+      }
+    },
+    "llmfit-mcp": {
+      "command": "llmfit",
+      "args": ["serve", "--mcp"]
+    },
+    "vercel-mcp": {
+      "url": "https://vercel.com/api/mcp",
+      "headers": {
+        "Authorization": "Bearer ${VERCEL_TOKEN}"
+      }
+    },
+    "stripe-mcp": {
+      "command": "npx",
+      "args": ["-y", "@stripe/mcp@latest"],
+      "env": {
+        "STRIPE_SECRET_KEY": "${STRIPE_SECRET_KEY}"
+      }
+    },
+    "memory-shrunk": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "caveman-shrink",
+        "cmd",
+        "/c",
+        "npx",
+        "-y",
+        "@modelcontextprotocol/server-memory"
+      ],
+      "env": {
+        "CAVEMAN_SHRINK_FIELDS": "description",
+        "CAVEMAN_SHRINK_DEBUG": "0"
+      }
+    }
+  }
+}
