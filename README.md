@@ -1,8 +1,10 @@
-# Claude Code Boilerplate Framework
+# Claude Code Presentation Framework
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A ready-to-clone starting point for Claude Code as an agentic AI workspace. Ships with pre-configured plugins, skills, MCP servers, hooks, rules, and workflow patterns so you can skip boilerplate and start building immediately.
+Boilerplate presentation framework for premium HTML decks with branding. This is a starting point that lets you build all your presentations under one template.
+
+Built on top of a Claude Code agentic workspace — ships with pre-configured plugins, skills, MCP servers, hooks, rules, and workflow patterns so you can skip boilerplate and start building decks immediately.
 
 ---
 
