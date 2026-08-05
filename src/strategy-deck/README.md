@@ -1,4 +1,4 @@
-# Generic Presentation Example
+# Strategy Deck Presentation Example
 
 ## How to run
 
@@ -25,8 +25,8 @@ Requires [Node.js](https://nodejs.org) installed.
 | Path | Description |
 | --- | --- |
 | `index.html` | the deck (single file, all styles/scripts inline) |
-| `bg/` | background images + hero video |
-| `about/` | headshot photos for the About section |
+| `../shared/bg/` | background images + hero video (shared across projects) |
+| `../shared/about/` | headshot photos for the About section (shared across projects) |
 | `logo.svg`, `favicon.svg` | branding assets |
 | `serve.mjs` | tiny local static file server (Option B) |
 | `README.md` | this file |
