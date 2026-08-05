@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>90-Day Platform Strategy — Sensara Systems (Sample Deck)</title>
-<meta name="description" content="Sample 30/60/90-day plan to consolidate Sensara Systems' camera-first architecture into one unified embedded SW/HW sensing platform." />
+<title>Generic Platform Strategy</title>
+<meta name="description" content="Sample 30/60/90-day plan to consolidate a growing engineering company's fragmented product lines into one unified platform." />
 <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
 <link rel="shortcut icon" type="image/svg+xml" href="./favicon.svg" />
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -244,15 +244,15 @@
 </head>
 <body class="antialiased">
 <div id="bgStage">
-  <video id="bgVideo" autoplay muted loop playsinline poster="./bg/hero.jpg">
-    <source src="./bg/hero.mp4" type="video/mp4" />
+  <video id="bgVideo" autoplay muted loop playsinline poster="../shared/bg/hero.jpg">
+    <source src="../shared/bg/hero.mp4" type="video/mp4" />
   </video>
-  <div class="bg-photo" data-bg="state"><img src="./bg/state.jpg" alt="" /></div>
-  <div class="bg-photo" data-bg="gap"><img src="./bg/gap.jpg" alt="" /></div>
-  <div class="bg-photo" data-bg="vision"><img src="./bg/vision.jpg" alt="" /></div>
-  <div class="bg-photo" data-bg="roadmap"><img src="./bg/roadmap.jpg" alt="" /></div>
-  <div class="bg-photo" data-bg="cost"><img src="./bg/cost.jpg" alt="" /></div>
-  <div class="bg-photo" data-bg="hero"><img src="./bg/hero.jpg" alt="" /></div>
+  <div class="bg-photo" data-bg="state"><img src="../shared/bg/state.jpg" alt="" /></div>
+  <div class="bg-photo" data-bg="gap"><img src="../shared/bg/gap.jpg" alt="" /></div>
+  <div class="bg-photo" data-bg="vision"><img src="../shared/bg/vision.jpg" alt="" /></div>
+  <div class="bg-photo" data-bg="roadmap"><img src="../shared/bg/roadmap.jpg" alt="" /></div>
+  <div class="bg-photo" data-bg="cost"><img src="../shared/bg/cost.jpg" alt="" /></div>
+  <div class="bg-photo" data-bg="hero"><img src="../shared/bg/hero.jpg" alt="" /></div>
   <div class="bg-tint"></div>
 </div>
 <div class="noise"></div>
@@ -261,8 +261,8 @@
 <nav id="topnav" class="px-6 md:px-10 py-4">
   <div class="max-w-7xl mx-auto flex items-center justify-between">
     <div class="flex items-center gap-2.5">
-      <img src="./logo.svg" alt="Sensara Systems" width="20" height="20" class="shrink-0" />
-      <span class="font-display font-semibold text-sm tracking-wide">Sensara Platform Strategy</span>
+      <img src="./logo.svg" alt="Company logo" width="20" height="20" class="shrink-0" />
+      <span class="font-display font-semibold text-sm tracking-wide">Generic Platform Strategy</span>
     </div>
     <div class="hidden md:flex items-center gap-6 text-[13px] text-slate-300">
       <a href="#state" class="hover:text-white transition-colors">Today</a>
@@ -300,10 +300,10 @@
     <div class="max-w-2xl pt-6 lg:pt-10" id="heroTilt">
       <h1 class="text-[13vw] leading-[0.96] md:text-6xl lg:text-[4.4rem] font-bold mt-5 mb-6">
         One platform.
-        <span style="color:var(--signal)">Every sensor.</span>
+        <span style="color:var(--signal)">Every team.</span>
       </h1>
       <p class="text-lg text-slate-200 max-w-lg leading-relaxed mb-3">
-        A 30/60/90 day plan to unify thermal, vibration, current, and voltage into one platform built for proactive maintenance, not reactive fixes: one embedded stack, one cloud, one release train.
+        A 30/60/90 day plan to unify four disconnected product lines into one platform built for scalable delivery, not one-off fixes: one engineering stack, one cloud, one release train.
       </p>
       <div class="flex flex-wrap gap-3 mb-14 mt-8">
         <a href="#day30" class="btn-primary px-6 py-3.5 rounded-full text-sm">See the 30/60/90 plan</a>
@@ -311,16 +311,16 @@
       </div>
       <div class="grid grid-cols-3 gap-3 sm:gap-4 pt-7 max-w-lg">
         <div class="glass px-3 py-4 sm:p-5 text-center sm:text-left">
-          <div class="kpi-num text-2xl sm:text-3xl" style="color:var(--thermal)">140+</div>
-          <div class="text-[11px] sm:text-xs text-slate-300 mt-1 leading-snug">live sites on Sensara Cloud</div>
+          <div class="kpi-num text-2xl sm:text-3xl" style="color:var(--thermal)">85+</div>
+          <div class="text-[11px] sm:text-xs text-slate-300 mt-1 leading-snug">live accounts on Company Cloud</div>
         </div>
         <div class="glass px-3 py-4 sm:p-5 text-center sm:text-left">
-          <div class="kpi-num text-2xl sm:text-3xl" style="color:var(--signal)">6×</div>
-          <div class="text-[11px] sm:text-xs text-slate-300 mt-1 leading-snug">5-year ROI, 3-month payback</div>
+          <div class="kpi-num text-2xl sm:text-3xl" style="color:var(--signal)">5×</div>
+          <div class="text-[11px] sm:text-xs text-slate-300 mt-1 leading-snug">3-year ROI, 4-month payback</div>
         </div>
         <div class="glass px-3 py-4 sm:p-5 text-center sm:text-left">
           <div class="kpi-num text-2xl sm:text-3xl" style="color:var(--success)">4</div>
-          <div class="text-[11px] sm:text-xs text-slate-300 mt-1 leading-snug">sensor modalities, one roadmap</div>
+          <div class="text-[11px] sm:text-xs text-slate-300 mt-1 leading-snug">product lines, one roadmap</div>
         </div>
       </div>
     </div>
@@ -335,33 +335,33 @@
     <div class="grid lg:grid-cols-[1fr,0.7fr] gap-14 items-start">
       <div class="rule-list reveal">
         <div class="py-6 grid sm:grid-cols-[130px,1fr] gap-3 sm:gap-8">
-          <h3 class="font-display font-semibold text-base" style="color:var(--thermal)">Imaging heritage</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Thermal camera cores since 1995. Legacy strength, not a constraint.</p>
+          <h3 class="font-display font-semibold text-base" style="color:var(--thermal)">Engineering heritage</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Product engineering since 2005. Legacy strength, not a constraint.</p>
         </div>
         <div class="py-6 grid sm:grid-cols-[130px,1fr] gap-3 sm:gap-8">
-          <h3 class="font-display font-semibold text-base" style="color:var(--thermal)">Sensara Hub</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Edge gateway. 7 PoE sensors, local AI, offline resilient. A BSP already has a home here.</p>
+          <h3 class="font-display font-semibold text-base" style="color:var(--thermal)">Company Runtime</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Local processing layer. 6 deployment targets, local automation, offline resilient. A shared framework already has a home here.</p>
         </div>
         <div class="py-6 grid sm:grid-cols-[130px,1fr] gap-3 sm:gap-8">
-          <h3 class="font-display font-semibold text-base" style="color:var(--signal)">Sensara Cloud</h3>
-          <p class="text-sm text-slate-400 leading-relaxed">Cloud layer. Sensor-agnostic. Already shifting customers from reactive fixes to proactive maintenance, proven at 140+ sites, 6x ROI, 30% less downtime.</p>
+          <h3 class="font-display font-semibold text-base" style="color:var(--signal)">Company Cloud</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">Cloud layer. Product-agnostic. Already shifting customers from manual processes to automated workflows, proven at 85+ accounts, 5x ROI, 25% faster delivery.</p>
         </div>
       </div>
       <div class="reveal">
         <div class="glass p-6 flex items-start gap-4 mb-5">
           <svg class="shrink-0 mt-0.5" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="#FFCF00" stroke-width="1.6" stroke-linejoin="round"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="#FFCF00" stroke-width="1.6" stroke-linejoin="round"/></svg>
           <p class="text-sm text-slate-100 leading-relaxed">
-            <strong class="text-white">The signal:</strong> vibration already shipped next to thermal — proof multi-sensor motion has started on its own.
+            <strong class="text-white">The signal:</strong> Analytics already shipped next to Core Engine — proof multi-module integration has started on its own.
           </p>
         </div>
         <div class="text-xs uppercase tracking-wide text-slate-500 mb-2">Outcomes this already delivers</div>
         <div class="flex flex-wrap gap-2">
-          <span class="pill">Reduced unplanned downtime</span>
+          <span class="pill">Reduced manual work</span>
           <span class="pill">Higher operational throughput</span>
-          <span class="pill">Maintenance efficiency</span>
-          <span class="pill">Reduced safety &amp; operational risk</span>
+          <span class="pill">Delivery efficiency</span>
+          <span class="pill">Reduced compliance &amp; operational risk</span>
         </div>
-        <p class="text-[11px] text-slate-600 mt-3">Outcome categories per Sensara FY25 Investor Update (sample data).</p>
+        <p class="text-[11px] text-slate-600 mt-3">Outcome categories per Company FY25 Internal Update (sample data).</p>
       </div>
     </div>
   </div>
@@ -370,69 +370,69 @@
 <!-- THE GAP -->
 <section id="gap" data-bg="gap" class="py-24 px-6 md:px-10 border-t border-[var(--border-soft)]">
   <div class="max-w-7xl mx-auto">
-    <h2 class="text-3xl md:text-4xl font-bold max-w-2xl mb-14 reveal">Every new sensor re-pays the same integration tax</h2>
+    <h2 class="text-3xl md:text-4xl font-bold max-w-2xl mb-14 reveal">Every new module re-pays the same integration tax</h2>
     <div class="grid lg:grid-cols-2 gap-5 mb-5">
       <div class="glass p-8 reveal">
         <h3 class="font-display font-semibold text-lg mb-5 flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full" style="background:var(--danger)"></span> Today: bespoke per sensor
+          <span class="w-2 h-2 rounded-full" style="background:var(--danger)"></span> Today: bespoke per module
         </h3>
         <div class="space-y-3">
           <div class="flex items-center gap-3 text-sm p-3 rounded-lg border border-white/10 bg-black/20">
-            <span class="mono text-xs text-slate-400 w-16">Thermal</span>
+            <span class="mono text-xs text-slate-400 w-16">Core Engine</span>
             <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"><div class="h-full" style="width:100%;background:var(--thermal)"></div></div>
-            <span class="text-xs text-slate-400">own firmware</span>
+            <span class="text-xs text-slate-400">own codebase</span>
           </div>
           <div class="flex items-center gap-3 text-sm p-3 rounded-lg border border-white/10 bg-black/20">
-            <span class="mono text-xs text-slate-400 w-16">Vibration</span>
+            <span class="mono text-xs text-slate-400 w-16">Analytics</span>
             <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"><div class="h-full" style="width:100%;background:var(--thermal)"></div></div>
-            <span class="text-xs text-slate-400">own driver stack</span>
+            <span class="text-xs text-slate-400">own service stack</span>
           </div>
           <div class="flex items-center gap-3 text-sm p-3 rounded-lg border border-dashed border-white/15 opacity-50">
-            <span class="mono text-xs text-slate-400 w-16">Current</span>
+            <span class="mono text-xs text-slate-400 w-16">Integrations</span>
             <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"></div>
             <span class="text-xs text-slate-500">not yet built</span>
           </div>
           <div class="flex items-center gap-3 text-sm p-3 rounded-lg border border-dashed border-white/15 opacity-50">
-            <span class="mono text-xs text-slate-400 w-16">Voltage</span>
+            <span class="mono text-xs text-slate-400 w-16">Automation</span>
             <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"></div>
             <span class="text-xs text-slate-500">not yet built</span>
           </div>
         </div>
-        <p class="text-xs text-slate-400 mt-5">Own OS/driver/BSP, own support burden, own data model. Every row.</p>
+        <p class="text-xs text-slate-400 mt-5">Own infra/services/support burden, own data model. Every row.</p>
       </div>
       <div class="glass p-8 reveal">
         <h3 class="font-display font-semibold text-lg mb-5 flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full" style="background:var(--success)"></span> Target: one BSP, plug-in modules
+          <span class="w-2 h-2 rounded-full" style="background:var(--success)"></span> Target: one core, plug-in modules
         </h3>
         <div class="space-y-3">
           <div class="flex items-center gap-3 text-sm p-3 rounded-lg border" style="border-color:var(--signal-dim); background:rgba(255,207,0,0.06)">
-            <span class="mono text-xs text-slate-400 w-16">Thermal</span>
+            <span class="mono text-xs text-slate-400 w-16">Core Engine</span>
             <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"><div class="h-full" style="width:100%;background:var(--signal)"></div></div>
             <span class="text-xs text-slate-300">plug-in module</span>
           </div>
           <div class="flex items-center gap-3 text-sm p-3 rounded-lg border" style="border-color:var(--signal-dim); background:rgba(255,207,0,0.06)">
-            <span class="mono text-xs text-slate-400 w-16">Vibration</span>
+            <span class="mono text-xs text-slate-400 w-16">Analytics</span>
             <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"><div class="h-full" style="width:100%;background:var(--signal)"></div></div>
             <span class="text-xs text-slate-300">plug-in module</span>
           </div>
           <div class="flex items-center gap-3 text-sm p-3 rounded-lg border" style="border-color:var(--signal-dim); background:rgba(255,207,0,0.06)">
-            <span class="mono text-xs text-slate-400 w-16">Current</span>
+            <span class="mono text-xs text-slate-400 w-16">Integrations</span>
             <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"><div class="h-full" style="width:60%;background:var(--amber)"></div></div>
             <span class="text-xs text-slate-300">Q3 module</span>
           </div>
           <div class="flex items-center gap-3 text-sm p-3 rounded-lg border" style="border-color:var(--signal-dim); background:rgba(255,207,0,0.06)">
-            <span class="mono text-xs text-slate-400 w-16">Voltage</span>
+            <span class="mono text-xs text-slate-400 w-16">Automation</span>
             <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"><div class="h-full" style="width:60%;background:var(--amber)"></div></div>
             <span class="text-xs text-slate-300">Q3 module</span>
           </div>
         </div>
-        <p class="text-xs text-slate-400 mt-5">Same OS/driver/BSP underneath. A new sensor is a module, not a rebuild: one integration point, one data lake, one customer portal for all of it.</p>
+        <p class="text-xs text-slate-400 mt-5">Same core services underneath. A new capability is a module, not a rebuild: one integration point, one data lake, one customer portal for all of it.</p>
       </div>
     </div>
     <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 reveal">
       <div class="glass p-6">
         <div class="text-xs text-slate-400 mb-2 uppercase tracking-wide">Engineering cost</div>
-        <p class="text-sm text-slate-200">Firmware, drivers, QA, support — paid again per sensor type.</p>
+        <p class="text-sm text-slate-200">Build, QA, support — paid again per module.</p>
       </div>
       <div class="glass p-6">
         <div class="text-xs text-slate-400 mb-2 uppercase tracking-wide">Release cadence</div>
@@ -440,14 +440,14 @@
       </div>
       <div class="glass p-6">
         <div class="text-xs text-slate-400 mb-2 uppercase tracking-wide">Go-to-market</div>
-        <p class="text-sm text-slate-200">Market still hears "thermal camera company," not platform.</p>
+        <p class="text-sm text-slate-200">Market still hears "single-product company," not platform.</p>
       </div>
       <div class="glass p-6">
         <div class="text-xs text-slate-400 mb-2 uppercase tracking-wide">Cost of inaction</div>
-        <p class="text-sm text-slate-200">Unplanned downtime averages $90K/hour; a single cooling failure runs $1.1M and four weeks to recover.<sup>*</sup></p>
+        <p class="text-sm text-slate-200">Operational inefficiency averages $40K/week; a single major outage runs $250K and two weeks to recover.<sup>*</sup></p>
       </div>
     </div>
-    <p class="text-[11px] text-slate-600 mt-4">* Downtime figures per Sensara FY25 Investor Update (sample data), citing ABB Group and Data Centre Dynamics.</p>
+    <p class="text-[11px] text-slate-600 mt-4">* Figures per Company FY25 Internal Update (sample data).</p>
   </div>
 </section>
 
@@ -460,11 +460,11 @@
     <div class="grid sm:grid-cols-2 gap-x-10 gap-y-6 max-w-4xl">
       <div class="py-2 flex gap-5 items-start reveal">
         <svg class="shrink-0 mt-1" width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="#2E44E9" stroke-width="1.6"/><path d="M8 12h8M12 8v8" stroke="#2E44E9" stroke-width="1.6" stroke-linecap="round"/></svg>
-        <div><h3 class="font-display font-semibold mb-1">One integration point, every sensor</h3><p class="text-sm text-slate-400 leading-relaxed">A single unified embedded framework absorbs thermal, vibration, current, and voltage. New modality = driver module, not a new stack.</p></div>
+        <div><h3 class="font-display font-semibold mb-1">One integration point, every module</h3><p class="text-sm text-slate-400 leading-relaxed">A single unified framework absorbs Core Engine, Analytics, Integrations, and Automation. New capability = plug-in module, not a new stack.</p></div>
       </div>
       <div class="py-5 flex gap-5 items-start reveal">
         <svg class="shrink-0 mt-1" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3v6M12 15v6M3 12h6M15 12h6" stroke="#2E44E9" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="12" r="3" stroke="#2E44E9" stroke-width="1.6"/></svg>
-        <div><h3 class="font-display font-semibold mb-1">One data lake, one customer portal</h3><p class="text-sm text-slate-400 leading-relaxed">Every sensor lands in one clean data-lake schema under Connect. Every customer monitors and controls their fleet through one portal, backed by the Hub at the edge.</p></div>
+        <div><h3 class="font-display font-semibold mb-1">One data lake, one customer portal</h3><p class="text-sm text-slate-400 leading-relaxed">Every module lands in one clean data-lake schema under Company Cloud. Every customer monitors and manages their account through one portal, backed by the Runtime locally.</p></div>
       </div>
       <div class="py-5 flex gap-5 items-start reveal">
         <svg class="shrink-0 mt-1" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 1 1 3.5 7.1" stroke="#FFCF00" stroke-width="1.6" stroke-linecap="round"/><path d="M3 17v-5h5" stroke="#FFCF00" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -472,7 +472,7 @@
       </div>
       <div class="py-5 flex gap-5 items-start reveal">
         <svg class="shrink-0 mt-1" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke="#FFCF00" stroke-width="1.6" stroke-linecap="round"/></svg>
-        <div><h3 class="font-display font-semibold mb-1">Proactive AI, edge to cloud</h3><p class="text-sm text-slate-400 leading-relaxed">Local models on the Hub catch failures before they happen, not after. Fleet models in Connect turn that into prescriptive maintenance: less downtime for customers, a lighter long-term footprint for the whole stack.</p></div>
+        <div><h3 class="font-display font-semibold mb-1">Proactive automation, local to cloud</h3><p class="text-sm text-slate-400 leading-relaxed">Local automation on the Runtime catches issues before they happen, not after. Fleet-wide models in Company Cloud turn that into predictive insight: less downtime for customers, a lighter long-term footprint for the whole stack.</p></div>
       </div>
     </div>
   </div>
@@ -484,28 +484,28 @@
     <div class="lg:sticky lg:top-28 lg:self-start reveal">
       <div class="mono text-xs text-slate-500 mb-3">Days 1&ndash;30</div>
       <h2 class="text-4xl font-bold mb-4">Discover and align</h2>
-      <p class="text-slate-400 leading-relaxed mb-6">Align the business. Protect the 140+ live sites from ever feeling this transition.</p>
+      <p class="text-slate-400 leading-relaxed mb-6">Align the business. Protect the 85+ live accounts from ever feeling this transition.</p>
       <div class="pl-4 border-l-2" style="border-color:var(--thermal)">
         <div class="text-xs text-slate-500 uppercase tracking-wide mb-1">Day-30 deliverable</div>
-        <div class="text-sm font-medium">Platform Charter + Field Continuity Plan, signed off</div>
+        <div class="text-sm font-medium">Platform Charter + Delivery Continuity Plan, signed off</div>
       </div>
     </div>
     <div class="rule-list">
       <div class="num-row py-6 reveal">
         <span class="num-badge">1</span>
-        <div><h3 class="font-display font-semibold mb-2">Stakeholder alignment</h3><p class="text-sm text-slate-400 leading-relaxed">Product, Finance, Manufacturing, Ops charter the stack together — budget owners in the room early.</p></div>
+        <div><h3 class="font-display font-semibold mb-2">Stakeholder alignment</h3><p class="text-sm text-slate-400 leading-relaxed">Product, Finance, Engineering, Ops charter the stack together — budget owners in the room early.</p></div>
       </div>
       <div class="num-row py-6 reveal">
         <span class="num-badge">2</span>
-        <div><h3 class="font-display font-semibold mb-2">Architecture &amp; IP audit</h3><p class="text-sm text-slate-400 leading-relaxed">Map Hub, Connect, imaging firmware, vibration pipeline against reusable vs. rebuild. Runs parallel — field ops don't pause.</p></div>
+        <div><h3 class="font-display font-semibold mb-2">Architecture &amp; IP audit</h3><p class="text-sm text-slate-400 leading-relaxed">Map Runtime, Cloud, core engine, analytics pipeline against reusable vs. rebuild. Runs parallel — delivery doesn't pause.</p></div>
       </div>
       <div class="num-row py-6 reveal">
         <span class="num-badge">3</span>
-        <div><h3 class="font-display font-semibold mb-2">GTM re-alignment</h3><p class="text-sm text-slate-400 leading-relaxed">"Thermal camera company" → "multi-sensor platform." Brief sales before release one ships.</p></div>
+        <div><h3 class="font-display font-semibold mb-2">GTM re-alignment</h3><p class="text-sm text-slate-400 leading-relaxed">"Single-product company" → "multi-module platform." Brief sales before release one ships.</p></div>
       </div>
       <div class="num-row py-6 reveal">
         <span class="num-badge">4</span>
-        <div><h3 class="font-display font-semibold mb-2">Resourcing decision: ops first</h3><p class="text-sm text-slate-400 leading-relaxed">Decide how the current 12 engineers split: priority stays on live-product sustainment, not a wholesale reassignment. Only the capacity that doesn't put the 140+ live sites at risk peels off into the new Brazil incubation pod &mdash; redundancy and acceleration on the unified stack, run in parallel to keeping today's product operational. This split is what Day 60 stands up.</p></div>
+        <div><h3 class="font-display font-semibold mb-2">Resourcing decision: ops first</h3><p class="text-sm text-slate-400 leading-relaxed">Decide how the current 12 engineers split: priority stays on live-product sustainment, not a wholesale reassignment. Only the capacity that doesn't put the 85+ live accounts at risk peels off into the new incubation pod &mdash; redundancy and acceleration on the unified stack, run in parallel to keeping today's product operational. This split is what Day 60 stands up.</p></div>
       </div>
     </div>
   </div>
@@ -516,28 +516,28 @@
     <div class="lg:sticky lg:top-28 lg:self-start reveal">
       <div class="mono text-xs text-slate-500 mb-3">Days 31&ndash;60</div>
       <h2 class="text-4xl font-bold mb-4">Team and foundation</h2>
-      <p class="text-slate-400 leading-relaxed mb-6">Split the org. Field never loses support while a dedicated team builds fast.</p>
+      <p class="text-slate-400 leading-relaxed mb-6">Split the org. Delivery never loses support while a dedicated team builds fast.</p>
       <div class="pl-4 border-l-2" style="border-color:var(--signal)">
         <div class="text-xs text-slate-500 uppercase tracking-wide mb-1">Day-60 deliverable</div>
-        <div class="text-sm font-medium">Core + Incubator org live, Brazil pod onboarding, BSP in active build</div>
+        <div class="text-sm font-medium">Core + Incubator org live, incubation pod onboarding, unified core in active build</div>
       </div>
     </div>
     <div class="rule-list">
       <div class="num-row py-6 reveal">
         <span class="num-badge">1</span>
-        <div><h3 class="font-display font-semibold mb-2">Capability assessment</h3><p class="text-sm text-slate-400 leading-relaxed">Skills-map today's 12 engineers against RTOS, Yocto, BSP, edge AI. Name the real gaps.</p></div>
+        <div><h3 class="font-display font-semibold mb-2">Capability assessment</h3><p class="text-sm text-slate-400 leading-relaxed">Skills-map today's 12 engineers against distributed systems, platform tooling, cloud infra, applied AI. Name the real gaps.</p></div>
       </div>
       <div class="num-row py-6 reveal">
         <span class="num-badge">2</span>
-        <div><h3 class="font-display font-semibold mb-2">Two-team restructure</h3><p class="text-sm text-slate-400 leading-relaxed"><strong class="text-slate-200">Core</strong> runs live sites uninterrupted. <strong class="text-slate-200">Incubator</strong> builds the unified stack, insulated from ticket gravity.</p></div>
+        <div><h3 class="font-display font-semibold mb-2">Two-team restructure</h3><p class="text-sm text-slate-400 leading-relaxed"><strong class="text-slate-200">Core</strong> runs live accounts uninterrupted. <strong class="text-slate-200">Incubator</strong> builds the unified stack, insulated from ticket gravity.</p></div>
       </div>
       <div class="num-row py-6 reveal">
         <span class="num-badge">3</span>
-        <div><h3 class="font-display font-semibold mb-2">Brazil engineering pod</h3><p class="text-sm text-slate-400 leading-relaxed">Nearshore pod closes the RTOS/Yocto/BSP gap. Starts small, mentored by the existing team, scales as it earns autonomy — see the Investment section for real numbers.</p></div>
+        <div><h3 class="font-display font-semibold mb-2">Incubation engineering pod</h3><p class="text-sm text-slate-400 leading-relaxed">Nearshore pod closes the platform-tooling gap. Starts small, mentored by the existing team, scales as it earns autonomy — see the Investment section for real numbers.</p></div>
       </div>
       <div class="num-row py-6 reveal">
         <span class="num-badge">4</span>
-        <div><h3 class="font-display font-semibold mb-2">Break ground on the BSP</h3><p class="text-sm text-slate-400 leading-relaxed">Thermal and vibration migrate first, proving the model before current and voltage build on it.</p></div>
+        <div><h3 class="font-display font-semibold mb-2">Break ground on the unified core</h3><p class="text-sm text-slate-400 leading-relaxed">Core Engine and Analytics migrate first, proving the model before Integrations and Automation build on it.</p></div>
       </div>
     </div>
   </div>
@@ -557,7 +557,7 @@
     <div class="rule-list">
       <div class="num-row py-6 reveal">
         <span class="num-badge">1</span>
-        <div><h3 class="font-display font-semibold mb-2">Build vs. buy matrix</h3><p class="text-sm text-slate-400 leading-relaxed">RTOS, Yocto layers, data-lake tech, analog front-ends — decided on cost and time, not habit.</p></div>
+        <div><h3 class="font-display font-semibold mb-2">Build vs. buy matrix</h3><p class="text-sm text-slate-400 leading-relaxed">Runtime layers, data-lake tech, integration front-ends — decided on cost and time, not habit.</p></div>
       </div>
       <div class="num-row py-6 reveal">
         <span class="num-badge">2</span>
@@ -565,11 +565,11 @@
       </div>
       <div class="num-row py-6 reveal">
         <span class="num-badge">3</span>
-        <div><h3 class="font-display font-semibold mb-2">Sensor sequencing</h3><p class="text-sm text-slate-400 leading-relaxed">Vibration shipped. Current and voltage next, then acoustic and environmental — all on one BSP.</p></div>
+        <div><h3 class="font-display font-semibold mb-2">Module sequencing</h3><p class="text-sm text-slate-400 leading-relaxed">Analytics shipped. Integrations and Automation next, then Reporting and beyond — all on one unified core.</p></div>
       </div>
       <div class="num-row py-6 reveal">
         <span class="num-badge">4</span>
-        <div><h3 class="font-display font-semibold mb-2">AI injection strategy</h3><p class="text-sm text-slate-400 leading-relaxed">Hub keeps real-time detection. Connect layers on fleet-wide prescriptive maintenance: the shift from reactive to proactive that cuts customer downtime and lowers the stack's long-term operating footprint.</p></div>
+        <div><h3 class="font-display font-semibold mb-2">AI injection strategy</h3><p class="text-sm text-slate-400 leading-relaxed">Runtime keeps real-time detection. Company Cloud layers on fleet-wide predictive insight: the shift from reactive to proactive that cuts customer downtime and lowers the stack's long-term operating footprint.</p></div>
       </div>
     </div>
   </div>
@@ -587,40 +587,40 @@
       <div class="pt-5 border-t-2" style="border-color:var(--thermal)">
         <div class="mono text-xs text-slate-500 mb-1">Q1</div>
         <div class="text-sm font-semibold mb-1" style="color:var(--thermal)">Foundation</div>
-        <div class="text-[10px] text-slate-500 mb-3">Investor Stage 1 &middot; platform &amp; UX</div>
+        <div class="text-[10px] text-slate-500 mb-3">Internal Stage 1 &middot; platform &amp; UX</div>
         <ul class="text-xs text-slate-400 space-y-1.5 leading-relaxed">
-          <li>Charter signed</li><li>Audit complete</li><li>Pod hired</li><li>BSP v0</li>
+          <li>Charter signed</li><li>Audit complete</li><li>Pod hired</li><li>Unified core v0</li>
         </ul>
       </div>
       <div class="pt-5 md:mt-10 border-t-2" style="border-color:var(--thermal)">
         <div class="mono text-xs text-slate-500 mb-1">Q2</div>
         <div class="text-sm font-semibold mb-1" style="color:var(--thermal)">Unification</div>
-        <div class="text-[10px] text-slate-500 mb-3">Investor Stage 2 &middot; Distribution &amp; Logistics</div>
+        <div class="text-[10px] text-slate-500 mb-3">Internal Stage 2 &middot; Distribution &amp; Logistics</div>
         <ul class="text-xs text-slate-400 space-y-1.5 leading-relaxed">
-          <li>BSP alpha ships</li><li>Thermal + vibration unified</li><li>Data lake v1</li><li>First quarterly release</li>
+          <li>Unified core alpha ships</li><li>Core Engine + Analytics unified</li><li>Data lake v1</li><li>First quarterly release</li>
         </ul>
       </div>
       <div class="pt-5 border-t-2" style="border-color:var(--signal)">
         <div class="mono text-xs text-slate-500 mb-1">Q3</div>
         <div class="text-sm font-semibold mb-1" style="color:var(--signal)">Expansion</div>
-        <div class="text-[10px] text-slate-500 mb-3">Investor Stage 3 &middot; Manufacturing, Data Centers</div>
+        <div class="text-[10px] text-slate-500 mb-3">Internal Stage 3 &middot; Delivery, Operations</div>
         <ul class="text-xs text-slate-400 space-y-1.5 leading-relaxed">
-          <li>Current + voltage integrated</li><li>Edge AI v2</li><li>Platform GTM live</li>
+          <li>Integrations + Automation integrated</li><li>Applied AI v2</li><li>Platform GTM live</li>
         </ul>
       </div>
       <div class="pt-5 md:mt-10 border-t-2" style="border-color:var(--signal)">
         <div class="mono text-xs text-slate-500 mb-1">Q4</div>
         <div class="text-sm font-semibold mb-1" style="color:var(--signal)">Scale</div>
-        <div class="text-[10px] text-slate-500 mb-3">Investor Stage 4&ndash;5 &middot; connected layer, predictive intelligence</div>
+        <div class="text-[10px] text-slate-500 mb-3">Internal Stage 4&ndash;5 &middot; connected layer, predictive intelligence</div>
         <ul class="text-xs text-slate-400 space-y-1.5 leading-relaxed">
-          <li>Acoustic + env. beta</li><li>Prescriptive AI pilot</li><li>FY+1 board review</li>
+          <li>Reporting beta</li><li>Predictive AI pilot</li><li>FY+1 board review</li>
         </ul>
       </div>
     </div>
-    <p class="text-[11px] text-slate-600 mb-12">Investor Stage references per Sensara FY25 Investor Update (sample data) 5-stage platform roadmap &mdash; this 90-day plan is how engineering delivers Stages 1&ndash;3.</p>
+    <p class="text-[11px] text-slate-600 mb-12">Internal Stage references per Company FY25 Internal Update (sample data) 5-stage platform roadmap &mdash; this 90-day plan is how engineering delivers Stages 1&ndash;3.</p>
 
     <div class="card p-7 reveal">
-      <h3 class="font-display font-semibold text-lg mb-5">Sensor modality rollout</h3>
+      <h3 class="font-display font-semibold text-lg mb-5">Module rollout</h3>
       <div class="overflow-x-auto scrollbar-thin">
         <div id="heatmap" class="grid grid-cols-5 gap-2 max-sm:min-w-[560px]">
           <div></div>
@@ -641,25 +641,25 @@
 <section id="cost" data-bg="cost" class="py-24 px-6 md:px-10 border-t border-[var(--border-soft)]">
   <div class="max-w-7xl mx-auto">
     <div class="max-w-2xl mb-10 reveal">
-      <h2 class="text-3xl md:text-4xl font-bold mb-3">What the Brazil pod costs, incrementally</h2>
+      <h2 class="text-3xl md:text-4xl font-bold mb-3">What the incubation pod costs, incrementally</h2>
       <span class="badge-sim mb-6 inline-flex">Simulated projection — click a bar to explore</span>
       <p class="text-sm text-slate-200 leading-relaxed mt-6">
         The existing <strong class="text-white">12-engineer team</strong> — a mix of US and global hires — keeps
         the current platform operational through the transition; that cost is
         <strong class="text-white">already funded in the annual plan and not counted here.</strong> This model is
-        only the <strong style="color:var(--signal)">incremental cost of a parallel Brazil incubator pod</strong>,
+        only the <strong style="color:var(--signal)">incremental cost of a parallel incubation pod</strong>,
         working alongside the existing team, adding 2&ndash;3 engineers a quarter as it earns autonomy.
       </p>
       <p class="text-xs text-slate-500 leading-relaxed mt-4 max-w-2xl">
         Software revenue nearly doubled in FY25 ($1.3M &rarr; $2.2M)<sup>*</sup> &mdash; this investment compounds
         that growth engine rather than starting a new one.
       </p>
-      <p class="text-[11px] text-slate-600 mt-1">* Per Sensara FY25 Investor Update (sample data), Financial Summary.</p>
+      <p class="text-[11px] text-slate-600 mt-1">* Per Company FY25 Internal Update (sample data), Financial Summary.</p>
     </div>
 
     <div class="grid sm:grid-cols-4 gap-5 mb-10">
       <div class="glass p-5 reveal">
-        <div class="text-xs text-slate-400 uppercase tracking-wide mb-2">Brazil engineer, loaded (avg)</div>
+        <div class="text-xs text-slate-400 uppercase tracking-wide mb-2">Incubation engineer, loaded (avg)</div>
         <div class="kpi-num text-2xl" style="color:var(--signal)">$65k<span class="text-sm text-slate-500">/yr</span></div>
       </div>
       <div class="glass p-5 reveal">
@@ -682,13 +682,13 @@
       <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
         <h3 class="font-display font-semibold text-lg">Quarterly incremental cost</h3>
         <div class="flex gap-4 text-xs text-slate-400 flex-wrap">
-          <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm inline-block" style="background:var(--signal)"></span>Brazil pod ($k)</span>
+          <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm inline-block" style="background:var(--signal)"></span>Incubation pod ($k)</span>
           <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm inline-block" style="background:var(--amber);opacity:0.7"></span>Incubation overhead ($k)</span>
           <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm inline-block border" style="border-color:var(--thermal)"></span>Cumulative</span>
           <span class="flex items-center gap-2"><span class="w-2.5 h-0 border-t border-dashed inline-block" style="border-color:#93A0BE"></span>±2 engineer flex range</span>
         </div>
       </div>
-      <svg id="costChart" width="100%" height="340" viewBox="0 0 800 340" role="img" aria-label="Interactive bar chart of the Brazil pod's incremental quarterly cost, Q1 through Q4, click a bar for detail"></svg>
+      <svg id="costChart" width="100%" height="340" viewBox="0 0 800 340" role="img" aria-label="Interactive bar chart of the incubation pod's incremental quarterly cost, Q1 through Q4, click a bar for detail"></svg>
       <div id="costDetail" class="mt-4 p-4 rounded-xl border border-[var(--border-soft)] bg-black/20 text-sm text-slate-300 leading-relaxed">
         Click a quarter above to see pod size, mentorship load, and overhead.
       </div>
@@ -714,19 +714,19 @@
           <div class="text-xs uppercase tracking-wide text-slate-300 mb-1">Shared / cross-trained</div>
           <div class="kpi-num text-3xl mb-3" style="color:var(--signal)">~25&ndash;50%</div>
           <div class="flex flex-wrap gap-2 justify-center">
-            <span class="pill">RTOS fundamentals</span>
-            <span class="pill">BSP integration</span>
+            <span class="pill">Systems fundamentals</span>
+            <span class="pill">Platform integration</span>
             <span class="pill">Cloud data pipelines</span>
           </div>
         </div>
         <div class="p-5" style="background:rgba(255,207,0,0.08)">
           <div class="text-xs uppercase tracking-wide mb-3" style="color:var(--signal)">Pod specialized</div>
           <div class="flex flex-wrap gap-2">
-            <span class="pill">Embedded Linux drivers</span>
+            <span class="pill">Backend services engineering</span>
             <span class="pill">DevOps &amp; tooling automation</span>
             <span class="pill">Localized nearshore delivery</span>
-            <span class="pill">Edge AI/LLM integration (on-device inference)</span>
-            <span class="pill">Cloud AI models for prescriptive maintenance</span>
+            <span class="pill">AI/ML integration (applied models)</span>
+            <span class="pill">Cloud AI models for predictive insights</span>
           </div>
         </div>
       </div>
@@ -745,9 +745,9 @@
       <span class="badge-sim mb-4 inline-flex">Calculated projection &mdash; not sourced from investor materials</span>
       <p class="text-sm text-slate-400 leading-relaxed mb-6 max-w-3xl">
         Modeled off this plan's own execution parameters: the $2.2M FY25 software-revenue base,<sup>*</sup> the
-        $434k Year-1 pod spend, and the Q3/Q4 modality-shipping cadence above. Counterfactual assumes bespoke
-        per-sensor integration keeps decelerating growth (45%/30%/20% YoY); platform case assumes the unified
-        BSP cross-sells Current + Voltage + the 5th modality into the 140+ site base once they ship, sustaining
+        $434k Year-1 pod spend, and the Q3/Q4 module-shipping cadence above. Counterfactual assumes bespoke
+        per-module integration keeps decelerating growth (45%/30%/20% YoY); platform case assumes the unified
+        core cross-sells Integrations + Automation + Reporting into the 85+ account base once they ship, sustaining
         growth instead.
       </p>
 
@@ -802,12 +802,12 @@
 
       <p class="text-sm text-slate-400 leading-relaxed max-w-3xl">
         Payback: Year-1 spend funds the build, not yet-shipped modules &mdash; revenue impact starts FY26 once
-        Current, Voltage, and the 5th modality go live. In the base case, FY26's growth delta alone ($0.66M)
+        Integrations, Automation, and Reporting go live. In the base case, FY26's growth delta alone ($0.66M)
         clears the Year-1 spend within the first year of shipping.
       </p>
       <p class="text-[11px] text-slate-600 mt-3">
-        * FY25 software revenue and growth rate per Sensara FY25 Investor Update (sample data). Growth-rate
-        assumptions above are this plan's own projection, not sourced from investor materials &mdash; refine with
+        * FY25 software revenue and growth rate per Company FY25 Internal Update (sample data). Growth-rate
+        assumptions above are this plan's own projection, not sourced from internal materials &mdash; refine with
         Finance at Day 30.
       </p>
     </div>
@@ -824,16 +824,16 @@
   <div class="max-w-7xl mx-auto">
     <h2 class="text-3xl md:text-4xl font-bold max-w-2xl mb-5 reveal">Give me 90 days to turn momentum into architecture.</h2>
     <p class="text-slate-400 leading-relaxed max-w-2xl mb-3 reveal">
-      140+ live sites. 6x ROI. A second sensor shipped without anyone asking permission. What's missing
-      isn't vision — it's the platform underneath it: one integration point for every sensor, one data lake,
-      one customer portal, and AI that catches problems before they cost anyone downtime.
+      85+ live accounts. 5x ROI. A second module shipped without anyone asking permission. What's missing
+      isn't vision — it's the platform underneath it: one integration point for every module, one data lake,
+      one customer portal, and automation that catches problems before they cost anyone delivery time.
     </p>
     <div class="mb-14 reveal">
       <p class="text-slate-500 text-sm leading-relaxed max-w-2xl">
         With $18.6M cash and $21.3M working capital on the balance sheet at FY25 year-end,<sup>*</sup> this $434k ask
         is a scoping decision, not a funding one.
       </p>
-      <p class="text-[11px] text-slate-600 mt-2">* Per Sensara FY25 Investor Update (sample data), Consolidated Balance Sheet.</p>
+      <p class="text-[11px] text-slate-600 mt-2">* Per Company FY25 Internal Update (sample data), Consolidated Balance Sheet.</p>
     </div>
     <div class="grid sm:grid-cols-3 gap-5 mb-14 reveal">
       <div class="card p-6">
@@ -842,7 +842,7 @@
       </div>
       <div class="card p-6">
         <div class="text-xs uppercase tracking-wide text-slate-500 mb-2">I need from Finance</div>
-        <div class="text-sm font-medium">Day-60 review of the Brazil pod model</div>
+        <div class="text-sm font-medium">Day-60 review of the incubation pod model</div>
       </div>
       <div class="card p-6">
         <div class="text-xs uppercase tracking-wide text-slate-500 mb-2">I bring at Day 90</div>
@@ -859,7 +859,7 @@
     <div class="grid lg:grid-cols-[0.75fr,1.25fr] gap-16 items-start">
       <div class="reveal">
         <div class="frame-img aspect-[4/5]">
-          <img src="./about/monil-casual.jpg" alt="Monil Morar" loading="lazy" />
+          <img src="../shared/about/monil-casual.jpg" alt="Monil Morar" loading="lazy" />
         </div>
         <div class="flex flex-wrap gap-3 mt-6">
           <a href="https://www.linkedin.com/in/mdmorar/" target="_blank" rel="noopener" class="social-btn">
@@ -958,33 +958,33 @@
   }, { threshold:0.12, rootMargin:'0px 0px -40px 0px' });
   revealEls.forEach(el=>revealObs.observe(el));
 
-// ---------- Sensor rollout heatmap (interactive) ----------
+// ---------- Module rollout heatmap (interactive) ----------
   const heatData = [
-    { row:'Thermal', cells:[
-      {q:'Q1', label:'Live', tone:'live', detail:'Thermal already runs in production across 140+ sites on today\'s legacy firmware — the baseline the unified BSP has to match before it can replace it.'},
-      {q:'Q2', label:'Unified', tone:'live', detail:'Thermal migrates onto the new BSP first. If thermal runs clean here, the architecture is proven for everything after it.'},
-      {q:'Q3', label:'Unified', tone:'live', detail:'Thermal stays on the unified stack, now shipping the same release train as current and voltage.'},
-      {q:'Q4', label:'Unified', tone:'live', detail:'Fully steady-state. Thermal is just one module among several on one BSP.'} ]},
-    { row:'Vibration', cells:[
-      {q:'Q1', label:'Live', tone:'live', detail:'Vibration already shipped organically — the proof point this whole plan is built on.'},
-      {q:'Q2', label:'Unified', tone:'live', detail:'Vibration moves onto the unified BSP alongside thermal, second sensor through the new pipeline.'},
-      {q:'Q3', label:'Unified', tone:'live', detail:'Runs on the same cadence as every other modality now.'},
-      {q:'Q4', label:'Unified', tone:'live', detail:'Steady-state, contributing to fleet-wide prescriptive models in Connect.'} ]},
-    { row:'Current', cells:[
-      {q:'Q1', label:'n/a', tone:'na', detail:'Not started. Team focus in Q1 is the charter, audit, and pod onboarding — not new sensor builds.'},
-      {q:'Q2', label:'Design', tone:'design', detail:'Analog front-end and driver design begins once the BSP alpha is stable enough to build against.'},
-      {q:'Q3', label:'Ship', tone:'ship', detail:'Current monitoring module ships as a plug-in on the unified BSP — first true test of the "module not rebuild" thesis.'},
+    { row:'Core Engine', cells:[
+      {q:'Q1', label:'Live', tone:'live', detail:'Core Engine already runs in production across 85+ accounts on today\'s legacy codebase — the baseline the unified core has to match before it can replace it.'},
+      {q:'Q2', label:'Unified', tone:'live', detail:'Core Engine migrates onto the new unified core first. If it runs clean here, the architecture is proven for everything after it.'},
+      {q:'Q3', label:'Unified', tone:'live', detail:'Core Engine stays on the unified stack, now shipping the same release train as Integrations and Automation.'},
+      {q:'Q4', label:'Unified', tone:'live', detail:'Fully steady-state. Core Engine is just one module among several on one unified core.'} ]},
+    { row:'Analytics', cells:[
+      {q:'Q1', label:'Live', tone:'live', detail:'Analytics already shipped organically — the proof point this whole plan is built on.'},
+      {q:'Q2', label:'Unified', tone:'live', detail:'Analytics moves onto the unified core alongside Core Engine, second module through the new pipeline.'},
+      {q:'Q3', label:'Unified', tone:'live', detail:'Runs on the same cadence as every other module now.'},
+      {q:'Q4', label:'Unified', tone:'live', detail:'Steady-state, contributing to fleet-wide predictive models in Company Cloud.'} ]},
+    { row:'Integrations', cells:[
+      {q:'Q1', label:'n/a', tone:'na', detail:'Not started. Team focus in Q1 is the charter, audit, and pod onboarding — not new module builds.'},
+      {q:'Q2', label:'Design', tone:'design', detail:'Interface and connector design begins once the unified core alpha is stable enough to build against.'},
+      {q:'Q3', label:'Ship', tone:'ship', detail:'Integrations module ships as a plug-in on the unified core — first true test of the "module not rebuild" thesis.'},
       {q:'Q4', label:'Unified', tone:'live', detail:'Fully integrated, running the standard release cadence with everything else.'} ]},
-    { row:'Voltage', cells:[
-      {q:'Q1', label:'n/a', tone:'na', detail:'Not started, same reasoning as Current — Q1 is foundation, not features.'},
-      {q:'Q2', label:'Design', tone:'design', detail:'Runs in parallel with Current\'s design phase, sharing the same BSP scaffolding.'},
-      {q:'Q3', label:'Ship', tone:'ship', detail:'Voltage module ships alongside Current — two modalities landing in the same quarter validates reuse.'},
+    { row:'Automation', cells:[
+      {q:'Q1', label:'n/a', tone:'na', detail:'Not started, same reasoning as Integrations — Q1 is foundation, not features.'},
+      {q:'Q2', label:'Design', tone:'design', detail:'Runs in parallel with the Integrations design phase, sharing the same core scaffolding.'},
+      {q:'Q3', label:'Ship', tone:'ship', detail:'Automation module ships alongside Integrations — two modules landing in the same quarter validates reuse.'},
       {q:'Q4', label:'Unified', tone:'live', detail:'Fully integrated, steady-state.'} ]},
-    { row:'Acoustic, env.', cells:[
+    { row:'Reporting', cells:[
       {q:'Q1', label:'n/a', tone:'na', detail:'Not started.'},
-      {q:'Q2', label:'n/a', tone:'na', detail:'Not started — waits for the BSP to prove itself on four modalities first.'},
-      {q:'Q3', label:'Design', tone:'design', detail:'Design work starts once Current and Voltage are shipping, applying the same lessons.'},
-      {q:'Q4', label:'Beta', tone:'ship', detail:'Beta with design partners. Sets up an FY+1 roadmap of continuous modality expansion.'} ]},
+      {q:'Q2', label:'n/a', tone:'na', detail:'Not started — waits for the unified core to prove itself on four modules first.'},
+      {q:'Q3', label:'Design', tone:'design', detail:'Design work starts once Integrations and Automation are shipping, applying the same lessons.'},
+      {q:'Q4', label:'Beta', tone:'ship', detail:'Beta with design partners. Sets up an FY+1 roadmap of continuous module expansion.'} ]},
   ];
   const toneStyle = {
     live:  { bg:'rgba(46,68,233,0.85)', color:'#F3F6FF' },
@@ -1019,13 +1019,13 @@
     });
   });
 
-  // ---------- Cost chart (interactive, Brazil-pod-only model) ----------
-  // Simulated projection: incremental Brazil nearshore pod cost only.
+  // ---------- Cost chart (interactive, incubation-pod-only model) ----------
+  // Simulated projection: incremental nearshore incubation pod cost only.
   // Existing 12-engineer team (mixed US/global) already funded in the annual plan — excluded.
   const costData = [
     { q:'Q1', label:'Foundation', pod:3,  us:48.75, ov:20, lo:36.25, hi:101.25, podLo:1, podHi:5,  mentor:'22%', note:'Pod bootstraps with 3 engineers, working in parallel with the existing team — not replacing it. Hands-on mentorship while the first hiring wave, tooling, and localization overhead front-loads.' },
     { q:'Q2', label:'Unification', pod:5, us:81.25, ov:13, lo:61.75, hi:126.75, podLo:3, podHi:7,  mentor:'14%', note:'Pod adds 2 more engineers (5 total) as the first cohort starts training the next. Mentorship load from the internal team eases as the pod gains ground truth.' },
-    { q:'Q3', label:'Expansion', pod:7,   us:113.75,ov:7,  lo:88.25, hi:153.25, podLo:5, podHi:9,  mentor:'7%',  note:'Pod adds 2 more (7 total), now owning Current and Voltage module delivery largely on its own. Overhead mostly amortized.' },
+    { q:'Q3', label:'Expansion', pod:7,   us:113.75,ov:7,  lo:88.25, hi:153.25, podLo:5, podHi:9,  mentor:'7%',  note:'Pod adds 2 more (7 total), now owning Integrations and Automation module delivery largely on its own. Overhead mostly amortized.' },
     { q:'Q4', label:'Scale', pod:9,       us:146.25,ov:4,  lo:117.75,hi:182.75, podLo:7, podHi:11, mentor:'3%',  note:'Pod reaches its Q4 target of 9, adding 2 more engineers, running near-autonomously alongside the existing team. Internal mentorship drops to a light-touch check-in.' },
   ];
   const svg = document.getElementById('costChart');
