@@ -349,3 +349,8 @@ Summary of substantive work completed each session — what was built, what was 
 <!-- DRAFT: review and edit before treating as permanent -->
 ## 2026-08-02 (auto-drafted — review before next session)
 - Fixed `.mcp.json`, `dashboard_server_patched.py`, `tests/openspace/test_integration.py` (35/35 pass), `.env`/`sys-env.sh` (dropped dead showcase path), `CLAUDE.md`/`README.md` refs, and hardened `openspace-sync.sh` to auto hard-reset instead of silently failing on future history rewrites.
+
+
+<!-- DRAFT: review and edit before treating as permanent -->
+## 2026-08-05 (auto-drafted — review before next session)
+- {"session_id":"f048f808-2a83-4f39-9729-89544fe37de8","transcript_path":"C:\\Users\\MorarMonil\\.claude\\projects\\C--GIT-Claude-Code-Presentation-Framework\\f048f808-2a83-4f39-9729-89544fe37de8.jsonl","cwd":"C:\\GIT\\Claude_Code_Presentation_Framework","prompt_id":"07e7e7a0-c91e-4bec-9952-890f8f92f475","permission_mode":"bypassPermissions","effort":{"level":"medium"},"hook_event_name":"Stop","stop_hook_active":false,"last_assistant_message":"Built `src/generic-deck/` â€” same backgrounds, transitions, animations, colors, and interactive components as `strategy-deck`, all content stripped to generic placeholder sections: Hero â†’ Introduction â†’ Problem â†’ Approach â†’ Phase 1/2/3 â†’ Timeline â†’ Resources â†’ Conclusion â†’ About (bio kept verbatim, untouched).
