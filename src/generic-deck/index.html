@@ -1,0 +1,1121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Generic Template</title>
+<meta name="description" content="A generic, reusable HTML presentation template — placeholder sections with built-in guidance for building any deck from introduction to conclusion." />
+<link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+<link rel="shortcut icon" type="image/svg+xml" href="./favicon.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@500;600;700;800&family=Rubik:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  :root{
+    --bg:#0A0F1C;
+    --surface:#121B30;
+    --surface-2:#182238;
+    --border:#243252;
+    --border-soft:#1B2740;
+    --text:#EEF2FA;
+    --text-muted:#93A0BE;
+    --text-dim:#5C6987;
+    --thermal:#2E44E9;
+    --thermal-dim:#16224F;
+    --signal:#FFCF00;
+    --signal-dim:#3A2F02;
+    --amber:#C9A227;
+    --success:#1FCB57;
+    --danger:#E5484D;
+    --grad-thermal: linear-gradient(135deg,#2E44E9 0%, #FFCF00 100%);
+    --shadow-thermal: 0 8px 30px -8px rgba(46,68,233,0.35);
+    --radius: 20px;
+  }
+  *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
+  body{
+    background:
+      radial-gradient(1100px 600px at 12% -10%, rgba(46,68,233,0.09), transparent 60%),
+      var(--bg);
+    color:var(--text);
+    font-family:'Rubik', ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  h1,h2,h3,.font-display{ font-family:'Saira', 'Rubik', sans-serif; letter-spacing:-0.01em; }
+  .mono{ font-family:'JetBrains Mono', ui-monospace, monospace; }
+  ::selection{ background:rgba(255,207,0,0.35); color:#14110A; }
+
+  .noise{
+    position:fixed; inset:0; pointer-events:none; z-index:1; opacity:0.03; mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  section{ position:relative; z-index:2; scroll-margin-top:76px; }
+
+  /* ---- global fixed background stage: one video, spanning every section ---- */
+  #bgStage{ position:fixed; inset:0; z-index:0; overflow:hidden; background:var(--bg); }
+  #bgStage video{
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    filter:brightness(0.42) saturate(1.15);
+    transform:scale(1.04);
+  }
+  .bg-photo{
+    position:absolute; inset:0; opacity:0;
+    transition:opacity 1800ms ease;
+    will-change:opacity;
+  }
+  .bg-photo.active{ opacity:0.5; }
+  .bg-photo img{
+    width:100%; height:100%; object-fit:cover; object-position:center;
+    filter:brightness(0.55) saturate(1.1);
+    transform:scale(1.06);
+    animation:kenburns 34s ease-in-out infinite alternate;
+  }
+  #bgStage .bg-tint{
+    position:absolute; inset:0;
+    background:
+      linear-gradient(180deg, rgba(10,15,28,0.25) 0%, rgba(10,15,28,0.55) 45%, rgba(10,15,28,0.78) 100%),
+      radial-gradient(1200px 650px at 18% 10%, rgba(46,68,233,0.10), transparent 60%);
+  }
+  @keyframes kenburns{ from{transform:scale(1.06) translate3d(0,0,0);} to{transform:scale(1.16) translate3d(-1.6%,-1.2%,0);} }
+  @media (prefers-reduced-motion: reduce){ .bg-photo img, #bgStage video{ animation:none; } }
+
+  .kicker{
+    font-size:11px; font-weight:600; letter-spacing:0.16em; text-transform:uppercase;
+    color:var(--text-dim);
+  }
+  .kicker em{ font-style:normal; color:var(--thermal); }
+  .kicker.gold em{ color:var(--signal); }
+  .kicker.light{ color:rgba(238,242,250,0.55); }
+  .kicker.light em{ color:var(--signal); }
+
+  .card{
+    background:linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+    border:1px solid var(--border-soft);
+    border-radius:var(--radius);
+  }
+  .glass{
+    background:rgba(18,27,48,0.55);
+    backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,0.08);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,0.06);
+    border-radius:var(--radius);
+  }
+
+  .rule-list > *{ border-top:1px solid var(--border-soft); }
+  .rule-list > *:first-child{ border-top:none; }
+
+  .ghost-num{
+    font-family:'Saira',sans-serif; font-weight:700; font-size:56px; line-height:1;
+    color:transparent; -webkit-text-stroke:1px var(--border);
+    letter-spacing:-0.02em;
+  }
+
+  .btn-primary{
+    background:#FFCF00; color:#14110A; font-weight:700;
+    box-shadow:var(--shadow-thermal);
+    transition:transform 180ms cubic-bezier(.2,.8,.2,1), box-shadow 180ms ease, background 180ms ease;
+  }
+  .btn-primary:hover{ background:#FFD91A; transform:translateY(-2px); box-shadow:0 14px 40px -8px rgba(255,207,0,0.4); }
+  .btn-primary:active{ transform:translateY(0) scale(0.98); }
+  .btn-primary:focus-visible{ outline:2px solid var(--thermal); outline-offset:3px; }
+
+  .btn-ghost{
+    border:1px solid rgba(255,255,255,0.22); color:var(--text);
+    transition:background 180ms ease, border-color 180ms ease;
+  }
+  .btn-ghost:hover{ background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.4); }
+  .btn-ghost:focus-visible{ outline:2px solid var(--signal); outline-offset:3px; }
+
+  a{ cursor:pointer; }
+  a:focus-visible, button:focus-visible{ outline:2px solid var(--signal); outline-offset:2px; }
+
+  #progress{
+    position:fixed; top:0; left:0; height:3px; width:100%;
+    transform:scaleX(0); transform-origin:left;
+    background:var(--grad-thermal); z-index:100; transition:transform 80ms linear;
+    will-change:transform;
+  }
+
+  #dotnav{
+    position:fixed; right:22px; top:50%; transform:translateY(-50%); z-index:90;
+    display:flex; flex-direction:column; gap:14px;
+  }
+  #dotnav a{
+    width:8px; height:8px; border-radius:999px; background:rgba(255,255,255,0.25);
+    display:block; position:relative; transition:all 220ms ease;
+  }
+  #dotnav a.active{ background:var(--signal); box-shadow:0 0 0 4px rgba(255,207,0,0.18); transform:scale(1.2); }
+  #dotnav a .label{
+    position:absolute; right:20px; top:50%; transform:translateY(-50%);
+    white-space:nowrap; font-size:11px; color:var(--text-muted);
+    opacity:0; pointer-events:none; transition:opacity 160ms ease;
+    background:var(--surface); padding:4px 10px; border-radius:8px; border:1px solid var(--border-soft);
+  }
+  #dotnav a:hover .label{ opacity:1; }
+  @media (max-width:1024px){ #dotnav{ display:none; } }
+
+  #topnav{
+    position:fixed; top:0; left:0; right:0; z-index:80;
+    backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px);
+    background:rgba(10,15,28,0.78); border-bottom:1px solid var(--border-soft);
+  }
+
+  .kpi-num{ font-family:'Saira',sans-serif; font-weight:700; font-variant-numeric:tabular-nums; }
+
+  table.roadmap td, table.roadmap th{ border:1px solid var(--border-soft); }
+
+  .heat-cell{ transition:transform 160ms ease, box-shadow 160ms ease, outline-color 160ms ease; cursor:pointer; outline:2px solid transparent; outline-offset:2px; }
+  .heat-cell:hover{ transform:scale(1.06); box-shadow:0 6px 18px -6px rgba(0,0,0,0.6); }
+  .heat-cell.selected{ outline-color:#fff; }
+
+  .scrollbar-thin::-webkit-scrollbar{ height:6px; width:6px; }
+  .scrollbar-thin::-webkit-scrollbar-thumb{ background:var(--border); border-radius:999px; }
+
+  .bar-hit{ cursor:pointer; }
+  .bar-hit rect{ transition:opacity 160ms ease; }
+  .bar-hit:hover rect{ opacity:0.75; }
+  .bar-hit.selected rect.us, .bar-hit.selected rect.ov{ stroke:#fff; stroke-width:2; }
+
+  .preview-rail a{ transition:background 160ms ease; }
+  .preview-rail a:hover{ background:rgba(255,255,255,0.03); }
+
+  .reveal{ opacity:0; transform:translateY(18px); transition:opacity 600ms ease, transform 600ms ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  .tilt{ transition:transform 300ms ease; transform-style:preserve-3d; }
+
+  .badge-sim{
+    display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600;
+    letter-spacing:0.04em; color:var(--amber); background:rgba(201,162,39,0.1);
+    border:1px solid rgba(201,162,39,0.35); border-radius:999px; padding:4px 10px;
+  }
+  .badge-sim::before{ content:''; width:6px; height:6px; border-radius:999px; background:var(--amber); }
+
+  /* framed inline imagery */
+  .frame-img{
+    position:relative; border-radius:var(--radius); overflow:hidden;
+    border:1px solid rgba(255,255,255,0.1);
+    box-shadow:0 30px 60px -20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.06);
+  }
+  .frame-img img{ display:block; width:100%; height:100%; object-fit:cover; }
+  .frame-img::after{ content:''; position:absolute; inset:0; box-shadow:inset 0 0 0 1px rgba(255,255,255,0.04); pointer-events:none; }
+  .frame-tag{
+    position:absolute; left:14px; bottom:14px; z-index:2;
+    background:rgba(10,15,28,0.72); backdrop-filter:blur(8px);
+    border:1px solid rgba(255,255,255,0.12); border-radius:999px;
+    padding:5px 12px; font-size:11px; letter-spacing:0.03em; color:var(--text-muted);
+  }
+
+  /* numbered row (replaces same-size card grids for sequential content) */
+  .num-row{ display:flex; gap:20px; align-items:flex-start; }
+  .num-badge{
+    flex-shrink:0; width:30px; height:30px; border-radius:999px;
+    display:flex; align-items:center; justify-content:center;
+    font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:500;
+    border:1px solid var(--border); color:var(--text-muted);
+  }
+
+  /* social icon row */
+  .social-btn{
+    display:inline-flex; align-items:center; gap:10px;
+    padding:11px 18px; border-radius:999px; border:1px solid rgba(255,255,255,0.16);
+    color:var(--text); font-size:13px; font-weight:600; background:rgba(255,255,255,0.03);
+    transition:border-color 180ms ease, background 180ms ease, transform 180ms ease;
+  }
+  .social-btn:hover{ border-color:var(--signal); background:rgba(255,207,0,0.06); transform:translateY(-2px); }
+  .social-btn svg{ width:18px; height:18px; }
+
+  .pill{
+    display:inline-flex; align-items:center; font-size:12px; color:var(--text-muted);
+    border:1px solid var(--border-soft); border-radius:999px; padding:6px 13px;
+    background:rgba(255,255,255,0.02);
+  }
+
+  .hero-glow{
+    position:absolute; inset:0; pointer-events:none;
+    background:
+      radial-gradient(900px 500px at 20% 20%, rgba(46,68,233,0.18), transparent 60%),
+      radial-gradient(700px 400px at 85% 75%, rgba(255,207,0,0.08), transparent 60%);
+  }
+
+  /* template-only helper: marks placeholder/instructional copy so it's obvious what to replace */
+  .howto{
+    font-size:11px; letter-spacing:0.03em; color:var(--text-dim);
+    text-transform:uppercase; font-weight:600; margin-bottom:6px;
+  }
+</style>
+</head>
+<body class="antialiased">
+<div id="bgStage">
+  <video id="bgVideo" autoplay muted loop playsinline poster="../shared/bg/hero.jpg">
+    <source src="../shared/bg/hero.mp4" type="video/mp4" />
+  </video>
+  <div class="bg-photo" data-bg="state"><img src="../shared/bg/state.jpg" alt="" /></div>
+  <div class="bg-photo" data-bg="gap"><img src="../shared/bg/gap.jpg" alt="" /></div>
+  <div class="bg-photo" data-bg="vision"><img src="../shared/bg/vision.jpg" alt="" /></div>
+  <div class="bg-photo" data-bg="roadmap"><img src="../shared/bg/roadmap.jpg" alt="" /></div>
+  <div class="bg-photo" data-bg="cost"><img src="../shared/bg/cost.jpg" alt="" /></div>
+  <div class="bg-photo" data-bg="hero"><img src="../shared/bg/hero.jpg" alt="" /></div>
+  <div class="bg-tint"></div>
+</div>
+<div class="noise"></div>
+<div id="progress"></div>
+
+<nav id="topnav" class="px-6 md:px-10 py-4">
+  <div class="max-w-7xl mx-auto flex items-center justify-between">
+    <div class="flex items-center gap-2.5">
+      <img src="./logo.svg" alt="Company logo" width="20" height="20" class="shrink-0" />
+      <span class="font-display font-semibold text-sm tracking-wide">Generic Template</span>
+    </div>
+    <div class="hidden md:flex items-center gap-6 text-[13px] text-slate-300">
+      <a href="#introduction" class="hover:text-white transition-colors">Introduction</a>
+      <a href="#problem" class="hover:text-white transition-colors">Problem</a>
+      <a href="#approach" class="hover:text-white transition-colors">Approach</a>
+      <a href="#phase1" class="hover:text-white transition-colors">Phase 1</a>
+      <a href="#phase2" class="hover:text-white transition-colors">Phase 2</a>
+      <a href="#phase3" class="hover:text-white transition-colors">Phase 3</a>
+      <a href="#timeline" class="hover:text-white transition-colors">Timeline</a>
+      <a href="#resources" class="hover:text-white transition-colors">Resources</a>
+      <a href="#about" class="hover:text-white transition-colors">About</a>
+    </div>
+    <a href="#close" class="btn-primary text-[13px] px-4 py-2 rounded-full">Conclusion</a>
+  </div>
+</nav>
+
+<div id="dotnav">
+  <a href="#hero" data-label="Hero"><span class="label">Top</span></a>
+  <a href="#introduction" data-label="Intro"><span class="label">Introduction</span></a>
+  <a href="#problem" data-label="Problem"><span class="label">The problem</span></a>
+  <a href="#approach" data-label="Approach"><span class="label">The approach</span></a>
+  <a href="#phase1" data-label="P1"><span class="label">Phase one</span></a>
+  <a href="#phase2" data-label="P2"><span class="label">Phase two</span></a>
+  <a href="#phase3" data-label="P3"><span class="label">Phase three</span></a>
+  <a href="#timeline" data-label="Timeline"><span class="label">Timeline</span></a>
+  <a href="#resources" data-label="Resources"><span class="label">Resources</span></a>
+  <a href="#close" data-label="Close"><span class="label">Conclusion</span></a>
+  <a href="#about" data-label="About"><span class="label">About the author</span></a>
+</div>
+
+<!-- HERO -->
+<section id="hero" data-bg="hero" class="min-h-[100dvh] flex items-center px-6 md:px-10 pt-24 pb-16">
+  <div class="hero-glow"></div>
+  <div class="max-w-7xl mx-auto w-full relative z-10">
+    <div class="max-w-2xl pt-6 lg:pt-10" id="heroTilt">
+      <div class="howto reveal">Section: Hero / Cover</div>
+      <h1 class="text-[13vw] leading-[0.96] md:text-6xl lg:text-[4.4rem] font-bold mt-5 mb-6">
+        Your deck title.
+        <span style="color:var(--signal)">One clear promise.</span>
+      </h1>
+      <p class="text-lg text-slate-200 max-w-lg leading-relaxed mb-3">
+        This is your hero. Replace this paragraph with one sentence that tells the audience what
+        this deck is about, who it's for, and why it matters right now.
+      </p>
+      <div class="flex flex-wrap gap-3 mb-14 mt-8">
+        <a href="#phase1" class="btn-primary px-6 py-3.5 rounded-full text-sm">See the plan</a>
+        <a href="#resources" class="btn-ghost px-6 py-3.5 rounded-full text-sm">Jump to resources</a>
+      </div>
+      <div class="grid grid-cols-3 gap-3 sm:gap-4 pt-7 max-w-lg">
+        <div class="glass px-3 py-4 sm:p-5 text-center sm:text-left">
+          <div class="kpi-num text-2xl sm:text-3xl" style="color:var(--thermal)">XX</div>
+          <div class="text-[11px] sm:text-xs text-slate-300 mt-1 leading-snug">headline stat #1 — replace with your number</div>
+        </div>
+        <div class="glass px-3 py-4 sm:p-5 text-center sm:text-left">
+          <div class="kpi-num text-2xl sm:text-3xl" style="color:var(--signal)">X×</div>
+          <div class="text-[11px] sm:text-xs text-slate-300 mt-1 leading-snug">headline stat #2 — e.g. ROI, growth, speed</div>
+        </div>
+        <div class="glass px-3 py-4 sm:p-5 text-center sm:text-left">
+          <div class="kpi-num text-2xl sm:text-3xl" style="color:var(--success)">XX</div>
+          <div class="text-[11px] sm:text-xs text-slate-300 mt-1 leading-snug">headline stat #3 — a supporting number</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INTRODUCTION -->
+<section id="introduction" data-bg="state" class="py-24 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto">
+    <div class="howto reveal">Section: Introduction / Background</div>
+    <h2 class="text-3xl md:text-4xl font-bold max-w-md mb-5 reveal">Bring the audience up to speed</h2>
+    <p class="text-slate-400 leading-relaxed max-w-md mb-10 reveal">Guidance: summarize what the reader already knows before you introduce the problem. Keep it factual, short, and free of jargon.</p>
+    <div class="grid lg:grid-cols-[1fr,0.7fr] gap-14 items-start">
+      <div class="rule-list reveal">
+        <div class="py-6 grid sm:grid-cols-[130px,1fr] gap-3 sm:gap-8">
+          <h3 class="font-display font-semibold text-base" style="color:var(--thermal)">Background</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">One or two lines of relevant history or context — how did we get here?</p>
+        </div>
+        <div class="py-6 grid sm:grid-cols-[130px,1fr] gap-3 sm:gap-8">
+          <h3 class="font-display font-semibold text-base" style="color:var(--thermal)">Current state</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">What's true today. The starting point for the rest of your narrative.</p>
+        </div>
+        <div class="py-6 grid sm:grid-cols-[130px,1fr] gap-3 sm:gap-8">
+          <h3 class="font-display font-semibold text-base" style="color:var(--signal)">Key strength</h3>
+          <p class="text-sm text-slate-400 leading-relaxed">An existing asset, capability, or proof point you can build the rest of the story on.</p>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="glass p-6 flex items-start gap-4 mb-5">
+          <svg class="shrink-0 mt-0.5" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M12 2L2 7l10 5 10-5-10-5z" stroke="#FFCF00" stroke-width="1.6" stroke-linejoin="round"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5" stroke="#FFCF00" stroke-width="1.6" stroke-linejoin="round"/></svg>
+          <p class="text-sm text-slate-100 leading-relaxed">
+            <strong class="text-white">The hook:</strong> a single compelling fact, quote, or data point that pulls the reader in. Keep it to one or two sentences.
+          </p>
+        </div>
+        <div class="text-xs uppercase tracking-wide text-slate-500 mb-2">Quick outcome tags</div>
+        <div class="flex flex-wrap gap-2">
+          <span class="pill">Benefit #1</span>
+          <span class="pill">Benefit #2</span>
+          <span class="pill">Benefit #3</span>
+          <span class="pill">Benefit #4</span>
+        </div>
+        <p class="text-[11px] text-slate-600 mt-3">Cite your data sources here.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem" data-bg="gap" class="py-24 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto">
+    <div class="howto reveal">Section: Problem / The Gap</div>
+    <h2 class="text-3xl md:text-4xl font-bold max-w-2xl mb-14 reveal">Name the problem clearly, in one line</h2>
+    <div class="grid lg:grid-cols-2 gap-5 mb-5">
+      <div class="glass p-8 reveal">
+        <h3 class="font-display font-semibold text-lg mb-5 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full" style="background:var(--danger)"></span> Today
+        </h3>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3 text-sm p-3 rounded-lg border border-white/10 bg-black/20">
+            <span class="mono text-xs text-slate-400 w-16">Item A</span>
+            <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"><div class="h-full" style="width:100%;background:var(--thermal)"></div></div>
+            <span class="text-xs text-slate-400">status label</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm p-3 rounded-lg border border-white/10 bg-black/20">
+            <span class="mono text-xs text-slate-400 w-16">Item B</span>
+            <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"><div class="h-full" style="width:100%;background:var(--thermal)"></div></div>
+            <span class="text-xs text-slate-400">status label</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm p-3 rounded-lg border border-dashed border-white/15 opacity-50">
+            <span class="mono text-xs text-slate-400 w-16">Item C</span>
+            <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"></div>
+            <span class="text-xs text-slate-500">not started</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm p-3 rounded-lg border border-dashed border-white/15 opacity-50">
+            <span class="mono text-xs text-slate-400 w-16">Item D</span>
+            <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"></div>
+            <span class="text-xs text-slate-500">not started</span>
+          </div>
+        </div>
+        <p class="text-xs text-slate-400 mt-5">Guidance: describe what's fragmented, duplicated, or inefficient about the current state. This card is a visual, not a literal template — relabel the rows to whatever you're comparing.</p>
+      </div>
+      <div class="glass p-8 reveal">
+        <h3 class="font-display font-semibold text-lg mb-5 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full" style="background:var(--success)"></span> Target
+        </h3>
+        <div class="space-y-3">
+          <div class="flex items-center gap-3 text-sm p-3 rounded-lg border" style="border-color:var(--signal-dim); background:rgba(255,207,0,0.06)">
+            <span class="mono text-xs text-slate-400 w-16">Item A</span>
+            <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"><div class="h-full" style="width:100%;background:var(--signal)"></div></div>
+            <span class="text-xs text-slate-300">target status</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm p-3 rounded-lg border" style="border-color:var(--signal-dim); background:rgba(255,207,0,0.06)">
+            <span class="mono text-xs text-slate-400 w-16">Item B</span>
+            <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"><div class="h-full" style="width:100%;background:var(--signal)"></div></div>
+            <span class="text-xs text-slate-300">target status</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm p-3 rounded-lg border" style="border-color:var(--signal-dim); background:rgba(255,207,0,0.06)">
+            <span class="mono text-xs text-slate-400 w-16">Item C</span>
+            <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"><div class="h-full" style="width:60%;background:var(--amber)"></div></div>
+            <span class="text-xs text-slate-300">in progress</span>
+          </div>
+          <div class="flex items-center gap-3 text-sm p-3 rounded-lg border" style="border-color:var(--signal-dim); background:rgba(255,207,0,0.06)">
+            <span class="mono text-xs text-slate-400 w-16">Item D</span>
+            <div class="flex-1 h-2 rounded-full bg-white/10 overflow-hidden"><div class="h-full" style="width:60%;background:var(--amber)"></div></div>
+            <span class="text-xs text-slate-300">in progress</span>
+          </div>
+        </div>
+        <p class="text-xs text-slate-400 mt-5">Guidance: describe the unified/ideal state — what changes once the problem is solved.</p>
+      </div>
+    </div>
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5 reveal">
+      <div class="glass p-6">
+        <div class="text-xs text-slate-400 mb-2 uppercase tracking-wide">Cost impact</div>
+        <p class="text-sm text-slate-200">What does the problem cost today — time, money, or effort?</p>
+      </div>
+      <div class="glass p-6">
+        <div class="text-xs text-slate-400 mb-2 uppercase tracking-wide">Timing impact</div>
+        <p class="text-sm text-slate-200">How does the problem slow down delivery, releases, or decisions?</p>
+      </div>
+      <div class="glass p-6">
+        <div class="text-xs text-slate-400 mb-2 uppercase tracking-wide">Perception impact</div>
+        <p class="text-sm text-slate-200">How does the problem affect how customers, partners, or the market see you?</p>
+      </div>
+      <div class="glass p-6">
+        <div class="text-xs text-slate-400 mb-2 uppercase tracking-wide">Cost of inaction</div>
+        <p class="text-sm text-slate-200">What's the risk or cost of doing nothing?<sup>*</sup></p>
+      </div>
+    </div>
+    <p class="text-[11px] text-slate-600 mt-4">* Cite your source for any figure you use here.</p>
+  </div>
+</section>
+
+<!-- APPROACH -->
+<section id="approach" data-bg="vision" class="py-24 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto">
+    <div class="howto reveal">Section: Approach / Vision</div>
+    <h2 class="font-display text-4xl md:text-5xl font-bold leading-[1.05] max-w-lg mb-14 reveal">
+      Your big idea.<br/>Stated once.<br/><span style="color:var(--signal)">Stated boldly.</span>
+    </h2>
+    <div class="grid sm:grid-cols-2 gap-x-10 gap-y-6 max-w-4xl">
+      <div class="py-2 flex gap-5 items-start reveal">
+        <svg class="shrink-0 mt-1" width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="3" stroke="#2E44E9" stroke-width="1.6"/><path d="M8 12h8M12 8v8" stroke="#2E44E9" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <div><h3 class="font-display font-semibold mb-1">Pillar one</h3><p class="text-sm text-slate-400 leading-relaxed">Describe one core pillar of your approach in one or two sentences.</p></div>
+      </div>
+      <div class="py-5 flex gap-5 items-start reveal">
+        <svg class="shrink-0 mt-1" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 3v6M12 15v6M3 12h6M15 12h6" stroke="#2E44E9" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="12" r="3" stroke="#2E44E9" stroke-width="1.6"/></svg>
+        <div><h3 class="font-display font-semibold mb-1">Pillar two</h3><p class="text-sm text-slate-400 leading-relaxed">Describe a second pillar — what changes structurally, technically, or operationally.</p></div>
+      </div>
+      <div class="py-5 flex gap-5 items-start reveal">
+        <svg class="shrink-0 mt-1" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M3 12a9 9 0 1 1 3.5 7.1" stroke="#FFCF00" stroke-width="1.6" stroke-linecap="round"/><path d="M3 17v-5h5" stroke="#FFCF00" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div><h3 class="font-display font-semibold mb-1">Pillar three</h3><p class="text-sm text-slate-400 leading-relaxed">Describe a third pillar — often about cadence, process, or how work ships.</p></div>
+      </div>
+      <div class="py-5 flex gap-5 items-start reveal">
+        <svg class="shrink-0 mt-1" width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 2v4M12 18v4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M2 12h4M18 12h4M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8" stroke="#FFCF00" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <div><h3 class="font-display font-semibold mb-1">Pillar four</h3><p class="text-sm text-slate-400 leading-relaxed">Describe a fourth pillar — the forward-looking or differentiating piece.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE ONE -->
+<section id="phase1" data-bg="gap" class="py-24 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-[0.85fr,1.6fr] gap-14">
+    <div class="lg:sticky lg:top-28 lg:self-start reveal">
+      <div class="howto">Section: Phase 1 / Near-term</div>
+      <div class="mono text-xs text-slate-500 mb-3">Phase 1</div>
+      <h2 class="text-4xl font-bold mb-4">Discover and align</h2>
+      <p class="text-slate-400 leading-relaxed mb-6">Guidance: what happens first. Keep this phase focused on discovery, alignment, and protecting what already works.</p>
+      <div class="pl-4 border-l-2" style="border-color:var(--thermal)">
+        <div class="text-xs text-slate-500 uppercase tracking-wide mb-1">Phase 1 deliverable</div>
+        <div class="text-sm font-medium">Name the concrete output you'll have by the end of this phase.</div>
+      </div>
+    </div>
+    <div class="rule-list">
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">1</span>
+        <div><h3 class="font-display font-semibold mb-2">Action item one</h3><p class="text-sm text-slate-400 leading-relaxed">Describe the specific task, who owns it, and why it matters.</p></div>
+      </div>
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">2</span>
+        <div><h3 class="font-display font-semibold mb-2">Action item two</h3><p class="text-sm text-slate-400 leading-relaxed">Describe the specific task, who owns it, and why it matters.</p></div>
+      </div>
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">3</span>
+        <div><h3 class="font-display font-semibold mb-2">Action item three</h3><p class="text-sm text-slate-400 leading-relaxed">Describe the specific task, who owns it, and why it matters.</p></div>
+      </div>
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">4</span>
+        <div><h3 class="font-display font-semibold mb-2">Action item four</h3><p class="text-sm text-slate-400 leading-relaxed">Describe the specific task, who owns it, and why it matters. Explain what this sets up for Phase 2.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE TWO -->
+<section id="phase2" data-bg="state" class="py-24 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-[0.85fr,1.6fr] gap-14">
+    <div class="lg:sticky lg:top-28 lg:self-start reveal">
+      <div class="howto">Section: Phase 2 / Mid-term</div>
+      <div class="mono text-xs text-slate-500 mb-3">Phase 2</div>
+      <h2 class="text-4xl font-bold mb-4">Build the foundation</h2>
+      <p class="text-slate-400 leading-relaxed mb-6">Guidance: where the real work happens. Usually the longest and highest-risk phase — be specific about resourcing here.</p>
+      <div class="pl-4 border-l-2" style="border-color:var(--signal)">
+        <div class="text-xs text-slate-500 uppercase tracking-wide mb-1">Phase 2 deliverable</div>
+        <div class="text-sm font-medium">Name the concrete output you'll have by the end of this phase.</div>
+      </div>
+    </div>
+    <div class="rule-list">
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">1</span>
+        <div><h3 class="font-display font-semibold mb-2">Action item one</h3><p class="text-sm text-slate-400 leading-relaxed">Describe the specific task, who owns it, and why it matters.</p></div>
+      </div>
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">2</span>
+        <div><h3 class="font-display font-semibold mb-2">Action item two</h3><p class="text-sm text-slate-400 leading-relaxed">Describe the specific task, who owns it, and why it matters.</p></div>
+      </div>
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">3</span>
+        <div><h3 class="font-display font-semibold mb-2">Action item three</h3><p class="text-sm text-slate-400 leading-relaxed">Describe the specific task, who owns it, and why it matters.</p></div>
+      </div>
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">4</span>
+        <div><h3 class="font-display font-semibold mb-2">Action item four</h3><p class="text-sm text-slate-400 leading-relaxed">Describe the specific task, who owns it, and why it matters. Explain what this sets up for Phase 3.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PHASE THREE -->
+<section id="phase3" data-bg="roadmap" class="py-24 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-[0.85fr,1.6fr] gap-14">
+    <div class="lg:sticky lg:top-28 lg:self-start reveal">
+      <div class="howto">Section: Phase 3 / Long-term</div>
+      <div class="mono text-xs text-slate-500 mb-3">Phase 3</div>
+      <h2 class="text-4xl font-bold mb-4">Commit to the roadmap</h2>
+      <p class="text-slate-400 leading-relaxed mb-6">Guidance: how this phase turns into an ongoing plan the audience can commit to and fund.</p>
+      <div class="pl-4 border-l-2" style="border-color:var(--thermal)">
+        <div class="text-xs text-slate-500 uppercase tracking-wide mb-1">Phase 3 deliverable</div>
+        <div class="text-sm font-medium">Name the concrete output you'll have by the end of this phase.</div>
+      </div>
+    </div>
+    <div class="rule-list">
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">1</span>
+        <div><h3 class="font-display font-semibold mb-2">Action item one</h3><p class="text-sm text-slate-400 leading-relaxed">Describe the specific task, who owns it, and why it matters.</p></div>
+      </div>
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">2</span>
+        <div><h3 class="font-display font-semibold mb-2">Action item two</h3><p class="text-sm text-slate-400 leading-relaxed">Describe the specific task, who owns it, and why it matters.</p></div>
+      </div>
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">3</span>
+        <div><h3 class="font-display font-semibold mb-2">Action item three</h3><p class="text-sm text-slate-400 leading-relaxed">Describe the specific task, who owns it, and why it matters.</p></div>
+      </div>
+      <div class="num-row py-6 reveal">
+        <span class="num-badge">4</span>
+        <div><h3 class="font-display font-semibold mb-2">Action item four</h3><p class="text-sm text-slate-400 leading-relaxed">Describe the specific task, who owns it, and why it matters. Tie this back to the Timeline section below.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section id="timeline" data-bg="roadmap" class="py-24 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto">
+    <div class="mb-14 reveal">
+      <div class="howto">Section: Timeline / Roadmap</div>
+      <h2 class="text-3xl md:text-4xl font-bold mb-3">Sequence the work</h2>
+      <span class="badge-sim">Example sequencing — click a cell below to explore</span>
+    </div>
+
+    <div class="grid md:grid-cols-4 gap-8 mb-4 reveal">
+      <div class="pt-5 border-t-2" style="border-color:var(--thermal)">
+        <div class="mono text-xs text-slate-500 mb-1">Q1</div>
+        <div class="text-sm font-semibold mb-1" style="color:var(--thermal)">Stage 1 name</div>
+        <div class="text-[10px] text-slate-500 mb-3">Short stage descriptor</div>
+        <ul class="text-xs text-slate-400 space-y-1.5 leading-relaxed">
+          <li>Milestone placeholder</li><li>Milestone placeholder</li><li>Milestone placeholder</li>
+        </ul>
+      </div>
+      <div class="pt-5 md:mt-10 border-t-2" style="border-color:var(--thermal)">
+        <div class="mono text-xs text-slate-500 mb-1">Q2</div>
+        <div class="text-sm font-semibold mb-1" style="color:var(--thermal)">Stage 2 name</div>
+        <div class="text-[10px] text-slate-500 mb-3">Short stage descriptor</div>
+        <ul class="text-xs text-slate-400 space-y-1.5 leading-relaxed">
+          <li>Milestone placeholder</li><li>Milestone placeholder</li><li>Milestone placeholder</li>
+        </ul>
+      </div>
+      <div class="pt-5 border-t-2" style="border-color:var(--signal)">
+        <div class="mono text-xs text-slate-500 mb-1">Q3</div>
+        <div class="text-sm font-semibold mb-1" style="color:var(--signal)">Stage 3 name</div>
+        <div class="text-[10px] text-slate-500 mb-3">Short stage descriptor</div>
+        <ul class="text-xs text-slate-400 space-y-1.5 leading-relaxed">
+          <li>Milestone placeholder</li><li>Milestone placeholder</li><li>Milestone placeholder</li>
+        </ul>
+      </div>
+      <div class="pt-5 md:mt-10 border-t-2" style="border-color:var(--signal)">
+        <div class="mono text-xs text-slate-500 mb-1">Q4</div>
+        <div class="text-sm font-semibold mb-1" style="color:var(--signal)">Stage 4 name</div>
+        <div class="text-[10px] text-slate-500 mb-3">Short stage descriptor</div>
+        <ul class="text-xs text-slate-400 space-y-1.5 leading-relaxed">
+          <li>Milestone placeholder</li><li>Milestone placeholder</li><li>Milestone placeholder</li>
+        </ul>
+      </div>
+    </div>
+    <p class="text-[11px] text-slate-600 mb-12">Guidance: four columns is just a starting point — add, remove, or relabel stages to fit your own timeline. Cite sources for any figures here.</p>
+
+    <div class="card p-7 reveal">
+      <h3 class="font-display font-semibold text-lg mb-5">Workstream rollout (example chart)</h3>
+      <div class="overflow-x-auto scrollbar-thin">
+        <div id="heatmap" class="grid grid-cols-5 gap-2 max-sm:min-w-[560px]">
+          <div></div>
+          <div class="text-center text-xs text-slate-500 uppercase tracking-wide pb-2">Q1</div>
+          <div class="text-center text-xs text-slate-500 uppercase tracking-wide pb-2">Q2</div>
+          <div class="text-center text-xs text-slate-500 uppercase tracking-wide pb-2">Q3</div>
+          <div class="text-center text-xs text-slate-500 uppercase tracking-wide pb-2">Q4</div>
+        </div>
+      </div>
+      <div id="heatDetail" class="mt-5 p-4 rounded-xl border border-[var(--border-soft)] bg-black/20 text-sm text-slate-300 leading-relaxed">
+        Click any cell above to see how this interactive detail panel works — swap in your own workstreams and copy.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section id="resources" data-bg="cost" class="py-24 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto">
+    <div class="max-w-2xl mb-10 reveal">
+      <div class="howto">Section: Resources / Investment</div>
+      <h2 class="text-3xl md:text-4xl font-bold mb-3">What you're asking for, incrementally</h2>
+      <span class="badge-sim mb-6 inline-flex">Example projection — click a bar to explore</span>
+      <p class="text-sm text-slate-200 leading-relaxed mt-6">
+        Guidance: explain what's already funded and what this ask adds on top of it. Being explicit
+        about the <strong style="color:var(--signal)">incremental</strong> cost — not the whole budget —
+        makes the ask easier to approve.
+      </p>
+      <p class="text-xs text-slate-500 leading-relaxed mt-4 max-w-2xl">
+        Add any supporting context here — growth trend, prior investment, or why this compounds
+        something already working.<sup>*</sup>
+      </p>
+      <p class="text-[11px] text-slate-600 mt-1">* Cite your source here.</p>
+    </div>
+
+    <div class="grid sm:grid-cols-4 gap-5 mb-10">
+      <div class="glass p-5 reveal">
+        <div class="text-xs text-slate-400 uppercase tracking-wide mb-2">Cost driver #1</div>
+        <div class="kpi-num text-2xl" style="color:var(--signal)">$XXk<span class="text-sm text-slate-500">/yr</span></div>
+      </div>
+      <div class="glass p-5 reveal">
+        <div class="text-xs text-slate-400 uppercase tracking-wide mb-2">Comparison benchmark</div>
+        <div class="kpi-num text-2xl" style="color:var(--success)">~X.Xx</div>
+      </div>
+      <div class="glass p-5 reveal">
+        <div class="text-xs text-slate-400 uppercase tracking-wide mb-2">Team size by Q4</div>
+        <div class="kpi-num text-2xl" style="color:var(--thermal)">X <span class="text-sm text-slate-500">±X</span></div>
+        <div class="text-xs text-slate-500 mt-1">flexes up or down to scale</div>
+      </div>
+      <div class="glass p-5 reveal">
+        <div class="text-xs text-slate-400 uppercase tracking-wide mb-2">Year-1 incremental spend</div>
+        <div class="kpi-num text-2xl">$XXXk</div>
+        <div class="text-xs text-slate-500 mt-1">range with buffer</div>
+      </div>
+    </div>
+
+    <div class="card p-7 mb-6 reveal">
+      <div class="flex items-center justify-between mb-6 flex-wrap gap-3">
+        <h3 class="font-display font-semibold text-lg">Quarterly incremental cost (example data)</h3>
+        <div class="flex gap-4 text-xs text-slate-400 flex-wrap">
+          <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm inline-block" style="background:var(--signal)"></span>Core spend ($k)</span>
+          <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm inline-block" style="background:var(--amber);opacity:0.7"></span>Overhead ($k)</span>
+          <span class="flex items-center gap-2"><span class="w-2.5 h-2.5 rounded-sm inline-block border" style="border-color:var(--thermal)"></span>Cumulative</span>
+          <span class="flex items-center gap-2"><span class="w-2.5 h-0 border-t border-dashed inline-block" style="border-color:#93A0BE"></span>Flex range</span>
+        </div>
+      </div>
+      <svg id="costChart" width="100%" height="340" viewBox="0 0 800 340" role="img" aria-label="Interactive example bar chart of incremental quarterly cost, Q1 through Q4, click a bar for detail"></svg>
+      <div id="costDetail" class="mt-4 p-4 rounded-xl border border-[var(--border-soft)] bg-black/20 text-sm text-slate-300 leading-relaxed">
+        Click a quarter above to see how the interactive detail panel works — replace this data with your own model.
+      </div>
+    </div>
+
+    <div class="card p-7 mb-6 reveal">
+      <h3 class="font-display font-semibold text-lg mb-2">Team composition</h3>
+      <p class="text-sm text-slate-400 leading-relaxed mb-6 max-w-3xl">
+        Guidance: use this card to show how a new team or hire relates to the existing team — shared
+        skills, dedicated specialties, and how knowledge transfers both ways.
+      </p>
+
+      <div class="grid md:grid-cols-[1fr,0.9fr,1fr] gap-0 items-stretch rounded-2xl overflow-hidden border border-[var(--border-soft)] mb-6">
+        <div class="p-5" style="background:rgba(46,68,233,0.08)">
+          <div class="text-xs uppercase tracking-wide mb-3" style="color:var(--thermal)">Existing team only</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="pill">Skill placeholder</span>
+            <span class="pill">Skill placeholder</span>
+            <span class="pill">Skill placeholder</span>
+          </div>
+        </div>
+        <div class="p-5 flex flex-col justify-center text-center" style="background:linear-gradient(135deg, rgba(46,68,233,0.16), rgba(255,207,0,0.16))">
+          <div class="text-xs uppercase tracking-wide text-slate-300 mb-1">Shared / cross-trained</div>
+          <div class="kpi-num text-3xl mb-3" style="color:var(--signal)">~XX%</div>
+          <div class="flex flex-wrap gap-2 justify-center">
+            <span class="pill">Skill placeholder</span>
+            <span class="pill">Skill placeholder</span>
+            <span class="pill">Skill placeholder</span>
+          </div>
+        </div>
+        <div class="p-5" style="background:rgba(255,207,0,0.08)">
+          <div class="text-xs uppercase tracking-wide mb-3" style="color:var(--signal)">New team specialized</div>
+          <div class="flex flex-wrap gap-2">
+            <span class="pill">Skill placeholder</span>
+            <span class="pill">Skill placeholder</span>
+            <span class="pill">Skill placeholder</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3 text-xs text-slate-400">
+        <div class="flex-1 h-2 rounded-full overflow-hidden flex bg-white/5">
+          <div class="h-full" style="width:65%; background:var(--thermal)"></div>
+          <div class="h-full" style="width:35%; background:linear-gradient(90deg, var(--thermal), var(--signal))"></div>
+        </div>
+        <span class="shrink-0">example split — illustrative</span>
+      </div>
+    </div>
+
+    <div class="card p-7 mb-6 reveal">
+      <h3 class="font-display font-semibold text-lg mb-2">Projected return on the ask</h3>
+      <span class="badge-sim mb-4 inline-flex">Example table — not real data</span>
+      <p class="text-sm text-slate-400 leading-relaxed mb-6 max-w-3xl">
+        Guidance: show a small set of scenarios (conservative / base / upside) so the audience can see
+        your assumptions rather than a single unverifiable number.
+      </p>
+
+      <div class="overflow-x-auto mb-4">
+        <table class="roadmap w-full text-sm border-collapse">
+          <thead>
+            <tr class="text-left text-xs text-slate-500 uppercase tracking-wide">
+              <th class="p-3">Scenario</th>
+              <th class="p-3">Growth assumption</th>
+              <th class="p-3">3-yr outcome</th>
+              <th class="p-3">Delta vs. baseline</th>
+              <th class="p-3">Net vs. spend</th>
+              <th class="p-3">ROI multiple</th>
+            </tr>
+          </thead>
+          <tbody class="text-slate-300">
+            <tr>
+              <td class="p-3">Baseline (no change)</td>
+              <td class="p-3 mono">XX% / XX% / XX%</td>
+              <td class="p-3 mono">$X.XM</td>
+              <td class="p-3 mono">&mdash;</td>
+              <td class="p-3 mono">&mdash;</td>
+              <td class="p-3 mono">&mdash;</td>
+            </tr>
+            <tr>
+              <td class="p-3">Conservative</td>
+              <td class="p-3 mono">XX% / XX% / XX%</td>
+              <td class="p-3 mono">$X.XM</td>
+              <td class="p-3 mono">$X.XM</td>
+              <td class="p-3 mono">$X.XM</td>
+              <td class="p-3 mono" style="color:var(--signal)">X.Xx</td>
+            </tr>
+            <tr>
+              <td class="p-3">Base</td>
+              <td class="p-3 mono">XX% / XX% / XX%</td>
+              <td class="p-3 mono">$X.XM</td>
+              <td class="p-3 mono">$X.XM</td>
+              <td class="p-3 mono">$X.XM</td>
+              <td class="p-3 mono" style="color:var(--success)">X.Xx</td>
+            </tr>
+            <tr>
+              <td class="p-3">Upside</td>
+              <td class="p-3 mono">XX% / XX% / XX%</td>
+              <td class="p-3 mono">$X.XM</td>
+              <td class="p-3 mono">$X.XM</td>
+              <td class="p-3 mono">$X.XM</td>
+              <td class="p-3 mono" style="color:var(--success)">X.Xx</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p class="text-sm text-slate-400 leading-relaxed max-w-3xl">
+        Guidance: explain when payback happens and what triggers it — e.g. once specific milestones from
+        the Timeline section ship.
+      </p>
+      <p class="text-[11px] text-slate-600 mt-3">
+        Guidance: state your assumptions plainly and note that they're your own projection, not
+        third-party verified — invite the audience to refine them with you.
+      </p>
+    </div>
+
+    <p class="text-xs text-slate-500 max-w-2xl leading-relaxed">
+      Guidance: state what these figures exclude (e.g. existing baseline costs already budgeted) so the
+      ask reads as precise, not padded.
+    </p>
+  </div>
+</section>
+
+<!-- CLOSE / CONCLUSION -->
+<section id="close" data-bg="hero" class="py-28 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto">
+    <div class="howto reveal">Section: Conclusion / The Ask</div>
+    <h2 class="text-3xl md:text-4xl font-bold max-w-2xl mb-5 reveal">Give me [timeframe] to turn this into a plan.</h2>
+    <p class="text-slate-400 leading-relaxed max-w-2xl mb-3 reveal">
+      Guidance: restate your strongest 2-3 proof points from earlier, then land on the single sentence
+      that summarizes what's missing and what you're proposing to fix it.
+    </p>
+    <div class="mb-14 reveal">
+      <p class="text-slate-500 text-sm leading-relaxed max-w-2xl">
+        Guidance: if you can, frame the ask relative to something the audience already has (budget,
+        headcount, runway) so it reads as a scoping decision, not a brand-new cost.<sup>*</sup>
+      </p>
+      <p class="text-[11px] text-slate-600 mt-2">* Cite your source here.</p>
+    </div>
+    <div class="grid sm:grid-cols-3 gap-5 mb-14 reveal">
+      <div class="card p-6">
+        <div class="text-xs uppercase tracking-wide text-slate-500 mb-2">I need from you</div>
+        <div class="text-sm font-medium">Name the specific decision or sponsorship you're asking for.</div>
+      </div>
+      <div class="card p-6">
+        <div class="text-xs uppercase tracking-wide text-slate-500 mb-2">I need from [stakeholder]</div>
+        <div class="text-sm font-medium">Name a second ask directed at a specific team or role.</div>
+      </div>
+      <div class="card p-6">
+        <div class="text-xs uppercase tracking-wide text-slate-500 mb-2">I bring at [milestone]</div>
+        <div class="text-sm font-medium">Name what you'll deliver in return, and by when.</div>
+      </div>
+    </div>
+    <a href="#hero" class="btn-primary px-8 py-4 rounded-full text-sm inline-block reveal">Back to the top</a>
+  </div>
+</section>
+
+<!-- ABOUT THE AUTHOR (kept intact, not a placeholder) -->
+<section id="about" data-bg="vision" class="py-28 px-6 md:px-10 border-t border-[var(--border-soft)]">
+  <div class="max-w-7xl mx-auto">
+    <div class="grid lg:grid-cols-[0.75fr,1.25fr] gap-16 items-start">
+      <div class="reveal">
+        <div class="frame-img aspect-[4/5]">
+          <img src="../shared/about/monil-casual.jpg" alt="Monil Morar" loading="lazy" />
+        </div>
+        <div class="flex flex-wrap gap-3 mt-6">
+          <a href="https://www.linkedin.com/in/mdmorar/" target="_blank" rel="noopener" class="social-btn">
+            <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" stroke-width="1.6"/><path d="M7 10v7M7 7.2v.01M11 17v-4.5c0-1.4 1-2.5 2.4-2.5 1.3 0 2.1 1 2.1 2.5V17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+            LinkedIn
+          </a>
+          <a href="https://github.com/mdmorar/" target="_blank" rel="noopener" class="social-btn">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M12 2C6.48 2 2 6.58 2 12.2c0 4.49 2.87 8.3 6.84 9.64.5.1.68-.22.68-.49v-1.92c-2.78.62-3.37-1.36-3.37-1.36-.46-1.2-1.11-1.52-1.11-1.52-.9-.64.07-.62.07-.62 1 .07 1.53 1.05 1.53 1.05.89 1.56 2.34 1.11 2.91.85.09-.66.35-1.11.63-1.37-2.22-.26-4.56-1.14-4.56-5.05 0-1.12.39-2.03 1.03-2.75-.1-.26-.45-1.31.1-2.72 0 0 .84-.28 2.75 1.05a9.3 9.3 0 0 1 5 0c1.9-1.33 2.74-1.05 2.74-1.05.56 1.41.2 2.46.1 2.72.64.72 1.03 1.63 1.03 2.75 0 3.92-2.34 4.78-4.57 5.03.36.32.68.94.68 1.9v2.82c0 .27.18.6.69.49A10.02 10.02 0 0 0 22 12.2C22 6.58 17.52 2 12 2Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+            GitHub
+          </a>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <h2 class="text-3xl md:text-4xl font-bold mb-2">Monil Morar</h2>
+        <p class="text-sm mb-3" style="color:var(--signal)">Technology Leader · Digital &amp; AI Transformation · IoT SaaS Connectivity · End-to-End Engineering</p>
+        <p class="text-xs text-slate-500 mb-8">Industries: Oil &amp; Gas Services · Avionics · MedTech · Biotech · Mobility Solutions</p>
+
+        <p class="text-slate-300 leading-relaxed mb-5">
+          Started in controls and automation — analog closed-loop systems, electrical and embedded
+          engineering. That hands-on foundation became the launchpad for bridging legacy engineering
+          systems with the cloud-connected, data-driven world running product portfolios today.
+        </p>
+        <p class="text-slate-400 leading-relaxed mb-8">
+          From there: IoT and cloud-connected solutions bringing real-time telemetry into scalable data
+          architectures, then digital transformation enablement — helping organizations build in-house
+          capability for end-to-end solutions with harmonized data models, digital twins, and
+          cloud-native intelligence. The result has been engineering efficiency gains, reduced carbon
+          footprint, measurable ROI, and better outcomes for the customer, across every organization along the way.
+        </p>
+
+        <div class="glass p-6 mb-8">
+          <p class="text-sm text-slate-100 leading-relaxed italic">
+            "The convergence of AI services and generative AI into product portfolios is a shift as
+            profound as the smartphone or the cloud. The organizations that build internal maturity now
+            will lead that transition."
+          </p>
+        </div>
+
+        <div class="mb-2 text-xs uppercase tracking-wide text-slate-500">What I bring to the table</div>
+        <div class="flex flex-wrap gap-2">
+          <span class="pill">Strategic roadmap &amp; product lifecycle</span>
+          <span class="pill">Digital ecosystem harmonization</span>
+          <span class="pill">Concept &rarr; prototype &rarr; production</span>
+          <span class="pill">Cross-functional alignment</span>
+          <span class="pill">3&ndash;5yr SaaS monetization strategy</span>
+          <span class="pill">Cybersecurity &amp; infra architecture</span>
+          <span class="pill">Full-stack, multi-platform delivery</span>
+          <span class="pill">AI CoE &amp; toolchain enablement</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // scroll progress
+  const progress = document.getElementById('progress');
+  function onScroll(){
+    const h = document.documentElement;
+    const pct = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progress.style.transform = 'scaleX(' + (pct/100) + ')';
+  }
+  document.addEventListener('scroll', onScroll, { passive:true });
+
+  // dot nav spy
+  const sections = ['hero','introduction','problem','approach','phase1','phase2','phase3','timeline','resources','close','about'].map(id=>document.getElementById(id));
+  const dots = document.querySelectorAll('#dotnav a');
+  const spy = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const id = e.target.id;
+        dots.forEach(d=>d.classList.toggle('active', d.getAttribute('href') === '#'+id));
+      }
+    });
+  }, { threshold:0.5 });
+  sections.forEach(s=>{ if(s) spy.observe(s); });
+
+  // seamless full-page background: crossfade the matching photo layer as each section scrolls into view
+  const bgPhotos = document.querySelectorAll('.bg-photo');
+  const bgSpy = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const key = e.target.dataset.bg;
+        if(!key) return;
+        bgPhotos.forEach(p=>p.classList.toggle('active', p.dataset.bg === key));
+      }
+    });
+  }, { threshold:0.35 });
+  sections.forEach(s=>{ if(s && s.dataset.bg) bgSpy.observe(s); });
+
+  // reveal on scroll
+  const revealEls = document.querySelectorAll('.reveal');
+  const revealObs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); revealObs.unobserve(e.target); } });
+  }, { threshold:0.12, rootMargin:'0px 0px -40px 0px' });
+  revealEls.forEach(el=>revealObs.observe(el));
+
+// ---------- Workstream rollout heatmap (interactive example — replace with your own data) ----------
+  const heatData = [
+    { row:'Workstream A', cells:[
+      {q:'Q1', label:'Live', tone:'live', detail:'Example detail text. Describe what happens to Workstream A in Q1.'},
+      {q:'Q2', label:'Live', tone:'live', detail:'Example detail text. Describe what happens to Workstream A in Q2.'},
+      {q:'Q3', label:'Live', tone:'live', detail:'Example detail text. Describe what happens to Workstream A in Q3.'},
+      {q:'Q4', label:'Live', tone:'live', detail:'Example detail text. Describe what happens to Workstream A in Q4.'} ]},
+    { row:'Workstream B', cells:[
+      {q:'Q1', label:'Live', tone:'live', detail:'Example detail text. Describe what happens to Workstream B in Q1.'},
+      {q:'Q2', label:'Live', tone:'live', detail:'Example detail text. Describe what happens to Workstream B in Q2.'},
+      {q:'Q3', label:'Live', tone:'live', detail:'Example detail text. Describe what happens to Workstream B in Q3.'},
+      {q:'Q4', label:'Live', tone:'live', detail:'Example detail text. Describe what happens to Workstream B in Q4.'} ]},
+    { row:'Workstream C', cells:[
+      {q:'Q1', label:'n/a', tone:'na', detail:'Example detail text. Not started yet — explain why.'},
+      {q:'Q2', label:'Design', tone:'design', detail:'Example detail text. Describe the design phase for Workstream C.'},
+      {q:'Q3', label:'Ship', tone:'ship', detail:'Example detail text. Describe what ships for Workstream C.'},
+      {q:'Q4', label:'Live', tone:'live', detail:'Example detail text. Describe the steady state for Workstream C.'} ]},
+    { row:'Workstream D', cells:[
+      {q:'Q1', label:'n/a', tone:'na', detail:'Example detail text. Not started yet — explain why.'},
+      {q:'Q2', label:'Design', tone:'design', detail:'Example detail text. Describe the design phase for Workstream D.'},
+      {q:'Q3', label:'Ship', tone:'ship', detail:'Example detail text. Describe what ships for Workstream D.'},
+      {q:'Q4', label:'Live', tone:'live', detail:'Example detail text. Describe the steady state for Workstream D.'} ]},
+    { row:'Workstream E', cells:[
+      {q:'Q1', label:'n/a', tone:'na', detail:'Example detail text. Not started yet.'},
+      {q:'Q2', label:'n/a', tone:'na', detail:'Example detail text. Still not started — explain the dependency.'},
+      {q:'Q3', label:'Design', tone:'design', detail:'Example detail text. Describe the design phase for Workstream E.'},
+      {q:'Q4', label:'Beta', tone:'ship', detail:'Example detail text. Describe the beta/pilot for Workstream E.'} ]},
+  ];
+  const toneStyle = {
+    live:  { bg:'rgba(46,68,233,0.85)', color:'#F3F6FF' },
+    ship:  { bg:'rgba(255,207,0,0.85)', color:'#14110A' },
+    design:{ bg:'rgba(201,162,39,0.85)', color:'#14110A' },
+    na:    { bg:'transparent', color:'var(--text-dim)', dashed:true },
+  };
+  const heatmap = document.getElementById('heatmap');
+  const heatDetail = document.getElementById('heatDetail');
+  heatData.forEach(row=>{
+    const label = document.createElement('div');
+    label.className = 'text-xs text-slate-400 flex items-center';
+    label.textContent = row.row;
+    heatmap.appendChild(label);
+    row.cells.forEach(cell=>{
+      const t = toneStyle[cell.tone];
+      const div = document.createElement('div');
+      div.className = 'heat-cell rounded-lg h-11 flex items-center justify-center text-[11px] mono' + (t.dashed ? ' border border-dashed' : '');
+      div.style.background = t.bg;
+      div.style.color = t.color;
+      if(t.dashed) div.style.borderColor = 'var(--border)';
+      div.textContent = cell.label;
+      div.setAttribute('role','button');
+      div.setAttribute('tabindex','0');
+      div.addEventListener('click', ()=>{
+        document.querySelectorAll('.heat-cell.selected').forEach(x=>x.classList.remove('selected'));
+        div.classList.add('selected');
+        heatDetail.innerHTML = '<strong class="text-white">' + row.row + ', ' + cell.q + ' &mdash; ' + cell.label + ':</strong> ' + cell.detail;
+      });
+      div.addEventListener('keydown', (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); div.click(); } });
+      heatmap.appendChild(div);
+    });
+  });
+
+  // ---------- Cost chart (interactive example — replace costData with your own numbers) ----------
+  const costData = [
+    { q:'Q1', label:'Stage 1', pod:3,  us:48.75, ov:20, lo:36.25, hi:101.25, podLo:1, podHi:5,  mentor:'22%', note:'Example note. Describe what this quarter\'s spend covers and why the range is wide early on.' },
+    { q:'Q2', label:'Stage 2', pod:5, us:81.25, ov:13, lo:61.75, hi:126.75, podLo:3, podHi:7,  mentor:'14%', note:'Example note. Describe how spend and headcount evolve into the second quarter.' },
+    { q:'Q3', label:'Stage 3', pod:7,   us:113.75,ov:7,  lo:88.25, hi:153.25, podLo:5, podHi:9,  mentor:'7%',  note:'Example note. Describe how overhead amortizes as the team gains ground truth.' },
+    { q:'Q4', label:'Stage 4', pod:9,       us:146.25,ov:4,  lo:117.75,hi:182.75, podLo:7, podHi:11, mentor:'3%',  note:'Example note. Describe the steady-state exit point of your plan.' },
+  ];
+  const svg = document.getElementById('costChart');
+  const costDetail = document.getElementById('costDetail');
+  const W = 800, H = 340, padL = 50, padB = 40, padT = 20, padR = 20;
+  const chartW = W - padL - padR, chartH = H - padT - padB;
+  const maxVal = 200;
+  let cumMaxTotal = 0; costData.forEach(d=>cumMaxTotal += d.us + d.ov);
+  const barGroupW = chartW / costData.length;
+  const barW = 64;
+  const svgNS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs){ const e = document.createElementNS(svgNS, tag); for(const k in attrs) e.setAttribute(k, attrs[k]); return e; }
+
+  for(let i=0;i<=4;i++){
+    const y = padT + chartH - (chartH * i/4);
+    svg.appendChild(el('line', {x1:padL,y1:y,x2:W-padR,y2:y,stroke:'#243252','stroke-width':1}));
+    const lval = Math.round(maxVal * i/4);
+    const t = el('text', {x:padL-10,y:y+4,fill:'#5C6987','font-size':11,'text-anchor':'end','font-family':'JetBrains Mono, monospace'});
+    t.textContent = '$'+lval+'k';
+    svg.appendChild(t);
+  }
+
+  let cumulative = 0;
+  const points = [];
+  costData.forEach((d, i)=>{
+    const cx = padL + barGroupW * i + barGroupW/2;
+    const usH = (d.us/maxVal) * chartH;
+    const ovH = (d.ov/maxVal) * chartH;
+    const usY = padT + chartH - usH;
+    const ovY = usY - ovH;
+
+    const group = el('g', {class:'bar-hit'});
+    const usRect = el('rect', {class:'us', x:cx-barW/2, y:usY, width:barW, height:usH, rx:4, fill:'#FFCF00'});
+    const ovRect = el('rect', {class:'ov', x:cx-barW/2, y:ovY, width:barW, height:ovH, rx:4, fill:'#C9A227'});
+    group.appendChild(usRect);
+    group.appendChild(ovRect);
+
+    // flex-range whisker: shows an example scale-up/down buffer for this quarter
+    const loY = padT + chartH - (d.lo/maxVal) * chartH;
+    const hiY = padT + chartH - (d.hi/maxVal) * chartH;
+    const whiskerW = 15;
+    svg.appendChild(el('line', {x1:cx, y1:hiY, x2:cx, y2:loY, stroke:'#93A0BE', 'stroke-width':1.5, 'stroke-dasharray':'2,3', opacity:'0.85'}));
+    svg.appendChild(el('line', {x1:cx-whiskerW/2, y1:hiY, x2:cx+whiskerW/2, y2:hiY, stroke:'#93A0BE', 'stroke-width':1.5, opacity:'0.85'}));
+    svg.appendChild(el('line', {x1:cx-whiskerW/2, y1:loY, x2:cx+whiskerW/2, y2:loY, stroke:'#93A0BE', 'stroke-width':1.5, opacity:'0.85'}));
+
+    const totalLabel = el('text', {x:cx, y:hiY-10, fill:'#EEF2FA', 'font-size':13,'font-weight':700,'text-anchor':'middle','font-family':'Saira, sans-serif'});
+    totalLabel.textContent = '$'+(d.us+d.ov).toFixed(1).replace(/\.0$/,'')+'k';
+    svg.appendChild(totalLabel);
+
+    const qLabel = el('text', {x:cx, y:H-14, fill:'#93A0BE', 'font-size':12,'text-anchor':'middle'});
+    qLabel.textContent = d.q;
+    svg.appendChild(qLabel);
+
+    // invisible full-height hit area for easier clicking
+    const hit = el('rect', {x:cx-barW/2-8, y:padT, width:barW+16, height:chartH, fill:'transparent'});
+    group.appendChild(hit);
+    group.style.cursor = 'pointer';
+    group.addEventListener('click', ()=>{
+      document.querySelectorAll('.bar-hit.selected').forEach(x=>x.classList.remove('selected'));
+      group.classList.add('selected');
+      cumulativeAt = 0;
+      for(let j=0;j<=i;j++) cumulativeAt += costData[j].us + costData[j].ov;
+      costDetail.innerHTML =
+        '<strong class="text-white">' + d.q + ', ' + d.label + ':</strong> ' +
+        d.note +
+        '<div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-3 text-xs">' +
+        '<div><div class="text-slate-500">Team size (planned)</div><div class="mono text-slate-200">' + d.pod + '</div></div>' +
+        '<div><div class="text-slate-500">Flex range</div><div class="mono text-slate-200">' + d.podLo + '&ndash;' + d.podHi + '</div></div>' +
+        '<div><div class="text-slate-500">Overhead</div><div class="mono text-slate-200">$' + d.ov + 'k</div></div>' +
+        '<div><div class="text-slate-500">Mentorship load</div><div class="mono text-slate-200">' + d.mentor + '</div></div>' +
+        '</div>' +
+        '<div class="text-xs text-slate-500 mt-3">Spend this quarter: <span class="mono text-slate-200">$' + d.lo.toFixed(1).replace(/\.0$/,'') + 'k&ndash;$' + d.hi.toFixed(1).replace(/\.0$/,'') + 'k</span> (planned $' + (d.us+d.ov).toFixed(1).replace(/\.0$/,'') + 'k) &middot; cumulative through ' + d.q + ': <span class="mono text-slate-200">$' + cumulativeAt.toFixed(1).replace(/\.0$/,'') + 'k</span></div>';
+    });
+    svg.appendChild(group);
+
+    cumulative += d.us + d.ov;
+    const cy = padT + (chartH*0.12) + (chartH*0.88) - (cumulative/cumMaxTotal) * (chartH*0.88);
+    points.push([cx, cy]);
+  });
+
+  const pathD = points.map((p,i)=> (i===0?'M':'L')+p[0]+','+p[1]).join(' ');
+  svg.appendChild(el('path', {d:pathD, fill:'none', stroke:'#2E44E9', 'stroke-width':2, 'stroke-dasharray':'5,4'}));
+  points.forEach(p=>{ svg.appendChild(el('circle', {cx:p[0], cy:p[1], r:4, fill:'#2E44E9'})); });
+</script>
+</body>
+</html>
