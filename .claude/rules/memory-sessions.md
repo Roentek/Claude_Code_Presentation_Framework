@@ -349,3 +349,8 @@ Summary of substantive work completed each session — what was built, what was 
 <!-- DRAFT: review and edit before treating as permanent -->
 ## 2026-08-02 (auto-drafted — review before next session)
 - Fixed `.mcp.json`, `dashboard_server_patched.py`, `tests/openspace/test_integration.py` (35/35 pass), `.env`/`sys-env.sh` (dropped dead showcase path), `CLAUDE.md`/`README.md` refs, and hardened `openspace-sync.sh` to auto hard-reset instead of silently failing on future history rewrites.
+
+
+<!-- DRAFT: review and edit before treating as permanent -->
+## 2026-08-10 (auto-drafted — review before next session)
+- {"session_id":"1f0efe78-32a9-422b-bbe8-86c484621c02","transcript_path":"C:\\Users\\MorarMonil\\.claude\\projects\\C--GIT-Claude-Code-Boilerplate-Framework\\1f0efe78-32a9-422b-bbe8-86c484621c02.jsonl","cwd":"C:\\GIT\\Claude_Code_Boilerplate_Framework","prompt_id":"8f511630-a520-46e9-afd1-b362b78045e2","permission_mode":"bypassPermissions","effort":{"level":"medium"},"hook_event_name":"Stop","stop_hook_active":false,"last_assistant_message":"Added `Codeburn Web Dashboard` config to `.vscode/launch.json` â€” runs `codeburn web`, opens `localhost:4747` on ready.
