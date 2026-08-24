@@ -99,6 +99,7 @@
     "OPENSPACE_WORKSPACE":        "",
     "OPENSPACE_API_KEY":          "",
     "GEMINI_API_KEY":             "",
+    "ELEVENLABS_API_KEY":         "",
     "OPENAI_API_KEY":             "",
     "SUPABASE_PROJECT_URL":       "",
     "SUPABASE_PROJECT_KEY":       "",
