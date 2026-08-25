@@ -1,0 +1,13 @@
+# .boilerplate-sync-keep — Claude_Code_Presentation_Framework (legacy fallback)
+#
+# The primary sync-control file is .boilerplate-sync.json (mode, mirror,
+# additive, keep). This legacy keep file is still honored by the
+# sync-boilerplate edge function — its patterns are UNIONED with the
+# manifest's "keep" list — so the critical project-owned paths are
+# duplicated here as a fallback in case the manifest is ever unreadable.
+
+.gitignore
+.claude/rules/memory-profile.md
+.claude/rules/memory-preferences.md
+.claude/rules/memory-decisions.md
+.claude/rules/memory-sessions.md
