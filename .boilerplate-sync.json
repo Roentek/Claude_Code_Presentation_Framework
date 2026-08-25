@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "mode": "deletion-safe",
+  "mirror": [".claude", "workflows", "tools", "generations"],
+  "additive": [],
+  "keep": [
+    ".gitignore",
+    ".claude/rules/memory-profile.md",
+    ".claude/rules/memory-preferences.md",
+    ".claude/rules/memory-decisions.md",
+    ".claude/rules/memory-sessions.md"
+  ]
+}
