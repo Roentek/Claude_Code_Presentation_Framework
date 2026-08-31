@@ -24,6 +24,18 @@ case "$(uname -s 2>/dev/null)" in
 esac
 
 if command -v uv &>/dev/null; then
+  # Ensure a working venv exists — a stale/broken .venv (e.g. copied from
+  # another machine, pointing at a Python interpreter that no longer exists)
+  # makes `uv pip install -e` fail with "Broken Python trampoline". Pin 3.12
+  # explicitly (not via a committed .python-version — that would dirty the
+  # submodule tree and block openspace-sync.sh's auto-pull).
+  if [ ! -x "$DIR/.venv/Scripts/python.exe" ] && [ ! -x "$DIR/.venv/bin/python" ]; then
+    echo "  Creating OpenSpace venv (Python 3.12)..."
+    (cd "$DIR" && rm -rf .venv && uv venv --python 3.12 --quiet)
+  elif ! (cd "$DIR" && uv run --no-sync python -c "" 2>/dev/null); then
+    echo "  ⚠ Existing OpenSpace venv is broken — recreating..."
+    (cd "$DIR" && rm -rf .venv && uv venv --python 3.12 --quiet)
+  fi
   echo "  Installing OpenSpace [$OS_EXTRA] via uv pip..."
   if (cd "$DIR" && uv pip install -e ".[$OS_EXTRA]" 2>&1 | tail -3); then
     echo "✓ OpenSpace installed"

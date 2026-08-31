@@ -25,10 +25,12 @@ if [ ! -d "$OPENSPACE_DIR/.git" ] && [ ! -f "$OPENSPACE_DIR/.git" ]; then
   exit 0
 fi
 
-# Check for uncommitted changes in submodule
+# Check for uncommitted changes in submodule (tracked files only — untracked
+# build artifacts like .venv/, node_modules/, __pycache__/ don't block sync;
+# the submodule carries no local edits to tracked files by convention).
 cd "$PROJECT_ROOT/$OPENSPACE_DIR" || exit 1
 
-if [ -n "$(git status --porcelain)" ]; then
+if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
   echo "⚠ OpenSpace submodule has uncommitted changes — skipping sync"
   exit 0
 fi

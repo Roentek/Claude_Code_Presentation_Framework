@@ -32,8 +32,7 @@
       "Bash(npm run playwright:*)",
       "Bash(firecrawl:*)",
       "Bash(npx firecrawl-cli:*)",
-      "Bash(nlm:*)",
-      "Bash(uvx --from notebooklm-mcp-cli nlm:*)",
+      "Bash(notebooklm:*)",
       "Bash(apify *)",
       "Bash(npx apify-cli *)",
       "Bash(openspace *)",
@@ -52,6 +51,9 @@
       "Bash(vercel *)",
       "Bash(alpaca *)",
       "Bash(stripe *)",
+      "Bash(codeburn *)",
+      "Bash(browser-harness *)",
+      "Bash(supabase *)",
       "Bash(openspace-dashboard *)",
       "Bash(bash .claude/hooks/setup.sh)",
       "Bash(echo \"exit: $?\")",
@@ -76,8 +78,7 @@
       "PowerShell(npx playwright *)",
       "PowerShell(firecrawl *)",
       "PowerShell(npx firecrawl-cli *)",
-      "PowerShell(nlm *)",
-      "PowerShell(uvx --from notebooklm-mcp-cli nlm *)",
+      "PowerShell(notebooklm *)",
       "PowerShell(apify *)",
       "PowerShell(npx apify-cli *)",
       "PowerShell(openspace *)",
@@ -94,6 +95,9 @@
       "PowerShell(vercel *)",
       "PowerShell(alpaca *)",
       "PowerShell(stripe *)",
+      "PowerShell(codeburn *)",
+      "PowerShell(browser-harness *)",
+      "PowerShell(supabase *)",
       "PowerShell(openspace-dashboard *)",
       "PowerShell(npm install *)",
       "PowerShell(Get-Process *)",
@@ -224,12 +228,11 @@
     "apify-ultimate-scraper@apify-agent-skills": true,
     "caveman@caveman": true,
     "context-mode@context-mode": true,
-    "claude-mem@claude-mem": true,
     "claude-mem@thedotmack": true,
     "designlang@design-extract": false,
     "watch@claude-video": true,
     "ponytail@ponytail": true,
-    "mattpocock-skills@mattpocock-skills": true,
+    "mattpocock-skills@mattpocock": true,
     "claude-obsidian@agricidaniel-claude-obsidian": true,
     "higgsfield@higgsfield": true,
     "stripe@claude-plugins-official": true
@@ -304,7 +307,7 @@
       },
       "autoUpdate": true
     },
-    "claude-mem": {
+    "thedotmack": {
       "source": {
         "source": "github",
         "repo": "thedotmack/claude-mem"
@@ -325,7 +328,7 @@
       },
       "autoUpdate": true
     },
-    "mattpocock-skills": {
+    "mattpocock": {
       "source": {
         "source": "github",
         "repo": "mattpocock/skills"

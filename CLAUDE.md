@@ -172,7 +172,7 @@ npm install
 # 2. Run initial setup (hooks, skills, permissions, CLI tools, git submodules)
 bash .claude/hooks/setup.sh
 # Installs: marketplace plugins (ui-ux-pro-max, impeccable, codex, gemini, cli-anything, caveman, context-mode, claude-mem, claude-video, ponytail, mattpocock-skills)
-# Step 7a:  Apify agent skills (5 skills from apify/agent-skills marketplace) with 30-sec timeout protection; displays manual /skill install commands if timeout/failure occurs
+# Step 7a:  Apify agent skills (5 skills from apify/agent-skills marketplace) with 30-sec timeout protection; displays manual /plugin install commands if timeout/failure occurs
 # Step 7b:  Caveman plugin (token compression — 75% response reduction, 46% memory file reduction)
 # Step 7c:  Context Mode plugin (98% context reduction via sandboxing; statusline shows session/total savings + efficiency %); auto-installs better-sqlite3 with NODE_TLS_REJECT_UNAUTHORIZED=0 (corporate SSL proxy fix) for FTS5 session continuity
 # Step 7d-pre: Bun runtime (required by claude-mem worker for web viewer + MCP search; also 3-5x faster context-mode sandbox); Windows: powershell -c "irm bun.sh/install.ps1 | iex"; Unix: curl -fsSL https://bun.sh/install | bash
@@ -263,6 +263,7 @@ tools/                        ← Deterministic execution scripts (Python/Node)
     setup_backends.py         ← Backend connection validation script
     pyproject.toml            ← Dependencies (lightrag-hku + server + Plus deps)
     uv.lock                   ← Dependency lockfile
+    .python-version           ← Pins 3.12 (newer Python has no pyiceberg wheel — would need MSVC to build from source)
     README.md                 ← Full LightRAG Plus documentation
     .env                      ← Server config + API keys (gitignored)
     .env.example              ← Configuration template with all options
@@ -327,7 +328,7 @@ vault/                        ← Obsidian wiki vault (dual-layer)
 | `mattpocock-skills` | Real-engineering skills: grilling sessions, TDD, PRDs, issue decomposition, architecture improvement, domain modeling — run `/setup-matt-pocock-skills` once per repo |
 | `claude-obsidian` | Obsidian + Claude AI second brain (Karpathy LLM Wiki pattern) — persistent, compounding knowledge base; hybrid BM25+cosine retrieval; methodology modes (LYT/PARA/Zettelkasten); `/wiki` to start |
 | `higgsfield` | AI image/video/audio — **CLI-first:** 30+ models, Marketing Studio, Soul ID, virality scoring; browser OAuth. Plugin install pending Claude Code support for `./` source type — use CLI (`higgsfield generate create ...`) directly until resolved |
-| `stripe` | Stripe payments, Connect, billing, subscriptions — official Claude plugin; 4 skills auto-load: `stripe-best-practices`, `stripe-directory`, `stripe-projects`, `upgrade-stripe` |
+| `stripe` | Stripe payments, Connect, billing, subscriptions — official Claude plugin; 8 skills auto-load: `stripe-best-practices`, `stripe-directory`, `stripe-projects`, `upgrade-stripe`, `stripe-apps`, `stripe-docs`, `connect-recommend`, `connect-required-verification-information` |
 | `caveman` | Token compression — 75% reduction on responses, 46% on memory files; terse commits/reviews; session tracking |
 | `context-mode` | Context window optimization — 98% reduction via sandboxing (315 KB → 5.4 KB); session continuity via SQLite FTS5; output compression ~65-75% |
 | `claude-mem` | Persistent memory across sessions — captures tool usage observations, generates semantic summaries, [web viewer](http://localhost:37777) |
@@ -402,6 +403,10 @@ vault/                        ← Obsidian wiki vault (dual-layer)
 | `/stripe-directory` | Find Stripe partners / service providers for a workflow, industry, or capability — also use when needing to programmatically purchase a service |
 | `/stripe-projects` | Provision infrastructure via Stripe Projects — databases, auth, caching, LLM providers, email, storage; triggers on "I need a database / API key / set up X" |
 | `/upgrade-stripe` | Guide for upgrading Stripe API versions and SDKs |
+| `/stripe-apps` | Building, modifying, or reviewing a Stripe App — UI extensions, `@stripe/ui-extension-sdk`, `stripe-app.yaml` manifest, authentication (platform keys, OAuth, restricted keys), webhooks, Secret Store API, marketplace publishing |
+| `/stripe-docs` | Read, search, or look up Stripe documentation or API reference — prefer this over `curl`/WebFetch for any `docs.stripe.com` content |
+| `/connect-recommend` | Recommend a Stripe Connect setup (account types, charge patterns, onboarding/KYC, Dashboard access) for marketplaces, platforms, or multi-vendor/multi-party payment flows |
+| `/connect-required-verification-information` | Look up what verification/KYC information a Stripe Connect connected account must provide, by platform country, account country, business type, or capability |
 | `/higgsfield:generate` | Image/video generation across 30+ models (Nano Banana 2, Seedance 2.0, Kling 3.0, Veo 3.1, GPT Image 2…), Marketing Studio for branded ads, Virality Predictor — CLI-first |
 | `/higgsfield:soul-id` | Train a Soul Character — reusable face-faithful identity model; returns `reference_id` for use in generate |
 | `/higgsfield:product-photoshoot` | Brand-quality product imagery — 10 modes (studio, lifestyle, Pinterest, hero, virtual try-on…) |
@@ -588,13 +593,15 @@ Tier 2 tests (`TestOpenSpaceInit`) read LLM key from `tools/openspace/.env` or O
 | MCP server timeout | Increase `toolTimeout` in `.mcp.json` (default 600s → 1200s) |
 | Git Bash crash (Windows) | Use PowerShell or WSL instead |
 | `OPENAI_API_KEY not set` | Add to both `.env` AND OS environment (`setx` on Windows) |
-| setup.sh hangs at skill install | Press Ctrl+C, run manual `/skill install` commands shown |
+| setup.sh hangs at skill install | Press Ctrl+C, run manual `/plugin install <name>@<marketplace>` commands shown (marketplace skills install like plugins — `claude` CLI has no `skill install` subcommand) |
 | `better-sqlite3` build fails (corporate proxy) | `NODE_TLS_REJECT_UNAUTHORIZED=0 npm install better-sqlite3 --build-from-source` — or re-run setup.sh (step 7c applies this fix automatically) |
 | Playwright Chromium download fails: `UNABLE_TO_GET_ISSUER_CERT_LOCALLY` | Corporate proxy intercepts TLS. Fix: `NODE_TLS_REJECT_UNAUTHORIZED=0 npx playwright install chromium` — baked into `sys-npm-deps.sh` automatically |
 | `uv sync` fails with `UnknownIssuer` / `invalid peer certificate` | Corporate proxy intercepts TLS. Fix: `UV_NATIVE_TLS=true uv sync` — uses Windows cert store. Already baked into `update-all.sh`. |
 | LightRAG uploads fail: `httpx.ReadTimeout` during entity extraction | Ollama LLM exceeds default timeout on large chunks. Fix: increase `LLM_TIMEOUT` in `tools/lightrag-plus/.env` — set `1800` (30 min) for slow hardware. Both `asyncio.wait_for` and httpx client use this value. `--timeout` CLI arg only affects gunicorn, not uvicorn — do NOT use it. |
 | `designlang` postinstall fails with Playwright/SSL error | Corporate proxy blocks Playwright browser download. Fix: `npm install -g designlang --ignore-scripts` — CLI works fully without the Playwright browser |
 | OpenSpace skills not discovered on Windows | `OPENSPACE_HOST_SKILL_DIRS` uses git-bash paths (`/c/Users/...`). Windows-native Python can't resolve them (`Path("/c/..").exists()` is False). Fix: use NATIVE paths (`C:/GIT/.../.claude/skills`) in `.env` AND `setx`. Seed the tree with `tools/openspace_overrides/seed_openspace_skills.py` |
+| OpenSpace `uv pip install -e` fails with "Broken Python trampoline" | Stale `.venv` (e.g. copied from another machine) points at a Python interpreter that no longer exists. `tool-openspace.sh` now auto-detects a missing/broken venv and recreates it pinned to Python 3.12 — re-run `bash .claude/hooks/install/tool-openspace.sh` |
+| `uv sync` in `tools/lightrag-plus` tries to build `pyiceberg` from source (needs MSVC) | Python 3.14+ (uv's default when unpinned) has no prebuilt wheel for `pyiceberg` (pulled in transitively via `supabase`→`storage3`). Fixed by `tools/lightrag-plus/.python-version` pinning `3.12` (has a wheel) — `uv sync` picks it up automatically |
 
 ---
 

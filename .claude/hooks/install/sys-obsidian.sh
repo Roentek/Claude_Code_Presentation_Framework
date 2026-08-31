@@ -6,12 +6,18 @@ source "$(dirname "$0")/lib.sh"
 echo "=== Step: Obsidian ==="
 
 if _is_windows; then
-  if [ -d "$LOCALAPPDATA/Obsidian" ]; then
-    echo "  [skip] Obsidian already installed (found $LOCALAPPDATA/Obsidian)"
+  if [ -d "$LOCALAPPDATA/Programs/Obsidian" ] || [ -d "$LOCALAPPDATA/Obsidian" ]; then
+    echo "  [skip] Obsidian already installed (found $LOCALAPPDATA/Programs/Obsidian)"
   else
     echo "  Installing Obsidian via winget..."
     winget install Obsidian.Obsidian --silent --accept-package-agreements --accept-source-agreements 2>/dev/null || {
-      echo "  [warn] winget install failed. Install manually: https://obsidian.md/download"
+      # winget exits non-zero when the package is already installed with no
+      # upgrade available — check the actual install dir before warning.
+      if [ -d "$LOCALAPPDATA/Programs/Obsidian" ]; then
+        echo "  [skip] Obsidian already installed (winget reported no upgrade needed)"
+      else
+        echo "  [warn] winget install failed. Install manually: https://obsidian.md/download"
+      fi
     }
   fi
 elif [[ "$OSTYPE" == "darwin"* ]]; then

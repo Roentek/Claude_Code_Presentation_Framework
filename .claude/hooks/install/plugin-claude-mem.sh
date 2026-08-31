@@ -5,6 +5,6 @@
 INSTALL_DIR="$(cd "$(dirname "$0")" && pwd)"
 . "$INSTALL_DIR/lib.sh"
 
-if _install_plugin "claude-mem" "claude-mem"; then
+if _install_plugin "claude-mem" "thedotmack"; then
   echo "  Web viewer: http://localhost:37777 (requires Bun — restart terminal first)"
 fi
