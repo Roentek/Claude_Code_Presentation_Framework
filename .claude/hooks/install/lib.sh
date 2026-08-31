@@ -57,18 +57,20 @@ _install_plugin() {
 
 # ── Install a marketplace skill ───────────────────────────────
 # Usage: _install_skill <skill-name> <marketplace-key>
+# NOTE: the `claude` CLI has no `skill` subcommand — marketplace skills are
+# installed the same way as plugins, via `claude plugin install`.
 _install_skill() {
   local name="$1" mkt="$2"
   if command -v claude &>/dev/null; then
-    if _timeout 30 claude skill install "${name}@${mkt}" 2>/dev/null; then
+    if _timeout 30 claude plugin install "${name}@${mkt}" 2>/dev/null; then
       echo "  ✓ $name installed"
       return 0
     else
-      echo "  ⚠ $name — run in Claude Code: /skill install ${name}@${mkt}"
+      echo "  ⚠ $name — run in Claude Code: /plugin install ${name}@${mkt}"
       return 1
     fi
   else
-    echo "  ⚠ claude CLI not found — run in Claude Code: /skill install ${name}@${mkt}"
+    echo "  ⚠ claude CLI not found — run in Claude Code: /plugin install ${name}@${mkt}"
     return 1
   fi
 }

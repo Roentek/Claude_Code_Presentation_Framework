@@ -9,5 +9,5 @@
 
 . "$(dirname "$0")/lib.sh"
 
-echo "  Installing mattpocock-skills plugin (mattpocock-skills@mattpocock-skills)..."
-_install_plugin "mattpocock-skills" "mattpocock-skills"
+echo "  Installing mattpocock-skills plugin (mattpocock-skills@mattpocock)..."
+_install_plugin "mattpocock-skills" "mattpocock"

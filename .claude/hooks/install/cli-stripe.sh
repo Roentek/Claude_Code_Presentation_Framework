@@ -12,9 +12,12 @@ fi
 echo "  Installing Stripe CLI..."
 if _is_windows; then
   if command -v winget &>/dev/null; then
-    if _timeout 120 winget install --id Stripe.StripeCLI -e --silent; then
+    if _timeout 120 winget install --id Stripe.StripeCli -e --silent; then
       echo "✓ stripe installed via winget"
       echo "  ⚠ Run 'stripe login' to authenticate before first use"
+    elif winget list --id Stripe.StripeCli -e &>/dev/null; then
+      # winget exits non-zero when already installed with no upgrade available
+      echo "✓ stripe already installed via winget (no upgrade needed)"
     else
       echo "⚠ winget install failed — try: scoop install stripe"
       echo "  Or download from: https://github.com/stripe/stripe-cli/releases"

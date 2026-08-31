@@ -130,7 +130,7 @@ _run cli-stripe.sh
 # ── Stripe skills (from docs.stripe.com) ─────────────────────
 echo "── Stripe skills ────────────────────────────────────────"
 echo "  Installing Stripe skills from docs.stripe.com..."
-if _timeout 60 npx skills@latest add https://docs.stripe.com 2>/dev/null; then
+if _timeout 120 npx skills@latest add https://docs.stripe.com 2>/dev/null; then
   echo "  ✓ Stripe skills installed (stripe-best-practices, stripe-directory, stripe-projects, upgrade-stripe)"
 else
   echo "  ⚠ Stripe skills install failed — run: npx skills@latest add https://docs.stripe.com"

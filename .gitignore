@@ -145,6 +145,13 @@ credentials.json
 token.json
 settings.local.json
 
+# Graphify — local knowledge-graph build output (regenerate with `/graphify .`)
+graphify-out/
+
+# Obsidian vault — self-contained nested git repo (its own history/remote,
+# not tracked by the parent repo; see vault/CLAUDE.md)
+vault/
+
 # Claude Code — per-machine setup marker (do not commit)
 .claude/.setup-complete
 
